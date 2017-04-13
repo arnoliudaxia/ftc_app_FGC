@@ -23,14 +23,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
- 此代码假定DIM名称为“dim”。
-  *
-  *在很多例子中，机器人可能想要向driver发出信号，不需要它们再征求driver station的命令。 这可能是像“球在料斗”条件或一个“准备拍摄”条件。
-  *
-  * DIM有两个用户可设置的指示灯（一个红色一个蓝色）。 这些可以直接从你的程序控制。
-  *
-  *使用Android Studios复制此类，并使用新名称将其粘贴到团队的代码文件夹中。
-  *删除或注释掉@Disabled行将此opmode添加到Driver Station OpMode列表
+ //此代码假定DIM名称为“dim”。
+  //*
+  //*在很多例子中，机器人可能想要向driver发出信号，不需要它们再征求driver station的命令。 这可能是像“球在漏斗”条件或一个“准备拍摄”条件。
+  //*
+  //* DIM有两个用户可设置的指示灯（一个红色一个蓝色）。 这些可以直接从你的程序控制。
+  //*
+  //*使用Android Studios复制此类，并使用新名称将其粘贴到团队的代码文件夹中。
+  //*删除或注释掉@Disabled行将此opmode添加到Driver Station OpMode列表
 @Autonomous(name = "Concept: DIM As Indicator", group = "Concept")
 @Disabled
 public class ConceptDIMAsIndicator extends LinearOpMode {
@@ -74,7 +74,7 @@ public class ConceptDIMAsIndicator extends LinearOpMode {
             idle();
         }
 
-        // Turn off LEDs;　关闭ＬＥＤ灯
+       // Turn off LEDs;　关闭ＬＥＤ灯
         dim.setLED(BLUE_LED, false);
         dim.setLED(RED_LED,  false);
         telemetry.addData(">", "Done");

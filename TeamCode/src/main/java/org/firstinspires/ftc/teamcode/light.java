@@ -13,43 +13,115 @@ public class light extends  LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
         driveforward();
+        weng();
+        shoot();
+        stops();
+        adjust();
+        stops2();
+        collection();
+        weng2();
+        shoot2();
+        stops3();
+        adjust2();
+        stops4();
+        ball1();
+        ballback1();
+        ball2();
+        ballback2();
         turnright();
         forward();
-        left1();
-        forwardbit1();
-        turnright2();
-        light1();
-        back1();
-        light2();
-        back2();
-        light3();
-        back3();
-        turnright3();
-        forwardbit2();
-        left45();
+        rightC();
         corner();
         moca1();
         moca2();
         moca3();
         moca4();
-        rengqiu();
     }
 
 
-
-
     public void driveforward() throws InterruptedException {
-        robot.WL.setPower(-0.2);
-        robot.WR.setPower(-0.2);
-        Thread.sleep(1000);
+        robot.WL.setPower(-0.1);
+        robot.WR.setPower(-0.1);
+        Thread.sleep(2500);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
 
+    public void weng() throws InterruptedException {
+        robot.WL.setPower(0);
+        robot.WR.setPower(0);
+        Thread.sleep(3500);
+        robot.WL.setPower(0);
+        robot.WR.setPower(0);}
+    public void shoot() throws InterruptedException {
+        robot.sht.setPower(1);
+        Thread.sleep(900);
+        robot.sht.setPower(0);}
+    public void stops() throws InterruptedException {
+        robot.sht.setPower(0);
+        Thread.sleep(400);
+        robot.sht.setPower(0);}
+    public void adjust() throws InterruptedException {
+        robot.sht.setPower(0.1);
+        Thread.sleep(1600);
+        robot.sht.setPower(0);}
+    public void stops2() throws InterruptedException {
+        robot.sht.setPower(0);
+        Thread.sleep(200);
+        robot.sht.setPower(0);}
+    public void collection() throws InterruptedException {
+        robot.col.setPower(0.5);
+        Thread.sleep(1900);
+        robot.sht.setPower(0);}
+
+    public void weng2() throws InterruptedException {
+        robot.col.setPower(0);
+        Thread.sleep(3400);
+        robot.col.setPower(0);}
+    public void shoot2() throws InterruptedException {
+        robot.sht.setPower(1);
+        Thread.sleep(900);
+        robot.sht.setPower(0);}
+    public void stops3() throws InterruptedException {
+        robot.sht.setPower(0);
+        Thread.sleep(200);
+        robot.sht.setPower(0);}
+    public void adjust2() throws InterruptedException {
+        robot.sht.setPower(0.1);
+        Thread.sleep(1600);
+        robot.sht.setPower(0);}
+    public void stops4() throws InterruptedException {
+        robot.sht.setPower(0);
+        Thread.sleep(200);
+        robot.sht.setPower(0);}
+    public void ball1() throws InterruptedException {
+        robot.WL.setPower(-0.2);
+        robot.WR.setPower(-0.2);
+        Thread.sleep(1500);
+        robot.WL.setPower(0);
+        robot.WR.setPower(0);}
+    public void ballback1() throws InterruptedException {
+        robot.WL.setPower(0.2);
+        robot.WR.setPower(0.2);
+        Thread.sleep(800);
+        robot.WL.setPower(0);
+        robot.WR.setPower(0);}
+    public void ball2() throws InterruptedException {
+        robot.WL.setPower(-0.2);
+        robot.WR.setPower(-0.2);
+        Thread.sleep(1500);
+        robot.WL.setPower(0);
+        robot.WR.setPower(0);}
+    public void ballback2() throws InterruptedException {
+        robot.WL.setPower(0.2);
+        robot.WR.setPower(0.2);
+        Thread.sleep(1480);
+        robot.WL.setPower(0);
+        robot.WR.setPower(0);}
 
     public void turnright () throws InterruptedException{
         robot.WL.setPower(-0.2);
         robot.WR.setPower(0.2);
-        Thread.sleep(900);
+        Thread.sleep(920);
         robot.WL.setPower(0);
         robot.WL.setPower(0);}
 
@@ -59,95 +131,28 @@ public class light extends  LinearOpMode {
     public void forward() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(1000);
+        Thread.sleep(1750);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
 
     }
-    public void left1() throws InterruptedException{
-        robot.WL.setPower(0.2);
-        robot.WR.setPower(-0.2);
-        Thread.sleep(900);
-        robot.WL.setPower(0);
-        robot.WL.setPower(0);}
-    public void forwardbit1() throws InterruptedException {
-        robot.WL.setPower(-0.2);
-        robot.WR.setPower(-0.2);
-        Thread.sleep(1220);
-        robot.WL.setPower(0);
-        robot.WR.setPower(0);}
 
-    public void turnright2 () throws InterruptedException{
+    public void rightC () throws InterruptedException{
         robot.WL.setPower(-0.2);
         robot.WR.setPower(0.2);
-        Thread.sleep(1070);
-        robot.WL.setPower(0);
-        robot.WL.setPower(0);}
-    public void light1() throws InterruptedException {
-        robot.WL.setPower(-0.2);
-        robot.WR.setPower(-0.2);
-        Thread.sleep(1630);
-        robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void back1() throws InterruptedException {
-        robot.WL.setPower(0.2);
-        robot.WR.setPower(0.2);
-        Thread.sleep(430);
-        robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void light2() throws InterruptedException {
-        robot.WL.setPower(-0.2);
-        robot.WR.setPower(-0.2);
-        Thread.sleep(900);
-        robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void back2() throws InterruptedException {
-        robot.WL.setPower(0.2);
-        robot.WR.setPower(0.2);
-        Thread.sleep(430);
-        robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void light3() throws InterruptedException {
-        robot.WL.setPower(-0.2);
-        robot.WR.setPower(-0.2);
-        Thread.sleep(900);
-        robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void back3() throws InterruptedException {
-        robot.WL.setPower(0.2);
-        robot.WR.setPower(0.2);
-        Thread.sleep(1230);
-        robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void turnright3 () throws InterruptedException{
-        robot.WL.setPower(-0.2);
-        robot.WR.setPower(0.2);
-        Thread.sleep(980);
-        robot.WL.setPower(0);
-        robot.WL.setPower(0);}
-
-    public void forwardbit2() throws InterruptedException {
-        robot.WL.setPower(-0.2);
-        robot.WR.setPower(-0.2);
-        Thread.sleep(960);
-        robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void left45 () throws InterruptedException{
-        robot.WL.setPower(0.2);
-        robot.WR.setPower(-0.2);
-        Thread.sleep(555);
+        Thread.sleep(550);
         robot.WL.setPower(0);
         robot.WL.setPower(0);}
     public void corner() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(1240);
+        Thread.sleep(1340);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
     public void moca1() throws InterruptedException {
         robot.WL.setPower(-0.2);
-        Thread.sleep(400);
+        Thread.sleep(600);
         robot.WL.setPower(0);
 
 
@@ -155,27 +160,23 @@ public class light extends  LinearOpMode {
 
     public void moca2() throws InterruptedException {
         robot.WR.setPower(-0.2);
-        Thread.sleep(400);
+        Thread.sleep(600);
         robot.WR.setPower(0);
     }
     public void moca3() throws InterruptedException {
         robot.WL.setPower(-0.2);
-        Thread.sleep(400);
+        Thread.sleep(600);
         robot.WL.setPower(0);
 
 
     }
     public void moca4() throws InterruptedException {
         robot.WR.setPower(-0.2);
-        Thread.sleep(400);
+        Thread.sleep(600);
         robot.WR.setPower(0);
     }
 
-    public void rengqiu() throws  InterruptedException {
-        robot.col.setPower(-0.4);
-        Thread.sleep(2500);
-        robot.col.setPower(0);
-    }
+
 }
 
 

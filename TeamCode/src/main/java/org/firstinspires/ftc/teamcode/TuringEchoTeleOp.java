@@ -52,22 +52,21 @@ public class TuringEchoTeleOp extends LinearOpMode {
             // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
             forward1 = gamepad1.left_stick_y / 2;
             forward2 = gamepad1.right_stick_y / 2;
-            left = gamepad1.left_trigger / 2.5;
-            right = gamepad1.right_trigger / 2.5;
+            right = gamepad1.left_trigger / 4;
+            left = gamepad1.right_trigger / 4;
             robot.WL.setPower(forward1 + forward2 - left + right);
             robot.WR.setPower(forward1 + forward2 + left - right);
-
             if (gamepad2.left_bumper)
                 robot.col.setPower(0.4);
             if (gamepad2.right_bumper)
                 robot.col.setPower(-0.4);
             if (gamepad2.a)
                 robot.sht.setPower(1);
-                Thread.sleep(1000);
-                robot.sht.setPower(0);
             if (gamepad2.b)
                 robot.sht.setPower(0);
-            if (gamepad2.back)
+            if (gamepad2.x)
+                robot.sht.setPower(0.1);
+            if (gamepad2.y)
                 robot.col.setPower(0);
             //if (gamepad2.x)
             //robot.sht.setPower(1);
@@ -80,5 +79,5 @@ public class TuringEchoTeleOp extends LinearOpMode {
 
 
             // Pause for metronome tick.  40 mS each cycle = update 25 times a second.
-            //robot.waitForTick(0);
+            robot.waitForTick(40);
         }}}

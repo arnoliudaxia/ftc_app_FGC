@@ -28,7 +28,7 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
-（以上为版权所有声明及任何情况下的免责声明）
+//（以上为版权所有声明及任何情况下的免责声明）
 
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
@@ -73,9 +73,9 @@ public class ConceptI2cAddressChange extends LinearOpMode {
   // you'll be able to change the I2C address of the ModernRoboticsColorSensor.
   // If the bytes you're expecting are different than what this op mode finds,
   // a comparison will be printed out into the logfile.
-  目前，这是设置是为期望来自IR Seeker的字节。 如果您更改这些值，将“FIRMWARE_REV”设置为COLOR_SENSOR_FIRMWARE_REV，
-  将“SENSOR_ID”设置为“COLOR_SENSOR_SENSOR_ID”，则可以更改ModernRoboticsColorSensor的I2C地址。
-  如果您期望的字节与此op模式找到的字节不同，则会将比较打印到日志文件中。
+  //目前，这是设置是为期望来自IR Seeker的字节。 如果您更改这些值，将“FIRMWARE_REV”设置为COLOR_SENSOR_FIRMWARE_REV，
+  ///将“SENSOR_ID”设置为“COLOR_SENSOR_SENSOR_ID”，则可以更改ModernRoboticsColorSensor的I2C地址。
+  //如果您期望的字节与此op模式找到的字节不同，则会将比较打印到日志文件中。
   public static final byte FIRMWARE_REV = IR_SEEKER_V3_FIRMWARE_REV;
   public static final byte SENSOR_ID = IR_SEEKER_V3_SENSOR_ID;
 
@@ -98,7 +98,7 @@ public class ConceptI2cAddressChange extends LinearOpMode {
   // Different hardware may have different rules.
   // Be sure to read the requirements for the hardware you're using!
   // If you use an invalid address, you may make your device completely unusable.
-  　//现代机器人设备上的I2c地址必须可以被2除，且在0x7e到0x10之间
+  //现代机器人设备上的I2c地址必须可以被2除，且在0x7e到0x10之间
    //不同的硬件可能有不同的规则。
    //请务必阅读您正在使用的硬件的要求！
    //如果使用无效的地址，可能会使您的设备完全无法使用。
@@ -120,7 +120,7 @@ public class ConceptI2cAddressChange extends LinearOpMode {
     // I2c addresses on Modern Robotics devices must be divisible by 2, and between 0x7e and 0x10
     // Different hardware may have different rules.
     // Be sure to read the requirements for the hardware you're using!
-    　//现代机器人设备上的I2c地址必须可以被2除，且在0x7e到0x10之间
+    //现代机器人设备上的I2c地址必须可以被2除，且在0x7e到0x10之间
    //不同的硬件可能有不同的规则。
    //请务必阅读您正在使用的硬件的要求！
     ModernRoboticsUsbDeviceInterfaceModule.throwIfModernRoboticsI2cAddressIsInvalid(newAddress);
@@ -187,7 +187,8 @@ public class ConceptI2cAddressChange extends LinearOpMode {
     telemetry.update();
     RobotLog.i("Successfully changed the I2C address." + String.format("New address: 0x%02x", newAddress));
 
-    /**** IMPORTANT NOTE ******/　重要提示
+    /**** IMPORTANT NOTE ******/
+    //重要提示
     // You need to add a line like this at the top of your op mode
     // to update the I2cAddress in the driver.　//您需要在op模式的顶部添加如下一行，以更新驱动程序中的I2cAddress。
     //irSeeker.setI2cAddress(newAddress);
