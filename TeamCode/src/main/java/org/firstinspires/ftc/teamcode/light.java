@@ -42,7 +42,7 @@ public class light extends  LinearOpMode {
     public void driveforward() throws InterruptedException {
         robot.WL.setPower(-0.1);
         robot.WR.setPower(-0.1);
-        Thread.sleep(2500);
+        Thread.sleep(2050);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
 
@@ -111,10 +111,11 @@ public class light extends  LinearOpMode {
         Thread.sleep(1500);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
+
     public void ballback2() throws InterruptedException {
         robot.WL.setPower(0.2);
         robot.WR.setPower(0.2);
-        Thread.sleep(1480);
+        Thread.sleep(1080);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
 
@@ -131,7 +132,7 @@ public class light extends  LinearOpMode {
     public void forward() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(1750);
+        Thread.sleep(1950);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
