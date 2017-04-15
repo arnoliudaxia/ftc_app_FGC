@@ -3,15 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name=" TuringEchoLight", group="TuringEcho")
-public class light extends  LinearOpMode {
+@TeleOp(name=" TuringEchocentre", group="TuringEcho")
+public class lightcentre extends  LinearOpMode {
 
     /* Declare OpMode members. */
     TuringEchoRobotHardware   robot           = new TuringEchoRobotHardware();
 
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        waitForStart();
         driveforward();
         weng();
         shoot();
@@ -28,21 +27,14 @@ public class light extends  LinearOpMode {
         ballback1();
         ball2();
         ballback2();
-        turnright();
-        forward();
-        rightC();
-        corner();
-        moca1();
-        moca2();
-        moca3();
-        moca4();
+
     }
 
 
     public void driveforward() throws InterruptedException {
         robot.WL.setPower(-0.1);
         robot.WR.setPower(-0.1);
-        Thread.sleep(2050);
+        Thread.sleep(2020);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
 
@@ -96,7 +88,7 @@ public class light extends  LinearOpMode {
     public void ball1() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(1500);
+        Thread.sleep(1900);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
     public void ballback1() throws InterruptedException {
@@ -108,74 +100,16 @@ public class light extends  LinearOpMode {
     public void ball2() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(1500);
+        Thread.sleep(2200);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
-
     public void ballback2() throws InterruptedException {
         robot.WL.setPower(0.2);
         robot.WR.setPower(0.2);
-        Thread.sleep(1080);
+        Thread.sleep(510);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
 
-    public void turnright () throws InterruptedException{
-        robot.WL.setPower(-0.2);
-        robot.WR.setPower(0.2);
-        Thread.sleep(920);
-        robot.WL.setPower(0);
-        robot.WL.setPower(0);}
-
-
-
-
-    public void forward() throws InterruptedException {
-        robot.WL.setPower(-0.2);
-        robot.WR.setPower(-0.2);
-        Thread.sleep(1950);
-        robot.WL.setPower(0);
-        robot.WR.setPower(0);
-
-
-    }
-
-    public void rightC () throws InterruptedException{
-        robot.WL.setPower(-0.2);
-        robot.WR.setPower(0.2);
-        Thread.sleep(550);
-        robot.WL.setPower(0);
-        robot.WL.setPower(0);}
-    public void corner() throws InterruptedException {
-        robot.WL.setPower(-0.2);
-        robot.WR.setPower(-0.2);
-        Thread.sleep(1340);
-        robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void moca1() throws InterruptedException {
-        robot.WL.setPower(-0.2);
-        Thread.sleep(600);
-        robot.WL.setPower(0);
-
-
-    }
-
-    public void moca2() throws InterruptedException {
-        robot.WR.setPower(-0.2);
-        Thread.sleep(600);
-        robot.WR.setPower(0);
-    }
-    public void moca3() throws InterruptedException {
-        robot.WL.setPower(-0.2);
-        Thread.sleep(600);
-        robot.WL.setPower(0);
-
-
-    }
-    public void moca4() throws InterruptedException {
-        robot.WR.setPower(-0.2);
-        Thread.sleep(600);
-        robot.WR.setPower(0);
-    }
 
 
 }

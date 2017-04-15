@@ -12,7 +12,7 @@ public class turnright45 extends  LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
         waitForStart();
-        turnright();
+        leftC();
     }
 
 
@@ -20,12 +20,12 @@ public class turnright45 extends  LinearOpMode {
 
 
 
-     public void turnright () throws InterruptedException{
-     robot.WL.setPower(-0.2);
-     robot.WR.setPower(0.2);
-     Thread.sleep(420);
-     robot.WL.setPower(0);
-     robot.WL.setPower(0);}
+    public void leftC () throws InterruptedException{
+        robot.WL.setPower(0.2);
+        robot.WR.setPower(-0.2);
+        Thread.sleep(550);
+        robot.WL.setPower(0);
+        robot.WL.setPower(0);}
 
 
     }
