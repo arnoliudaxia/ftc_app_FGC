@@ -11,6 +11,7 @@ public class lightcentre extends  LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
+        waitForStart();
         driveforward();
         weng();
         shoot();

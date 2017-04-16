@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name=" team1", group="TuringEcho")
-public class team1 extends  LinearOpMode {
+@TeleOp(name=" bluedisturb1423", group="TuringEcho")
+public class reddisturb2 extends  LinearOpMode {
 
     /* Declare OpMode members. */
     TuringEchoRobotHardware   robot           = new TuringEchoRobotHardware();
@@ -24,10 +24,12 @@ public class team1 extends  LinearOpMode {
         stops3();
         adjust2();
         stops4();
-        ball1();
-        ballback1();
-        ball2();
-        ballback2();
+        turnleft();
+        forward();
+        turnright();
+        forward2();
+        turnleft2();
+        forwardbit();
 
     }
 
@@ -35,7 +37,7 @@ public class team1 extends  LinearOpMode {
     public void driveforward() throws InterruptedException {
         robot.WL.setPower(-0.1);
         robot.WR.setPower(-0.1);
-        Thread.sleep(2020);
+        Thread.sleep(2080);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
 
@@ -86,33 +88,50 @@ public class team1 extends  LinearOpMode {
         robot.sht.setPower(0);
         Thread.sleep(200);
         robot.sht.setPower(0);}
-    public void ball1() throws InterruptedException {
+
+    public void turnleft () throws InterruptedException{
+        robot.WL.setPower(-0.2);
+        robot.WR.setPower(0.2);
+        Thread.sleep(1020);
+        robot.WL.setPower(0);
+        robot.WL.setPower(0);}
+
+
+
+
+    public void forward() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(1900);
+        Thread.sleep(1800);
         robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void ballback1() throws InterruptedException {
-        robot.WL.setPower(0.2);
+        robot.WR.setPower(0);
+
+
+
+    }
+    public void turnright () throws InterruptedException{
+        robot.WL.setPower(-0.2);
         robot.WR.setPower(0.2);
-        Thread.sleep(800);
+        Thread.sleep(1020);
         robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void ball2() throws InterruptedException {
+        robot.WL.setPower(0);}
+    public void forward2() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
         Thread.sleep(2200);
         robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void ballback2() throws InterruptedException {
-        robot.WL.setPower(0.2);
-        robot.WR.setPower(0.2);
-        Thread.sleep(510);
-        robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-
-
-
+        robot.WR.setPower(0);
 }
-
-
+    public void turnleft2 () throws InterruptedException{
+        robot.WL.setPower(-0.2);
+        robot.WR.setPower(0.2);
+        Thread.sleep(1020);
+        robot.WL.setPower(0);
+        robot.WL.setPower(0);}
+    public void forwardbit() throws InterruptedException {
+        robot.WL.setPower(-0.2);
+        robot.WR.setPower(-0.2);
+        Thread.sleep(1000);
+        robot.WL.setPower(0);
+        robot.WR.setPower(0);
+    }}
