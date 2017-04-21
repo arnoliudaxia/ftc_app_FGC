@@ -1,3 +1,11 @@
+/*
+  这段代码是TuringEcho手动程序。一号手柄控制移动以及转向。二号手柄控制弹射校准以及弹射，并包含扎带收集以及扎带反转。
+  还包含舵机（伺服）技术，采用挡板控制进球数量。
+  至此，感谢重庆三十七中的程序员Rarcher
+*/
+
+
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

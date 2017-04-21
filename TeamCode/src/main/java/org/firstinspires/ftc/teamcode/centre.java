@@ -1,3 +1,8 @@
+/*
+  这段代码是以正对中心框为起始位置的自动化程序，推开大球，并停在中心漩涡上
+*/
+
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

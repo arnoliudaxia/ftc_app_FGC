@@ -1,3 +1,8 @@
+/*
+  这段代码是以正对中心框为起始位置的自动化程序，弹射两个球，并停在红色角落漩涡上
+*/
+
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

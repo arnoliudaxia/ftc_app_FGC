@@ -1,14 +1,16 @@
 /*
-  这段代码是以倾斜45度为起始位置的自动化程序，弹射两个球并推开大球，并停在中心漩涡上
+  这段代码是以正对中心框为起始位置的自动化程序，弹射两个球，并停在蓝色角落漩涡上
 */
+
+
 
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name=" lean", group="TuringEcho")
-public class lean extends  LinearOpMode {
+@TeleOp(name=" bluecorner", group="TuringEcho")
+public class bluecorner extends  LinearOpMode {
 
     /* Declare OpMode members. */
     TuringEchoRobotHardware   robot           = new TuringEchoRobotHardware();
@@ -29,24 +31,31 @@ public class lean extends  LinearOpMode {
         stops3();
         adjust2();
         stops4();
-        ball1();
-        ballback1();
-        ball2();
-        ballback2();
+        turnleft();
+        forward();
+        leftC();
+        corner();
+        moca1();
+        moca2();
+        moca3();
+        moca4();
+        moca5();
+        moca6();
+
     }
 
 
     public void driveforward() throws InterruptedException {
         robot.WL.setPower(-0.1);
         robot.WR.setPower(-0.1);
-        Thread.sleep(3920);
+        Thread.sleep(2080);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
 
     public void weng() throws InterruptedException {
         robot.WL.setPower(0);
         robot.WR.setPower(0);
-        Thread.sleep(3500);
+        Thread.sleep(2200);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
     public void shoot() throws InterruptedException {
@@ -98,33 +107,81 @@ public class lean extends  LinearOpMode {
         robot.sht.setPower(0);
         Thread.sleep(200);
         robot.sht.setPower(0);}
-    public void ball1() throws InterruptedException {
+
+    public void turnleft () throws InterruptedException{
+        robot.WL.setPower(0.2);
+        robot.WR.setPower(-0.2);
+        Thread.sleep(1020);
+        robot.WL.setPower(0);
+        robot.WL.setPower(0);}
+
+
+
+
+    public void forward() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(2800);
+        Thread.sleep(2000);
         robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void ballback1() throws InterruptedException {
+        robot.WR.setPower(0);
+
+
+    }
+
+    public void leftC () throws InterruptedException{
         robot.WL.setPower(0.2);
-        robot.WR.setPower(0.2);
-        Thread.sleep(500);
+        robot.WR.setPower(-0.2);
+        Thread.sleep(610);
         robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void ball2() throws InterruptedException {
+        robot.WL.setPower(0);}
+    public void corner() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(1900);
+        Thread.sleep(1440);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
-    public void ballback2() throws InterruptedException {
-        robot.WL.setPower(0.2);
-        robot.WR.setPower(0.2);
-        Thread.sleep(510);
+    public void moca1() throws InterruptedException {
+        robot.WL.setPower(-0.2);
+        Thread.sleep(600);
         robot.WL.setPower(0);
-        robot.WR.setPower(0);}
+
+
+    }
+
+    public void moca2() throws InterruptedException {
+        robot.WR.setPower(-0.2);
+        Thread.sleep(600);
+        robot.WR.setPower(0);
+    }
+    public void moca3() throws InterruptedException {
+        robot.WL.setPower(-0.2);
+        Thread.sleep(600);
+        robot.WL.setPower(0);
+
+
+    }
+    public void moca4() throws InterruptedException {
+        robot.WR.setPower(-0.2);
+        Thread.sleep(600);
+        robot.WR.setPower(0);
+    }
+
+    public void moca5() throws InterruptedException {
+        robot.WL.setPower(-0.2);
+        Thread.sleep(600);
+        robot.WL.setPower(0);
+
+
+    }
+    public void moca6() throws InterruptedException {
+        robot.WR.setPower(-0.2);
+        Thread.sleep(600);
+        robot.WR.setPower(0);
+    }
+
+
+
+
 }
-
-
-
 
 
