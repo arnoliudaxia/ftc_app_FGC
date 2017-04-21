@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoController;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -33,6 +34,7 @@ public class TuringEchoRobotHardware
     public DcMotor  sht = null;
     public DcMotor  col2 = null;
     public ColorSensor c1 = null;
+    public Servo baffle1 =null;
     /* Local OpMode members. */
     HardwareMap hwMap  = null;
     private ElapsedTime period  = new ElapsedTime();
@@ -42,17 +44,22 @@ public class TuringEchoRobotHardware
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
+    public void init(HardwareMap ahwMap) throws InterruptedException {
         // save reference to HW Map
         hwMap = ahwMap;
 
         // Define and Initialize Motors
         WL   = hwMap.dcMotor.get("WL");
-        WR  = hwMap.dcMotor.get("WR");
+        WR   = hwMap.dcMotor.get("WR");
         col = hwMap.dcMotor.get("col");
         sht= hwMap.dcMotor.get("sht");
+        baffle1= hwMap.servo.get("baffle1");
+        baffle1.scaleRange(0,0.7);
         //col2 = hwMap.dcMotor.get("col2");
         WR.setDirection(DcMotor.Direction.REVERSE);
+
+
+
         //c1 = hwMap.colorSensor.get("c1");
 
         // Set all motors to zero power
@@ -72,7 +79,6 @@ public class TuringEchoRobotHardware
         // Define and initialize ALL installed servos.
 
     }
-
     /***
      *
      * waitForTick implements a periodic delay. However, this acts like a metronome with a regular
@@ -83,7 +89,7 @@ public class TuringEchoRobotHardware
      */
     public void waitForTick(long periodMs) {
 
-        long  remaining = periodMs - (long)period.milliseconds();
+        long remaining = periodMs - (long) period.milliseconds();
 
         // sleep for the remaining portion of the regular cycle period.
         if (remaining > 0) {
@@ -97,4 +103,6 @@ public class TuringEchoRobotHardware
         // Reset the cycle clock for the next pass.
         period.reset();
     }
+
+
 }

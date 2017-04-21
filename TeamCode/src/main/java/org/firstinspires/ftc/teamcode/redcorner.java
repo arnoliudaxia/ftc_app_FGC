@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name=" redcorner1332", group="TuringEcho")
+@TeleOp(name=" redcorner", group="TuringEcho")
 public class redcorner extends  LinearOpMode {
 
     /* Declare OpMode members. */
@@ -16,9 +16,9 @@ public class redcorner extends  LinearOpMode {
         weng();
         shoot();
         stops();
-        adjust();
-        stops2();
+        jiaozhun();
         collection();
+        jiaozhun2();
         weng2();
         shoot2();
         stops3();
@@ -59,19 +59,22 @@ public class redcorner extends  LinearOpMode {
         robot.sht.setPower(0);
         Thread.sleep(400);
         robot.sht.setPower(0);}
-    public void adjust() throws InterruptedException {
+    public void jiaozhun() throws  InterruptedException{
         robot.sht.setPower(0.1);
-        Thread.sleep(1600);
-        robot.sht.setPower(0);}
-    public void stops2() throws InterruptedException {
+        Thread.sleep(1000);
         robot.sht.setPower(0);
-        Thread.sleep(200);
-        robot.sht.setPower(0);}
-    public void collection() throws InterruptedException {
-        robot.col.setPower(0.5);
-        Thread.sleep(1900);
-        robot.sht.setPower(0);}
+        robot.baffle1.setPosition(0.7);Thread.sleep(800);
+    }
+    public void collection() throws  InterruptedException{
+        robot.col.setPower(0.4);
+        Thread.sleep(1000);
+        robot.col.setPower(0);
+    }
+    public void jiaozhun2() throws  InterruptedException{
 
+        robot.baffle1.setPosition(0);Thread.sleep(800);
+        robot.baffle1.close();
+    }
     public void weng2() throws InterruptedException {
         robot.col.setPower(0);
         Thread.sleep(1500);
