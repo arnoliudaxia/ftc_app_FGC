@@ -1,7 +1,7 @@
 /*
   这段代码是TuringEcho手动程序。一号手柄控制移动以及转向。二号手柄控制弹射校准以及弹射，并包含扎带收集以及扎带反转。
   还包含舵机（伺服）技术，采用挡板控制进球数量。
-  至此，感谢重庆三十七中的程序员Rarcher
+  至此，特别感谢重庆三十七中的程序员Rarcher在手动程序问题的解决上给予我们的帮助
 */
 
 
@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name=" TuringEchoTeleOp", group="TuringEcho")
+@TeleOp(name="TuringEchoTeleOp", group="TuringEcho")
 public class TuringEchoTeleOp extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -53,23 +53,29 @@ public class TuringEchoTeleOp extends LinearOpMode {
                 robot.col.setPower(0.4);
             if (gamepad2.right_bumper)
                 robot.col.setPower(-0.4);
+            if (gamepad2.y)
+                robot.col.setPower(0);
             if (gamepad2.a){
                 robot.sht.setPower(1);
-                sleepmanager(robot.sht,500);}
-            if (gamepad2.x) {
+                sleepmanager(robot.sht,500);
                 robot.sht.setPower(0.1);
                 Thread.sleep(1000);
                 robot.sht.setPower(0);
-                robot.baffle1.setPosition(0.7);Thread.sleep(800);
-                robot.baffle1.close();Thread.sleep(600);
-                robot.baffle1.setPosition(0);Thread.sleep(500);
-                robot.baffle1.close();
+            }
+            if(gamepad2.b){
+                //robot.baffle1.setPosition(0);//Thread.sleep(800);
+//                robot.baffle1.close();Thread.sleep(700);
+                robot.baffle1.setPosition(0);//Thread.sleep(700);
+                //robot.baffle1.close();
                 //Thread.sleep(1500);
                 //robot.baffle1.close();
                 //Thread.sleep(1500);
                 //robot.baffle1.setPosition(0);
                 //robot.baffle1.close();
-            }}
+
+            }else{
+                robot.baffle1.setPosition(0.6);
+            }
             telemetry.addData("Servo Position", "%5.2f", robot.baffle1.getPosition());
             telemetry.addData(">", "Press Stop to end test." );
             telemetry.update();
@@ -78,5 +84,6 @@ public class TuringEchoTeleOp extends LinearOpMode {
 
         }
 
+}
 }
 

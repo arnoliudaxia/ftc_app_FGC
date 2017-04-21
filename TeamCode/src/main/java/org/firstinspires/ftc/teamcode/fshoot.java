@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name=" fshoot", group="TuringEcho")
+
+@Autonomous(name="fshoot", group="TuringEcho")
 public class fshoot extends  LinearOpMode {
 
     /* Declare OpMode members. */

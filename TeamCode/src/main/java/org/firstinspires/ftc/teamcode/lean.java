@@ -4,10 +4,10 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name=" lean", group="TuringEcho")
+@Autonomous(name="lean", group="TuringEcho")
 public class lean extends  LinearOpMode {
 
     /* Declare OpMode members. */
@@ -39,7 +39,7 @@ public class lean extends  LinearOpMode {
     public void driveforward() throws InterruptedException {
         robot.WL.setPower(-0.1);
         robot.WR.setPower(-0.1);
-        Thread.sleep(3920);
+        Thread.sleep(4120);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
 
@@ -61,7 +61,7 @@ public class lean extends  LinearOpMode {
         robot.sht.setPower(0.1);
         Thread.sleep(1000);
         robot.sht.setPower(0);
-        robot.baffle1.setPosition(0.7);Thread.sleep(800);
+        robot.baffle1.setPosition(0);Thread.sleep(1000);
     }
     public void collection() throws  InterruptedException{
         robot.col.setPower(0.4);
@@ -75,7 +75,7 @@ public class lean extends  LinearOpMode {
     }
     public void jiaozhun2() throws  InterruptedException{
 
-        robot.baffle1.setPosition(0);Thread.sleep(800);
+        robot.baffle1.setPosition(0.6);Thread.sleep(1000);
         robot.baffle1.close();
     }
     public void weng2() throws InterruptedException {

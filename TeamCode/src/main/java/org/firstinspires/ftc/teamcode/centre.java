@@ -5,10 +5,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name=" centre", group="TuringEcho")
+
+@Autonomous(name="centre", group="TuringEcho")
 public class centre extends  LinearOpMode {
 
     /* Declare OpMode members. */
@@ -63,7 +64,7 @@ public class centre extends  LinearOpMode {
         robot.sht.setPower(0.1);
         Thread.sleep(1000);
         robot.sht.setPower(0);
-        robot.baffle1.setPosition(0.7);Thread.sleep(800);
+        robot.baffle1.setPosition(0);Thread.sleep(800);
     }
     public void collection() throws  InterruptedException{
         robot.col.setPower(0.4);
@@ -77,7 +78,7 @@ public class centre extends  LinearOpMode {
     }
     public void jiaozhun2() throws  InterruptedException{
 
-        robot.baffle1.setPosition(0);Thread.sleep(800);
+        robot.baffle1.setPosition(0.6);Thread.sleep(800);
         robot.baffle1.close();
     }
     public void weng2() throws InterruptedException {

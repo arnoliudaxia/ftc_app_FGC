@@ -5,10 +5,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name=" redcorner", group="TuringEcho")
+
+@Autonomous(name="redcorner", group="TuringEcho")
 public class redcorner extends  LinearOpMode {
 
     /* Declare OpMode members. */
@@ -46,7 +47,7 @@ public class redcorner extends  LinearOpMode {
     public void driveforward() throws InterruptedException {
         robot.WL.setPower(-0.1);
         robot.WR.setPower(-0.1);
-        Thread.sleep(2080);
+        Thread.sleep(2100);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
 
