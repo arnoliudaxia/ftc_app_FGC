@@ -35,7 +35,7 @@ public class shoot1 extends  LinearOpMode {
 
     public void shoot() throws InterruptedException {
         robot.sht.setPower(1);
-        Thread.sleep(900);
+        Thread.sleep(500);
         robot.sht.setPower(0);}
     public void stops() throws InterruptedException {
         robot.sht.setPower(0);
@@ -45,7 +45,8 @@ public class shoot1 extends  LinearOpMode {
         robot.sht.setPower(0.1);
         Thread.sleep(1000);
         robot.sht.setPower(0);
-        robot.baffle1.setPosition(0);Thread.sleep(800);
+        robot.baffle1.setPosition(0);
+        Thread.sleep(900);
     }
     public void collection() throws  InterruptedException{
         robot.col.setPower(0.4);
@@ -59,17 +60,16 @@ public class shoot1 extends  LinearOpMode {
     }
     public void jiaozhun2() throws  InterruptedException{
 
-        robot.baffle1.setPosition(0.8);Thread.sleep(700);
+        robot.baffle1.setPosition(0.6);Thread.sleep(900);
         robot.baffle1.close();
     }
     public void weng2() throws InterruptedException {
         robot.col.setPower(0);
         Thread.sleep(1500);
-        robot.col.setPower(0);
-    }
+        robot.col.setPower(0);}
     public void shoot2() throws InterruptedException {
         robot.sht.setPower(1);
-        Thread.sleep(900);
+        Thread.sleep(500);
         robot.sht.setPower(0);}
     public void stops3() throws InterruptedException {
         robot.sht.setPower(0);
@@ -77,12 +77,13 @@ public class shoot1 extends  LinearOpMode {
         robot.sht.setPower(0);}
     public void adjust2() throws InterruptedException {
         robot.sht.setPower(0.1);
-        Thread.sleep(1600);
+        Thread.sleep(1500);
         robot.sht.setPower(0);}
     public void stops4() throws InterruptedException {
         robot.sht.setPower(0);
         Thread.sleep(200);
         robot.sht.setPower(0);}
+
 
 
 }

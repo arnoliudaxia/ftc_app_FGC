@@ -76,6 +76,11 @@ public class TuringEchoTeleOp extends LinearOpMode {
             }else{
                 robot.baffle1.setPosition(0.6);
             }
+            if (gamepad2.x){
+                robot.sht.setPower(0.1);
+                Thread.sleep(1500);
+                robot.sht.setPower(0);
+            }
             telemetry.addData("Servo Position", "%5.2f", robot.baffle1.getPosition());
             telemetry.addData(">", "Press Stop to end test." );
             telemetry.update();

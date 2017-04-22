@@ -31,9 +31,9 @@ public class bluecorner extends  LinearOpMode {
         stops3();
         adjust2();
         stops4();
-        turnleft();
+        turnright();
         forward();
-        leftC();
+        rightC();
         corner();
         moca1();
         moca2();
@@ -48,7 +48,7 @@ public class bluecorner extends  LinearOpMode {
     public void driveforward() throws InterruptedException {
         robot.WL.setPower(-0.1);
         robot.WR.setPower(-0.1);
-        Thread.sleep(2100);
+        Thread.sleep(2300);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
 
@@ -60,7 +60,7 @@ public class bluecorner extends  LinearOpMode {
         robot.WR.setPower(0);}
     public void shoot() throws InterruptedException {
         robot.sht.setPower(1);
-        Thread.sleep(900);
+        Thread.sleep(500);
         robot.sht.setPower(0);}
     public void stops() throws InterruptedException {
         robot.sht.setPower(0);
@@ -70,7 +70,8 @@ public class bluecorner extends  LinearOpMode {
         robot.sht.setPower(0.1);
         Thread.sleep(1000);
         robot.sht.setPower(0);
-        robot.baffle1.setPosition(0);Thread.sleep(1000);
+        robot.baffle1.setPosition(0);
+        Thread.sleep(900);
     }
     public void collection() throws  InterruptedException{
         robot.col.setPower(0.4);
@@ -84,16 +85,16 @@ public class bluecorner extends  LinearOpMode {
     }
     public void jiaozhun2() throws  InterruptedException{
 
-        robot.baffle1.setPosition(0.6);Thread.sleep(1000);
+        robot.baffle1.setPosition(0.6);Thread.sleep(900);
         robot.baffle1.close();
     }
     public void weng2() throws InterruptedException {
         robot.col.setPower(0);
-        Thread.sleep(1500);
+        Thread.sleep(2500);
         robot.col.setPower(0);}
     public void shoot2() throws InterruptedException {
         robot.sht.setPower(1);
-        Thread.sleep(900);
+        Thread.sleep(500);
         robot.sht.setPower(0);}
     public void stops3() throws InterruptedException {
         robot.sht.setPower(0);
@@ -101,16 +102,16 @@ public class bluecorner extends  LinearOpMode {
         robot.sht.setPower(0);}
     public void adjust2() throws InterruptedException {
         robot.sht.setPower(0.1);
-        Thread.sleep(1600);
+        Thread.sleep(1400);
         robot.sht.setPower(0);}
     public void stops4() throws InterruptedException {
         robot.sht.setPower(0);
         Thread.sleep(200);
         robot.sht.setPower(0);}
 
-    public void turnleft () throws InterruptedException{
-        robot.WL.setPower(0.2);
-        robot.WR.setPower(-0.2);
+    public void turnright () throws InterruptedException{
+        robot.WL.setPower(-0.2);
+        robot.WR.setPower(0.2);
         Thread.sleep(1020);
         robot.WL.setPower(0);
         robot.WL.setPower(0);}
@@ -121,23 +122,23 @@ public class bluecorner extends  LinearOpMode {
     public void forward() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(2000);
+        Thread.sleep(1700);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
 
     }
 
-    public void leftC () throws InterruptedException{
-        robot.WL.setPower(0.2);
-        robot.WR.setPower(-0.2);
-        Thread.sleep(610);
+    public void rightC () throws InterruptedException{
+        robot.WL.setPower(-0.2);
+        robot.WR.setPower(0.2);
+        Thread.sleep(670);
         robot.WL.setPower(0);
         robot.WL.setPower(0);}
     public void corner() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(1440);
+        Thread.sleep(1640);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
     public void moca1() throws InterruptedException {

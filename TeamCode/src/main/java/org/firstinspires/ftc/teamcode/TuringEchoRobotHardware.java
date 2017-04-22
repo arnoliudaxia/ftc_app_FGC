@@ -35,6 +35,7 @@ public class TuringEchoRobotHardware
     public DcMotor  col2 = null;
     public ColorSensor c1 = null;
     public Servo baffle1 =null;
+
     /* Local OpMode members. */
     HardwareMap hwMap  = null;
     private ElapsedTime period  = new ElapsedTime();

@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-@Autonomous(name="redcorner", group="TuringEcho")
-public class redcorner extends  LinearOpMode {
+@Autonomous(name="team3", group="TuringEcho")
+public class team3 extends  LinearOpMode {
 
     /* Declare OpMode members. */
     TuringEchoRobotHardware   robot           = new TuringEchoRobotHardware();
@@ -47,7 +47,7 @@ public class redcorner extends  LinearOpMode {
     public void driveforward() throws InterruptedException {
         robot.WL.setPower(-0.1);
         robot.WR.setPower(-0.1);
-        Thread.sleep(2300);
+        Thread.sleep(2330);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
 
