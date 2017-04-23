@@ -29,24 +29,29 @@ public class lean extends  LinearOpMode {
         stops3();
         adjust2();
         stops4();
-        ball1();
-        ballback1();
-        ball2();
-        ballback2();
+        driveback();
+        leftC();
+        forwardlong();
+        leftC2();
+        corner();
+        moca1();
+        moca2();
+        moca3();
+        moca4();
     }
 
 
     public void driveforward() throws InterruptedException {
         robot.WL.setPower(-0.1);
         robot.WR.setPower(-0.1);
-        Thread.sleep(4920);
+        Thread.sleep(4270);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
 
     public void weng() throws InterruptedException {
         robot.WL.setPower(0);
         robot.WR.setPower(0);
-        Thread.sleep(3000);
+        Thread.sleep(2300);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
     public void shoot() throws InterruptedException {
@@ -98,30 +103,63 @@ public class lean extends  LinearOpMode {
         robot.sht.setPower(0);
         Thread.sleep(200);
         robot.sht.setPower(0);}
-    public void ball1() throws InterruptedException {
+    public void driveback() throws InterruptedException {
+        robot.WL.setPower(0.1);
+        robot.WR.setPower(0.1);
+        Thread.sleep(1090);
+        robot.WL.setPower(0);
+        robot.WR.setPower(0);}
+    public void leftC () throws InterruptedException{
+        robot.WL.setPower(0.2);
+        robot.WR.setPower(-0.2);
+        Thread.sleep(550);
+        robot.WL.setPower(0);
+        robot.WL.setPower(0);}
+    public void forwardlong() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(2300);
+        Thread.sleep(3700);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
-    public void ballback1() throws InterruptedException {
+    public void leftC2 () throws InterruptedException{
         robot.WL.setPower(0.2);
-        robot.WR.setPower(0.2);
-        Thread.sleep(500);
+        robot.WR.setPower(-0.2);
+        Thread.sleep(580);
         robot.WL.setPower(0);
-        robot.WR.setPower(0);}
-    public void ball2() throws InterruptedException {
+        robot.WL.setPower(0);}
+    public void corner() throws InterruptedException {
         robot.WL.setPower(-0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(1600);
+        Thread.sleep(1640);
         robot.WL.setPower(0);
         robot.WR.setPower(0);}
-    public void ballback2() throws InterruptedException {
-        robot.WL.setPower(0.2);
-        robot.WR.setPower(0.2);
-        Thread.sleep(710);
+    public void moca1() throws InterruptedException {
+        robot.WL.setPower(-0.2);
+        Thread.sleep(600);
         robot.WL.setPower(0);
-        robot.WR.setPower(0);}
+
+
+    }
+
+    public void moca2() throws InterruptedException {
+        robot.WR.setPower(-0.2);
+        Thread.sleep(600);
+        robot.WR.setPower(0);
+    }
+    public void moca3() throws InterruptedException {
+        robot.WL.setPower(-0.2);
+        Thread.sleep(600);
+        robot.WL.setPower(0);
+
+
+    }
+    public void moca4() throws InterruptedException {
+        robot.WR.setPower(-0.2);
+        Thread.sleep(600);
+        robot.WR.setPower(0);
+    }
+
+
 }
 
 
