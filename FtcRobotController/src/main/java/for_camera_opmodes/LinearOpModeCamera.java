@@ -120,7 +120,19 @@ public class LinearOpModeCamera extends LinearOpMode {
     width = parameters.getPreviewSize().width / ds;
     height = parameters.getPreviewSize().height / ds;
     parameters.setPreviewSize(width, height);
+//List<Size> pictureSizes = mCameraDevice.getCamera().getParameters().getSupportedPictureSizes();
+    List<Camera.Size> pictureSizes = parameters.getSupportedPictureSizes();
+    int length = pictureSizes.size();
+    for (int i = 0; i < length; i++) {
+      LOGD("t","SupportedPictureSizes : " + pictureSizes.get(i).width + "x" + pictureSizes.get(i).height);
+    }
 
+//List<Size> previewSizes = mCameraDevice.getCamera().getParameters().getSupportedPreviewSizes();
+    List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
+    length = previewSizes.size();
+    for (int i = 0; i < length; i++) {
+      LOGD("t","SupportedPreviewSizes : " + previewSizes.get(i).width + "x" + previewSizes.get(i).height);
+    }
     camera.setParameters(parameters);
 
     data = parameters.flatten();
@@ -188,6 +200,7 @@ public class LinearOpModeCamera extends LinearOpMode {
 
   static public int highestColor(int red, int green, int blue) {
     int[] color = {red, green, blue};
+
     int value = 0;
     for (int i = 1; i < 3; i++) {
       if (color[value] < color[i]) {
