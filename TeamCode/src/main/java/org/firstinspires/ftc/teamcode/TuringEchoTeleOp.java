@@ -18,24 +18,24 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class TuringEchoTeleOp extends LinearOpMode {
 
     /* Declare OpMode members. */
-    TuringEchoRobotHardware   robot           = new TuringEchoRobotHardware();              // Use a K9'shardware
+    TuringEchoRobotHardware1 robot = new TuringEchoRobotHardware1();              // Use a K9'shardware
 
-    public void sleepmanager(DcMotor sht,long time){
-        sleep(time);
-        sht.setPower(0);
-    }
+
 
     public void runOpMode() throws InterruptedException {
         double forward1;
-        double forward2;
+        double col;
         double left;
         double right;
+        double wp;
+        double wp2;
+        double sht;
 
 
         robot.init(hardwareMap);
 
 
-        telemetry.addData("Say", "Hello Echo");    //
+        telemetry.addData("Say", "Hello Echo" + "老板好！！！");    //
         telemetry.update();
 
 
@@ -43,52 +43,37 @@ public class TuringEchoTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            forward1 = gamepad1.left_stick_y / 2;
-            forward2 = gamepad1.right_stick_y / 2;
-            right = gamepad1.left_trigger / 4;
-            left = gamepad1.right_trigger / 4;
-            robot.WL.setPower(forward1 + forward2 - left + right);
-            robot.WR.setPower(forward1 + forward2 + left - right);
-            if (gamepad2.left_bumper)
-                robot.col.setPower(0.4);
-            if (gamepad2.right_bumper)
-                robot.col.setPower(-0.4);
-            if (gamepad2.y)
-                robot.col.setPower(0);
-            if (gamepad2.a){
-                robot.sht.setPower(1);
-                sleepmanager(robot.sht,500);
-                robot.sht.setPower(0.1);
-                Thread.sleep(1000);
-                robot.sht.setPower(0);
-            }
-            if(gamepad2.b){
-                //robot.baffle1.setPosition(0);//Thread.sleep(800);
-//                robot.baffle1.close();Thread.sleep(700);
-                robot.baffle1.setPosition(0);//Thread.sleep(700);
-                //robot.baffle1.close();
-                //Thread.sleep(1500);
-                //robot.baffle1.close();
-                //Thread.sleep(1500);
-                //robot.baffle1.setPosition(0);
-                //robot.baffle1.close();
+            forward1 = gamepad1.left_stick_y / 1.0;
+            right = gamepad1.left_trigger / 2.2;
+            left = gamepad1.right_trigger / 2.2;
+            wp = gamepad1.right_stick_x/1.0;
 
-            }else{
-                robot.baffle1.setPosition(0.6);
+            robot.WR.setPower(-forward1 - left + right);
+            robot.WL.setPower(-forward1 + left - right);
+            robot.WF.setPower(wp - left +right);
+            robot.WB.setPower(wp - left +right);
+
+            if (gamepad2.left_bumper) {
+            robot.col.setPower(-0.4);
             }
-            if (gamepad2.x){
-                robot.sht.setPower(0.1);
+            if (gamepad2.right_bumper){
+               robot.col.setPower(0.4);
+            }
+            if (gamepad2.y){
+                robot.col.setPower(0);
+            }
+            if (gamepad2.a){
+                robot.sht.setPower(-1);
+                Thread.sleep(500);
+                robot.sht.setPower(0);
+                Thread.sleep(500);
+                robot.sht.setPower(-0.2);
                 Thread.sleep(1500);
                 robot.sht.setPower(0);
             }
-            telemetry.addData("Servo Position", "%5.2f", robot.baffle1.getPosition());
-            telemetry.addData(">", "Press Stop to end test." );
-            telemetry.update();
 
+           }
 
-
-        }
-
-}
-}
+         }
+    }
 
