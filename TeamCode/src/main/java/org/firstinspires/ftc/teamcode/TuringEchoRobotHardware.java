@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoController;
@@ -30,10 +31,11 @@ public class TuringEchoRobotHardware
     /* Public OpMode members. */
     public DcMotor  WL   = null;
     public DcMotor  WR  = null;
-    public DcMotor  col = null;
     public DcMotor  sht = null;
-    public DcMotor  col2 = null;
-    public ColorSensor c1 = null;
+    public DcMotor  WF = null;
+    public DcMotor  WB = null;
+    public DcMotor  col = null;
+    //public ColorSensor c1 = null;
     public Servo baffle1 =null;
 
     /* Local OpMode members. */
@@ -52,12 +54,15 @@ public class TuringEchoRobotHardware
         // Define and Initialize Motors
         WL   = hwMap.dcMotor.get("WL");
         WR   = hwMap.dcMotor.get("WR");
+        WF  = hwMap.dcMotor.get("WF");
+        WB  = hwMap.dcMotor.get("WB");
+        sht = hwMap.dcMotor.get("sht");
         col = hwMap.dcMotor.get("col");
-        sht= hwMap.dcMotor.get("sht");
+
         baffle1= hwMap.servo.get("baffle1");
-        baffle1.scaleRange(0,0.7);
-        //col2 = hwMap.dcMotor.get("col2");
+         baffle1.scaleRange(0,0.7);
         WR.setDirection(DcMotor.Direction.REVERSE);
+        WB.setDirection(DcMotor.Direction.REVERSE);
 
 
 
@@ -66,16 +71,21 @@ public class TuringEchoRobotHardware
         // Set all motors to zero power
         WL.setPower(0);
         WR.setPower(0);
-        col.setPower(0);
+        WF.setPower(0);
+        WB.setPower(0);
         sht.setPower(0);
-        //col2.setPower(0);
+        col.setPower(0);
+
+
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
         WL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         WR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         sht.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        WF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        WB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         col.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //col2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         // Define and initialize ALL installed servos.
 
