@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import for_camera_opmodes.LinearOpModeCamera;
 
-@Autonomous(name="bluelight", group="TuringEcho")
+@Autonomous(name="bluelight1", group="TuringEcho")
 public class bluelight1 extends  LinearOpModeCamera {
 
     /* Declare OpMode members. */

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -33,6 +34,8 @@ public class TuringEchoRobotHardware1
     public DcMotor  WB = null;
     public DcMotor  col= null;
     public DcMotor  sht= null;
+
+
 
 
     /* Local OpMode members. */

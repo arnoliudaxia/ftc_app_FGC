@@ -10,8 +10,19 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
+
+import android.app.Activity;
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+import java.io.File;
+
+
 
 
 @TeleOp(name="TuringEchoTeleOp", group="TuringEcho")
@@ -35,7 +46,9 @@ public class TuringEchoTeleOp extends LinearOpMode {
         robot.init(hardwareMap);
 
 
-        telemetry.addData("Say", "Hello Echo" + "老板好！！！");    //
+        telemetry.addData("Say", "Hello Echo 老板好！");
+        telemetry.addData("Say", "参见逼圣！");
+        telemetry.addData("Say", "膜拜褚乾大佬！");//
         telemetry.update();
 
 
@@ -43,10 +56,10 @@ public class TuringEchoTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            forward1 = gamepad1.left_stick_y / 1.0;
+            forward1 = gamepad1.left_stick_y / 2.2;
             right = gamepad1.left_trigger / 2.2;
             left = gamepad1.right_trigger / 2.2;
-            wp = gamepad1.right_stick_x/1.0;
+            wp = gamepad1.right_stick_x/2.2;
 
             robot.WR.setPower(-forward1 - left + right);
             robot.WL.setPower(-forward1 + left - right);
@@ -63,13 +76,13 @@ public class TuringEchoTeleOp extends LinearOpMode {
                 robot.col.setPower(0);
             }
             if (gamepad2.a){
-                robot.sht.setPower(-1);
-                Thread.sleep(500);
+                robot.sht.setPower(1);
+                Thread.sleep(400);
                 robot.sht.setPower(0);
-                Thread.sleep(500);
-                robot.sht.setPower(-0.2);
-                Thread.sleep(1500);
+                robot.sht.setPower(0.2);
+                Thread.sleep(800);
                 robot.sht.setPower(0);
+
             }
 
            }
