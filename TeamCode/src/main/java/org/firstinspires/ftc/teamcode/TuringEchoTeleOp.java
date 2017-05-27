@@ -11,17 +11,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import android.app.Activity;
-import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-import java.io.File;
-
 
 
 
@@ -30,7 +19,6 @@ public class TuringEchoTeleOp extends LinearOpMode {
 
     /* Declare OpMode members. */
     TuringEchoRobotHardware1 robot = new TuringEchoRobotHardware1();              // Use a K9'shardware
-
 
 
     public void runOpMode() throws InterruptedException {

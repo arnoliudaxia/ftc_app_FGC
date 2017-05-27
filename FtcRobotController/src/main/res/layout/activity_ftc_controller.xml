@@ -57,7 +57,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         android:layout_marginLeft="1dp"
         android:layout_marginRight="1dp"
         android:adjustViewBounds="true"
-        android:background="@drawable/bbb2"
+        android:background="@drawable/ccg"
         android:scaleType="fitCenter"
         android:src="@drawable/red" />
 
