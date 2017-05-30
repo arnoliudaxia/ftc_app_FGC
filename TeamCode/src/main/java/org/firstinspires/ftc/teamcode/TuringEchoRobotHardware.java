@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.app.Activity;
+import android.media.MediaPlayer;
+
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -26,6 +29,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *   As the arm servo approaches 0, the arm position moves up (away from the floor).
  *   As the claw servo approaches 0, the claw opens up (drops the game element).
  */
+
 public class TuringEchoRobotHardware
 {
     /* Public OpMode members. */
@@ -43,14 +47,16 @@ public class TuringEchoRobotHardware
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public TuringEchoRobotHardware() {
-    }
 
+
+    //public void initMediaPlayer(
+
+
+    // }
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) throws InterruptedException {
         // save reference to HW Map
         hwMap = ahwMap;
-
         // Define and Initialize Motors
         WL   = hwMap.dcMotor.get("WL");
         WR   = hwMap.dcMotor.get("WR");
@@ -58,7 +64,6 @@ public class TuringEchoRobotHardware
         WB  = hwMap.dcMotor.get("WB");
         sht = hwMap.dcMotor.get("sht");
         col = hwMap.dcMotor.get("col");
-
         baffle1= hwMap.servo.get("baffle1");
          baffle1.scaleRange(0,0.7);
         WR.setDirection(DcMotor.Direction.REVERSE);
@@ -75,7 +80,7 @@ public class TuringEchoRobotHardware
         WB.setPower(0);
         sht.setPower(0);
         col.setPower(0);
-
+        
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.

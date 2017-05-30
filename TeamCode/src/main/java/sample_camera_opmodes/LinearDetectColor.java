@@ -2,7 +2,6 @@ package sample_camera_opmodes;
 
 import android.graphics.Bitmap;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import for_camera_opmodes.LinearOpModeCamera;
@@ -13,7 +12,6 @@ import for_camera_opmodes.LinearOpModeCamera;
  * Enables control of the robot via the gamepad
  */
 
-@TeleOp(name = "LinearDetectColor", group = "ZZOpModeCameraPackage")
 //@Disabled
 public class LinearDetectColor extends LinearOpModeCamera {
 

@@ -7,18 +7,18 @@
 
 
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import android.content.Context;
+import android.media.MediaPlayer;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
-
-
-
-@TeleOp(name="TuringEchoTeleOp", group="TuringEcho")
+@Autonomous(name="...", group="TuringEcho")
 public class TuringEchoTeleOp extends LinearOpMode {
-
+    //MediaPlayer mp = MediaPlayer.create(this, R.raw.zhw);
     /* Declare OpMode members. */
-    TuringEchoRobotHardware1 robot = new TuringEchoRobotHardware1();              // Use a K9'shardware
+    TuringEchoRobotHardware robot = new TuringEchoRobotHardware();// Use a K9'shardware
 
 
     public void runOpMode() throws InterruptedException {
@@ -29,10 +29,10 @@ public class TuringEchoTeleOp extends LinearOpMode {
         double wp;
         double wp2;
         double sht;
+        double baffle1;
 
 
         robot.init(hardwareMap);
-
 
         telemetry.addData("Say", "Hello Echo 老板好！");
         telemetry.addData("Say", "参见逼圣！");
@@ -42,39 +42,75 @@ public class TuringEchoTeleOp extends LinearOpMode {
 
         waitForStart();
 
+
         while (opModeIsActive()) {
 
             forward1 = gamepad1.left_stick_y / 2.2;
             right = gamepad1.left_trigger / 2.2;
             left = gamepad1.right_trigger / 2.2;
-            wp = gamepad1.right_stick_x/2.2;
+            wp = gamepad1.right_stick_x / 2.2;
 
             robot.WR.setPower(-forward1 - left + right);
             robot.WL.setPower(-forward1 + left - right);
-            robot.WF.setPower(wp - left +right);
-            robot.WB.setPower(wp - left +right);
+            robot.WF.setPower(wp - left + right);
+            robot.WB.setPower(wp - left + right);
 
-            if (gamepad2.left_bumper) {
-            robot.col.setPower(-0.4);
+            if (gamepad2.x){
+                robot.baffle1.setPosition(0);
             }
-            if (gamepad2.right_bumper){
-               robot.col.setPower(0.4);
-            }
-            if (gamepad2.y){
-                robot.col.setPower(0);
-            }
-            if (gamepad2.a){
+            else{
+                robot.baffle1.setPosition(0.5);}
+
+
+            if (gamepad2.a) {
                 robot.sht.setPower(1);
                 Thread.sleep(400);
                 robot.sht.setPower(0);
                 robot.sht.setPower(0.2);
                 Thread.sleep(800);
-                robot.sht.setPower(0);
+                robot.sht.setPower(0);}
+
+            if (gamepad2.left_bumper) {
+                robot.col.setPower(-0.4);
+            }
+            if (gamepad2.right_bumper) {
+                robot.col.setPower(0.4);
+            }
+            if (gamepad2.y) {
+                robot.col.setPower(0);
+
+                //try {
+                //mp.reset();//从新设置要播放的音乐
+                //           mediaPlayer.setDataSource(file.getAbsolutePath());
+                // //            mediaPlayer.prepare();//预加载音频
+                //mp.start();//播放音乐
+                //Thread.sleep(30000);
+
+               // } catch (Exception e) {
+                // e.printStackTrace();
+                //}
+
 
             }
 
-           }
 
-         }
-    }
+
+
+    }}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

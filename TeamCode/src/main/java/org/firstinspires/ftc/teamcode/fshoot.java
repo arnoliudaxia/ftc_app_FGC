@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-@Autonomous(name="fshoot", group="TuringEcho")
 public class fshoot extends  LinearOpMode {
 
     /* Declare OpMode members. */
@@ -26,7 +24,7 @@ public class fshoot extends  LinearOpMode {
     }
 
     public  void fbaffle1() throws  InterruptedException{
-        robot.baffle1.setPosition(0.7);
+        //robot.baffle1.setPosition(0.7);
     }
     public void shoot() throws InterruptedException {
         robot.sht.setPower(1);

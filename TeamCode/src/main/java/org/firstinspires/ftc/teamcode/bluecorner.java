@@ -6,10 +6,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="bluecorner", group="TuringEcho")
 public class bluecorner extends  LinearOpMode {
 
     /* Declare OpMode members. */
@@ -70,7 +68,7 @@ public class bluecorner extends  LinearOpMode {
         robot.sht.setPower(0.1);
         Thread.sleep(1000);
         robot.sht.setPower(0);
-        robot.baffle1.setPosition(0);
+        //robot.baffle1.setPosition(0);
         Thread.sleep(900);
     }
     public void collection() throws  InterruptedException{
@@ -85,8 +83,8 @@ public class bluecorner extends  LinearOpMode {
     }
     public void jiaozhun2() throws  InterruptedException{
 
-        robot.baffle1.setPosition(0.6);Thread.sleep(900);
-        robot.baffle1.close();
+        //robot.baffle1.setPosition(0.6);Thread.sleep(900);
+        //robot.baffle1.close();
     }
     public void weng2() throws InterruptedException {
         robot.col.setPower(0);

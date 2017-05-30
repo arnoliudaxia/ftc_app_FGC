@@ -7,6 +7,7 @@ package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Bitmap;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import for_camera_opmodes.LinearOpModeCamera;
@@ -15,8 +16,8 @@ import for_camera_opmodes.LinearOpModeCamera;
 public class bluelight extends  LinearOpModeCamera {
 
     /* Declare OpMode members. */
-    int ds2 = 2;
-    TuringEchoRobotHardware1 robot = new TuringEchoRobotHardware1();
+    int ds2 = 4;
+    TuringEchoRobotHardware robot = new TuringEchoRobotHardware();
     String colorString = "NONE";
 
     public void runOpMode() throws InterruptedException {
@@ -41,7 +42,7 @@ public class bluelight extends  LinearOpModeCamera {
 
         robot.WL.setPower(0.4);
         robot.WR.setPower(0.4);
-        Thread.sleep(2350);
+        Thread.sleep(2550);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
@@ -66,7 +67,7 @@ public class bluelight extends  LinearOpModeCamera {
     public void forward2() throws InterruptedException {
         robot.WL.setPower(0.4);
         robot.WR.setPower(0.4);
-        Thread.sleep(2250);
+        Thread.sleep(2450);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
@@ -140,6 +141,7 @@ public class bluelight extends  LinearOpModeCamera {
 
     public void opp() throws InterruptedException {
         while (opModeIsActive()) {
+            setCameraDownsampling(2);
             if (imageReady()) {
                 int redValue = 0;
                 int blueValue = 0;

@@ -5,14 +5,12 @@
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="zhaun3", group="TuringEcho")
 public class zi3 extends  LinearOpMode {
 
     /* Declare OpMode members. */
-    TuringEchoRobotHardware1 robot = new TuringEchoRobotHardware1();
+    TuringEchoRobotHardware robot = new TuringEchoRobotHardware();
 
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);

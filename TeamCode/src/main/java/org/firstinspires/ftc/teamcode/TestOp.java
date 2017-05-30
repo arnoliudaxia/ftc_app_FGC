@@ -9,10 +9,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
-@TeleOp(name="TestOp", group="TuringEcho")
 public class TestOp extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -38,9 +36,9 @@ public class TestOp extends LinearOpMode {
                 robot.baffle1.setPosition(0.5);
 
 
-           }
+            }
             else
-            robot.baffle1.setPosition(0);
-         }
+                robot.baffle1.setPosition(0);
+        }
     }}
 

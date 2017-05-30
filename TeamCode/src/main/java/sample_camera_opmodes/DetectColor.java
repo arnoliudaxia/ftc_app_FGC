@@ -2,8 +2,6 @@ package sample_camera_opmodes;
 
 import android.graphics.Bitmap;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
 import for_camera_opmodes.OpModeCamera;
 
 /**
@@ -12,7 +10,6 @@ import for_camera_opmodes.OpModeCamera;
  * Enables control of the robot via the gamepad
  */
 
-@TeleOp(name = "DetectColor", group = "ZZOpModeCameraPackage")
 //@Disabled
 public class DetectColor extends OpModeCamera {
 
@@ -27,7 +24,7 @@ public class DetectColor extends OpModeCamera {
    */
   @Override
   public void init() {
-    setCameraDownsampling(4);
+    setCameraDownsampling(1);
     // parameter determines how downsampled you want your images
     // 8, 4, 2, or 1.
     // higher number is more downsampled, so less resolution but faster

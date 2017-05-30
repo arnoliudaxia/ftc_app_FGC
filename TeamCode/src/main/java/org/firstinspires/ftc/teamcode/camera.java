@@ -2,13 +2,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 import for_camera_opmodes.LinearOpModeCamera;
-import android.graphics.Bitmap;
 
 
-@Autonomous(name="camera", group="TuringEcho")
 public class camera extends  LinearOpModeCamera {
 
     /* Declare OpMode members. */

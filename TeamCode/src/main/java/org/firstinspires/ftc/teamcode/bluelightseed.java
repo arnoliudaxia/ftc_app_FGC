@@ -7,16 +7,13 @@ package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Bitmap;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 import for_camera_opmodes.LinearOpModeCamera;
 
-@Autonomous(name="blueseed", group="TuringEcho")
 public class bluelightseed extends  LinearOpModeCamera {
 
     /* Declare OpMode members. */
     int ds2 = 2;
-    TuringEchoRobotHardware1 robot = new TuringEchoRobotHardware1();
+    TuringEchoRobotHardware robot = new TuringEchoRobotHardware();
     String colorString = "NONE";
 
     public void runOpMode() throws InterruptedException {

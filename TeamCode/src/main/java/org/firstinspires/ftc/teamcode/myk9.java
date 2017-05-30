@@ -34,9 +34,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
-import com.vuforia.ar.pl.SensorController;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwareK9bot;
 
@@ -57,7 +55,6 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwareK9bot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="myk9", group="K9bot")
 @Disabled
 public class myk9 extends LinearOpMode {
 

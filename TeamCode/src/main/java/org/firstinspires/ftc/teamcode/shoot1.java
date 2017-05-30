@@ -5,10 +5,8 @@
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="shoot1", group="TuringEcho")
 public class shoot1 extends  LinearOpMode {
 
     /* Declare OpMode members. */
@@ -16,6 +14,7 @@ public class shoot1 extends  LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
+
         waitForStart();
         shoot();
         stops();
@@ -45,7 +44,7 @@ public class shoot1 extends  LinearOpMode {
         robot.sht.setPower(0.1);
         Thread.sleep(1000);
         robot.sht.setPower(0);
-        robot.baffle1.setPosition(0);
+        //robot.baffle1.setPosition(0);
         Thread.sleep(900);
     }
     public void collection() throws  InterruptedException{
@@ -60,8 +59,8 @@ public class shoot1 extends  LinearOpMode {
     }
     public void jiaozhun2() throws  InterruptedException{
 
-        robot.baffle1.setPosition(0.6);Thread.sleep(900);
-        robot.baffle1.close();
+        //robot.baffle1.setPosition(0.6);Thread.sleep(900);
+        //robot.baffle1.close();
     }
     public void weng2() throws InterruptedException {
         robot.col.setPower(0);

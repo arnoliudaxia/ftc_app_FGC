@@ -2,17 +2,15 @@ package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Bitmap;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import for_camera_opmodes.LinearOpModeCamera;
 
 
-@Autonomous(name = "123detect", group = "TuringEcho")
 //@Disabled
 
 public class LinearDetectColor extends LinearOpModeCamera {
 
 
-    TuringEchoRobotHardware1 robot = new TuringEchoRobotHardware1();
+    TuringEchoRobotHardware robot = new TuringEchoRobotHardware();
     int ds2 = 2;  // additional downsampling of the image
     // set to 1 to disable further downsampling
 
