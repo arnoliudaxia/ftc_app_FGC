@@ -21,7 +21,7 @@ public class redlight extends  LinearOpModeCamera {
 
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        setCameraDownsampling(1);
+        setCameraDownsampling(2);
         telemetry.addLine("Wait for camera to finish initializing!");
         telemetry.update();
         telemetry.addLine("Camera ready!");
@@ -57,7 +57,7 @@ public class redlight extends  LinearOpModeCamera {
     public void left0() throws InterruptedException {
         robot.WF.setPower(-0.5);
         robot.WB.setPower(-0.5);
-        Thread.sleep(1400);
+        Thread.sleep(1250);
         robot.WF.setPower(0);
         robot.WB.setPower(0);
 
@@ -82,7 +82,7 @@ public class redlight extends  LinearOpModeCamera {
 
         robot.WL.setPower(0.4);
         robot.WR.setPower(0.4);
-        Thread.sleep(1950);
+        Thread.sleep(1790);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
@@ -123,15 +123,15 @@ public class redlight extends  LinearOpModeCamera {
     public void forward2() throws InterruptedException {
         robot.WL.setPower(0.4);
         robot.WR.setPower(0.4);
-        Thread.sleep(2380);
+        Thread.sleep(2290);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
     }
     public void ball() throws InterruptedException {
-        robot.WL.setPower(0.6);
-        robot.WR.setPower(0.6);
-        Thread.sleep(2480);
+        robot.WL.setPower(0.8);
+        robot.WR.setPower(0.8);
+        Thread.sleep(2280);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
@@ -176,7 +176,7 @@ public class redlight extends  LinearOpModeCamera {
     public void right2() throws InterruptedException {
         robot.WF.setPower(0.4);
         robot.WB.setPower(0.4);
-        Thread.sleep(1030);
+        Thread.sleep(830);
         robot.WF.setPower(0);
         robot.WB.setPower(0);
 
@@ -184,7 +184,7 @@ public class redlight extends  LinearOpModeCamera {
     public void right2little() throws InterruptedException {
         robot.WF.setPower(0.4);
         robot.WB.setPower(0.4);
-        Thread.sleep(680);
+        Thread.sleep(580);
         robot.WF.setPower(0);
         robot.WB.setPower(0);
 
@@ -214,7 +214,7 @@ public class redlight extends  LinearOpModeCamera {
         robot.WB.setPower(-0.2);
         robot.WL.setPower(0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(1100);
+        Thread.sleep(980);
         robot.WF.setPower(0);
         robot.WB.setPower(0);
         robot.WL.setPower(0);
@@ -386,6 +386,11 @@ public class redlight extends  LinearOpModeCamera {
                         colorString = "RED";
                         //telemetry.addData("2Color:", "Color detected is: " + colorString);
                         //telemetry.update();
+                        robot.WF.setPower(0.3);
+                        robot.WB.setPower(0.3);
+                        Thread.sleep(430);
+                        robot.WF.setPower(0);
+                        robot.WB.setPower(0);
                         little2();
                         stopCamera();
                         zhuan();

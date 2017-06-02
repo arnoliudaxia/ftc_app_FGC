@@ -45,10 +45,16 @@ public class TuringEchoTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            forward1 = gamepad1.left_stick_y / 2.2;
-            right = gamepad1.left_trigger / 2.2;
-            left = gamepad1.right_trigger / 2.2;
-            wp = gamepad1.right_stick_x / 2.2;
+            //forward1 = gamepad1.left_stick_y / 2.2;
+            //right = gamepad1.left_trigger / 2.2;
+           // left = gamepad1.right_trigger / 2.2;
+           // wp = gamepad1.right_stick_x / 2.2;
+
+            forward1 = gamepad1.left_stick_y;
+            right = gamepad1.left_trigger ;
+            left = gamepad1.right_trigger ;
+            wp = gamepad1.right_stick_x ;
+
 
             robot.WR.setPower(-forward1 - left + right);
             robot.WL.setPower(-forward1 + left - right);

@@ -57,7 +57,7 @@ public class bluelight extends  LinearOpModeCamera {
     public void left0() throws InterruptedException {
         robot.WF.setPower(0.5);
         robot.WB.setPower(0.5);
-        Thread.sleep(1400);
+        Thread.sleep(1250);
         robot.WF.setPower(0);
         robot.WB.setPower(0);
 
@@ -129,9 +129,9 @@ public class bluelight extends  LinearOpModeCamera {
 
     }
     public void ball() throws InterruptedException {
-        robot.WL.setPower(0.6);
-        robot.WR.setPower(0.6);
-        Thread.sleep(2480);
+        robot.WL.setPower(0.8);
+        robot.WR.setPower(0.8);
+        Thread.sleep(2280);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
@@ -385,7 +385,11 @@ public class bluelight extends  LinearOpModeCamera {
                         colorString = "GREEN";
                         //telemetry.addData("2Color:", "Color detected is: " + colorString);
                         //telemetry.update();
-
+                        robot.WF.setPower(0.3);
+                        robot.WB.setPower(0.3);
+                        Thread.sleep(430);
+                        robot.WF.setPower(0);
+                        robot.WB.setPower(0);
                         little2();
                         stopCamera();
                         zhuan();
@@ -397,6 +401,11 @@ public class bluelight extends  LinearOpModeCamera {
                         colorString = "BLUE";
                         //telemetry.addData("2color:", "Color detected is: " + colorString);
                         //telemetry.update();
+                        robot.WF.setPower(0.3);
+                        robot.WB.setPower(0.3);
+                        Thread.sleep(430);
+                        robot.WF.setPower(0);
+                        robot.WB.setPower(0);
                         little2();
                         stopCamera();
                         zhuan();
