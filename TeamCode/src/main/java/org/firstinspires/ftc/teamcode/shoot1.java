@@ -49,7 +49,7 @@ public class shoot1 extends  LinearOpMode {
     }
     public void collection() throws  InterruptedException{
         robot.col.setPower(0.4);
-        Thread.sleep(1400);
+        Thread.sleep(1800);
         robot.col.setPower(0);
     }
     public void cstop() throws  InterruptedException{

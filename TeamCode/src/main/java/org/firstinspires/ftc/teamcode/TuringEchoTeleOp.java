@@ -7,14 +7,14 @@
 
 
 package org.firstinspires.ftc.teamcode;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import android.content.Context;
 import android.media.MediaPlayer;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name="...", group="TuringEcho")
+@TeleOp(name="teleop", group="TuringEcho")
 public class TuringEchoTeleOp extends LinearOpMode {
     //MediaPlayer mp = MediaPlayer.create(this, R.raw.zhw);
     /* Declare OpMode members. */
@@ -64,9 +64,9 @@ public class TuringEchoTeleOp extends LinearOpMode {
 
             if (gamepad2.a) {
                 robot.sht.setPower(1);
-                Thread.sleep(400);
+                Thread.sleep(600);
                 robot.sht.setPower(0);
-                robot.sht.setPower(0.2);
+                robot.sht.setPower(0.3);
                 Thread.sleep(800);
                 robot.sht.setPower(0);}
 
