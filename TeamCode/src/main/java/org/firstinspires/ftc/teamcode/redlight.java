@@ -82,7 +82,7 @@ public class redlight extends  LinearOpModeCamera {
 
         robot.WL.setPower(0.4);
         robot.WR.setPower(0.4);
-        Thread.sleep(2050);
+        Thread.sleep(1950);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
@@ -129,9 +129,9 @@ public class redlight extends  LinearOpModeCamera {
 
     }
     public void ball() throws InterruptedException {
-        robot.WL.setPower(0.4);
-        robot.WR.setPower(0.4);
-        Thread.sleep(1580);
+        robot.WL.setPower(0.6);
+        robot.WR.setPower(0.6);
+        Thread.sleep(2480);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
@@ -214,7 +214,7 @@ public class redlight extends  LinearOpModeCamera {
         robot.WB.setPower(-0.2);
         robot.WL.setPower(0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(900);
+        Thread.sleep(1100);
         robot.WF.setPower(0);
         robot.WB.setPower(0);
         robot.WL.setPower(0);
