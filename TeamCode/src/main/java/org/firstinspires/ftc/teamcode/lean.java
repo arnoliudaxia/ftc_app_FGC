@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="lean  ", group="TuringEcho")
+@Autonomous(name="team3  ", group="TuringEcho")
 public class lean extends  LinearOpMode {
 
     /* Declare OpMode members. */
@@ -18,6 +18,11 @@ public class lean extends  LinearOpMode {
         robot.init(hardwareMap);
 
         waitForStart();
+        //robot.WL.setPower(0);
+        //robot.WR.setPower(0);
+        //Thread.sleep(10000);
+        //robot.WL.setPower(0);
+        //robot.WR.setPower(0);
         forward1();
         weng2();
         shoot();
@@ -25,11 +30,15 @@ public class lean extends  LinearOpMode {
         jiaozhun();
         collection();
         cstop();
-        jiaozhun2();
         weng2();
         shoot2();
         stops3();
         adjust2();
+        robot.WL.setPower(0.8);
+        robot.WR.setPower(0.8);
+        Thread.sleep(2180);
+        robot.WL.setPower(0);
+        robot.WR.setPower(0);
         stops4();
 
 
@@ -39,7 +48,7 @@ public class lean extends  LinearOpMode {
 
         robot.WL.setPower(0.4);
         robot.WR.setPower(0.4);
-        Thread.sleep(1480);
+        Thread.sleep(1090);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 

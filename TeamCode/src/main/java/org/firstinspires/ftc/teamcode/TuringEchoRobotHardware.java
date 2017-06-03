@@ -39,6 +39,7 @@ public class TuringEchoRobotHardware
     public DcMotor  WF = null;
     public DcMotor  WB = null;
     public DcMotor  col = null;
+    //public DcMotor  daball = null;
     //public ColorSensor c1 = null;
     public Servo baffle1 =null;
 
@@ -64,6 +65,7 @@ public class TuringEchoRobotHardware
         WB  = hwMap.dcMotor.get("WB");
         sht = hwMap.dcMotor.get("sht");
         col = hwMap.dcMotor.get("col");
+        //daball = hwMap.dcMotor.get("daball");
         baffle1= hwMap.servo.get("baffle1");
          baffle1.scaleRange(0,0.7);
         WR.setDirection(DcMotor.Direction.REVERSE);
@@ -80,6 +82,8 @@ public class TuringEchoRobotHardware
         WB.setPower(0);
         sht.setPower(0);
         col.setPower(0);
+        //daball.setPower(0);
+
         
 
         // Set all motors to run without encoders.
@@ -90,6 +94,7 @@ public class TuringEchoRobotHardware
         WF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         WB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         col.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //daball.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
         // Define and initialize ALL installed servos.

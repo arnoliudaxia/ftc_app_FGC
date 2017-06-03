@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import for_camera_opmodes.LinearOpModeCamera;
 
-@Autonomous(name="redlight", group="TuringEcho")//13.7
+@Autonomous(name="redlight2", group="TuringEcho")//13.7
 public class redlight extends  LinearOpModeCamera {
 
     /* Declare OpMode members. */
@@ -21,7 +21,7 @@ public class redlight extends  LinearOpModeCamera {
 
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        setCameraDownsampling(2);
+        setCameraDownsampling(1);
         telemetry.addLine("Wait for camera to finish initializing!");
         telemetry.update();
         telemetry.addLine("Camera ready!");
@@ -39,15 +39,11 @@ public class redlight extends  LinearOpModeCamera {
         Thread.sleep(1050);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
-        runwait();
         left0();
-        runwait();
         forward1();
-        runwait();
-
-
-
         left1();//zhuang
+        little();
+        left0();
         little();
         opp();
         opp2();
@@ -72,7 +68,7 @@ public class redlight extends  LinearOpModeCamera {
     }
     public void col() throws InterruptedException {
         robot.col.setPower(-0.4);
-        Thread.sleep(1500);
+        Thread.sleep(1800);
         robot.col.setPower(0);
 
 
@@ -82,7 +78,7 @@ public class redlight extends  LinearOpModeCamera {
 
         robot.WL.setPower(0.4);
         robot.WR.setPower(0.4);
-        Thread.sleep(1790);
+        Thread.sleep(1320);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
@@ -115,7 +111,7 @@ public class redlight extends  LinearOpModeCamera {
     public void left1() throws InterruptedException {
         robot.WF.setPower(-0.5);
         robot.WB.setPower(-0.5);
-        Thread.sleep(2000);
+        Thread.sleep(2500);
         robot.WF.setPower(0);
         robot.WB.setPower(0);
 
@@ -123,7 +119,7 @@ public class redlight extends  LinearOpModeCamera {
     public void forward2() throws InterruptedException {
         robot.WL.setPower(0.4);
         robot.WR.setPower(0.4);
-        Thread.sleep(2290);
+        Thread.sleep(2110);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
@@ -246,11 +242,6 @@ public class redlight extends  LinearOpModeCamera {
                         //telemetry.addData("Color:", "Color detected is: " + colorString);
                         //telemetry.update();
                         right2little();
-                        robot.WF.setPower(0);
-                        robot.WB.setPower(0);
-                        Thread.sleep(500);
-                        robot.WF.setPower(0);
-                        robot.WB.setPower(0);
                         forward2();
                         leftlittle1();
                         little();
@@ -272,28 +263,8 @@ public class redlight extends  LinearOpModeCamera {
                         Thread.sleep(800);
                         robot.WF.setPower(0);
                         robot.WB.setPower(0);//you
-
-
-                        robot.WF.setPower(0);
-                        robot.WB.setPower(0);
-                        Thread.sleep(500);
-                        robot.WF.setPower(0);
-                        robot.WB.setPower(0);
-
-
-
                         right2();
-                        robot.WL.setPower(0);
-                        robot.WR.setPower(0);
-                        Thread.sleep(500);
-                        robot.WL.setPower(0);
-                        robot.WR.setPower(0);
                         forward2();
-                        robot.WL.setPower(0);
-                        robot.WR.setPower(0);
-                        Thread.sleep(300);
-                        robot.WL.setPower(0);
-                        robot.WR.setPower(0);
                         leftlittle1();
                         little();
                         robot.WL.setPower(0);
@@ -321,26 +292,8 @@ public class redlight extends  LinearOpModeCamera {
                         robot.WB.setPower(0);//you
 
 
-                        robot.WF.setPower(0);
-                        robot.WB.setPower(0);
-                        Thread.sleep(500);
-                        robot.WF.setPower(0);
-                        robot.WB.setPower(0);
-
-
-
                         right2();
-                        robot.WL.setPower(0);
-                        robot.WR.setPower(0);
-                        Thread.sleep(500);
-                        robot.WL.setPower(0);
-                        robot.WR.setPower(0);
                         forward2();
-                        robot.WL.setPower(0);
-                        robot.WR.setPower(0);
-                        Thread.sleep(300);
-                        robot.WL.setPower(0);
-                        robot.WR.setPower(0);
                         leftlittle1();
                         little();
                         robot.WL.setPower(0);
@@ -394,6 +347,11 @@ public class redlight extends  LinearOpModeCamera {
                         little2();
                         stopCamera();
                         zhuan();
+                        col();
+                        runwait();
+                        runwait();
+                        runwait();
+                        shoot();
                         ball();
 
                         return;
@@ -426,6 +384,11 @@ public class redlight extends  LinearOpModeCamera {
                         little2();
                         stopCamera();
                         zhuan();
+                        col();
+                        runwait();
+                        runwait();
+                        runwait();
+                        shoot();
                         ball();
                         return;
 
@@ -457,6 +420,11 @@ public class redlight extends  LinearOpModeCamera {
                         little2();
                         stopCamera();
                         zhuan();
+                        col();
+                        runwait();
+                        runwait();
+                        runwait();
+                        shoot();
                         ball();
                         return;
 

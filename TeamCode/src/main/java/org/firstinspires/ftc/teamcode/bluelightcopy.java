@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import for_camera_opmodes.LinearOpModeCamera;
 
-@Autonomous(name="bluelight2", group="TuringEcho")//13.7
-public class bluelight extends  LinearOpModeCamera {
+@Autonomous(name="bluelight", group="TuringEcho")//13.7
+public class bluelightcopy extends  LinearOpModeCamera {
 
     /* Declare OpMode members. */
     int ds2 = 4;
@@ -82,7 +82,7 @@ public class bluelight extends  LinearOpModeCamera {
         //robot.baffle1.setPosition(0);
         Thread.sleep(900);
     }
-    public void col() throws  InterruptedException{
+    public void collection() throws  InterruptedException{
         robot.col.setPower(-0.4);
         Thread.sleep(1800);
         robot.col.setPower(0);
@@ -112,7 +112,7 @@ public class bluelight extends  LinearOpModeCamera {
 
         robot.WL.setPower(0.4);
         robot.WR.setPower(0.4);
-        Thread.sleep(1320);
+        Thread.sleep(1290);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
@@ -145,7 +145,7 @@ public class bluelight extends  LinearOpModeCamera {
     public void left1() throws InterruptedException {
         robot.WF.setPower(0.5);
         robot.WB.setPower(0.5);
-        Thread.sleep(2500);
+        Thread.sleep(2400);
         robot.WF.setPower(0);
         robot.WB.setPower(0);
 
@@ -153,7 +153,7 @@ public class bluelight extends  LinearOpModeCamera {
     public void forward2() throws InterruptedException {
         robot.WL.setPower(0.4);
         robot.WR.setPower(0.4);
-        Thread.sleep(2110);
+        Thread.sleep(1990);
         robot.WL.setPower(0);
         robot.WR.setPower(0);
 
@@ -396,11 +396,6 @@ public class bluelight extends  LinearOpModeCamera {
                         little2();
                         stopCamera();
                         zhuan();
-                        col();
-                        runwait();
-                        runwait();
-                        runwait();
-                        shoot();
                         ball();
                         return;
 
@@ -417,11 +412,6 @@ public class bluelight extends  LinearOpModeCamera {
                         little2();
                         stopCamera();
                         zhuan();
-                        col();
-                        runwait();
-                        runwait();
-                        runwait();
-                        shoot();
                         ball();
                         return;
 

@@ -3,8 +3,13 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Bitmap;
 
 import for_camera_opmodes.LinearOpModeCamera;
+import android.graphics.Bitmap;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import for_camera_opmodes.LinearOpModeCamera;
+
+@Autonomous(name="detect", group="TuringEcho")//13.7
 //@Disabled
 
 public class LinearDetectColor extends LinearOpModeCamera {
@@ -23,7 +28,12 @@ public class LinearDetectColor extends LinearOpModeCamera {
         telemetry.update();
 
 
-        // linear OpMode, so could do stuff like this too.
+        // linear OpMode, so could do stuff
+        //
+        //
+        //
+        //
+        // like this too.
         /*
         motorLeft = hardwareMap.dcMotor.get("motor_1");
         motorRight = hardwareMap.dcMotor.get("motor_2");

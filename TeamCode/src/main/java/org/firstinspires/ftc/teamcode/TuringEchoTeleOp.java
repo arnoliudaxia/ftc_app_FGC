@@ -12,6 +12,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="teleop", group="TuringEcho")
@@ -23,10 +24,15 @@ public class TuringEchoTeleOp extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         double forward1;
+        double huforward;
+        double huleft;
+        double huright;
+        double huwp;
         double col;
         double left;
         double right;
         double wp;
+        //double daball;
         double wp2;
         double sht;
         double baffle1;
@@ -45,15 +51,16 @@ public class TuringEchoTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            //forward1 = gamepad1.left_stick_y / 2.2;
-            //right = gamepad1.left_trigger / 2.2;
-           // left = gamepad1.right_trigger / 2.2;
-           // wp = gamepad1.right_stick_x / 2.2;
+            forward1 = gamepad1.left_stick_y / 2.2;
+            right = gamepad1.left_trigger / 2.2;
+            left = gamepad1.right_trigger / 2.2;
+            wp = gamepad1.right_stick_x / 2.2;
 
-            forward1 = gamepad1.left_stick_y;
-            right = gamepad1.left_trigger ;
-            left = gamepad1.right_trigger ;
-            wp = gamepad1.right_stick_x ;
+
+            //huforward = gamepad2.left_stick_y / 4.4;
+            //huright = gamepad2.left_trigger / 4.4;
+            //huleft = gamepad2.right_trigger / 4.4;
+            //huwp = gamepad2.right_stick_x / 4.4;
 
 
             robot.WR.setPower(-forward1 - left + right);
@@ -61,11 +68,27 @@ public class TuringEchoTeleOp extends LinearOpMode {
             robot.WF.setPower(wp - left + right);
             robot.WB.setPower(wp - left + right);
 
+
+
+            //robot.WR.setPower(huforward + huleft - huright);
+            //robot.WL.setPower(huforward - huleft + huright);
+            //robot.WF.setPower(-huwp + huleft - huright);
+           // robot.WB.setPower(-huwp + huleft - huright);
+
+
             if (gamepad2.x){
                 robot.baffle1.setPosition(0);
             }
             else{
                 robot.baffle1.setPosition(0.5);}
+
+           // if (gamepad1.b){
+               // robot.daball.setPower(0.8);
+
+           // }
+           // else {
+                //robot.daball.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+           // }
 
 
             if (gamepad2.a) {
@@ -79,9 +102,9 @@ public class TuringEchoTeleOp extends LinearOpMode {
             if (gamepad2.left_bumper) {
                 robot.col.setPower(-0.4);
             }
-            if (gamepad2.right_bumper) {
-                robot.col.setPower(0.4);
-            }
+            //if (gamepad2.right_bumper) {
+              //  robot.col.setPower(0.4);
+            //}
             if (gamepad2.y) {
                 robot.col.setPower(0);
 
@@ -102,7 +125,9 @@ public class TuringEchoTeleOp extends LinearOpMode {
 
 
 
-    }}}
+           }
+        }
+    }
 
 
 
