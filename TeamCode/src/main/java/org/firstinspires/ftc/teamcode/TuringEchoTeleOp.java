@@ -100,7 +100,7 @@ public class TuringEchoTeleOp extends LinearOpMode {
                 robot.sht.setPower(0);}
 
             if (gamepad2.left_bumper) {
-                robot.col.setPower(-0.4);
+                robot.col.setPower(-0.5);
             }
             //if (gamepad2.right_bumper) {
               //  robot.col.setPower(0.4);

@@ -66,32 +66,13 @@ public class bluelight extends  LinearOpModeCamera {
         robot.WB.setPower(0);
 
     }
-    public void weng2() throws InterruptedException {
-        robot.col.setPower(0);
-        Thread.sleep(1500);
-        robot.col.setPower(0);}
-    public void shoot2() throws InterruptedException {
-        robot.sht.setPower(1);
-        Thread.sleep(500);
-        robot.sht.setPower(0);}
 
-    public void jiaozhun() throws  InterruptedException{
-        robot.sht.setPower(0.1);
-        Thread.sleep(1000);
-        robot.sht.setPower(0);
-        //robot.baffle1.setPosition(0);
-        Thread.sleep(900);
-    }
     public void col() throws  InterruptedException{
         robot.col.setPower(-0.4);
         Thread.sleep(1800);
         robot.col.setPower(0);
     }
-    public void cstop() throws  InterruptedException{
-        robot.col.setPower(0);
-        Thread.sleep(700);
-        robot.col.setPower(0);
-    }
+
     public void runwait() throws InterruptedException {
         robot.WL.setPower(0);
         robot.WR.setPower(0);
@@ -244,7 +225,7 @@ public class bluelight extends  LinearOpModeCamera {
         robot.WB.setPower(0.2);
         robot.WL.setPower(-0.2);
         robot.WR.setPower(0.2);
-        Thread.sleep(980);
+        Thread.sleep(760);
         robot.WF.setPower(0);
         robot.WB.setPower(0);
         robot.WL.setPower(0);
@@ -396,11 +377,11 @@ public class bluelight extends  LinearOpModeCamera {
                         little2();
                         stopCamera();
                         zhuan();
-                        col();
-                        runwait();
-                        runwait();
-                        runwait();
-                        shoot();
+                        //col();
+                        //runwait();
+                        //runwait();
+                        //runwait();
+                        //shoot();
                         ball();
                         return;
 
@@ -417,11 +398,11 @@ public class bluelight extends  LinearOpModeCamera {
                         little2();
                         stopCamera();
                         zhuan();
-                        col();
-                        runwait();
-                        runwait();
-                        runwait();
-                        shoot();
+                       // col();
+                        //runwait();
+                        //runwait();
+                        //runwait();
+                        //shoot();
                         ball();
                         return;
 

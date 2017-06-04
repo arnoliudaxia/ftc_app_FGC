@@ -210,7 +210,7 @@ public class redlight extends  LinearOpModeCamera {
         robot.WB.setPower(-0.2);
         robot.WL.setPower(0.2);
         robot.WR.setPower(-0.2);
-        Thread.sleep(980);
+        Thread.sleep(760);
         robot.WF.setPower(0);
         robot.WB.setPower(0);
         robot.WL.setPower(0);
@@ -347,11 +347,6 @@ public class redlight extends  LinearOpModeCamera {
                         little2();
                         stopCamera();
                         zhuan();
-                        col();
-                        runwait();
-                        runwait();
-                        runwait();
-                        shoot();
                         ball();
 
                         return;
@@ -384,11 +379,6 @@ public class redlight extends  LinearOpModeCamera {
                         little2();
                         stopCamera();
                         zhuan();
-                        col();
-                        runwait();
-                        runwait();
-                        runwait();
-                        shoot();
                         ball();
                         return;
 
@@ -420,11 +410,6 @@ public class redlight extends  LinearOpModeCamera {
                         little2();
                         stopCamera();
                         zhuan();
-                        col();
-                        runwait();
-                        runwait();
-                        runwait();
-                        shoot();
                         ball();
                         return;
 
