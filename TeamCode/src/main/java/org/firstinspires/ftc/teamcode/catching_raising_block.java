@@ -78,7 +78,7 @@ public class catching_raising_block extends LinearOpMode {
         servo_catching_block_1 = hardwareMap.servo.get("servo_catching_block_1");
         servo_catching_block_2 = hardwareMap.servo.get("servo_catching_block_2");
 
-        motor_raising = hardwareMap.dcMotor.get("motor_taisheng");
+        motor_raising = hardwareMap.dcMotor.get("motor_raising");
 
         servo_catching_block_1.setPosition(servo_position);
         servo_catching_block_2.setPosition(servo_position);//init
