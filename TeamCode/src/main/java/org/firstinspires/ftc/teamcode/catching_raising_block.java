@@ -66,8 +66,9 @@ public class catching_raising_block extends LinearOpMode {
 
     DcMotor motor_raising;
 
-    double servo_position = 0.00;
-    double power = 0.00;
+    double servo_position_1 = 0.70;
+    double servo_position_2 = 0.10;
+    double power = 0.50;
 
 
     @Override
@@ -80,8 +81,8 @@ public class catching_raising_block extends LinearOpMode {
 
         motor_raising = hardwareMap.dcMotor.get("motor_raising");
 
-        servo_catching_block_1.setPosition(servo_position);
-        servo_catching_block_2.setPosition(servo_position);//init
+        servo_catching_block_1.setPosition(servo_position_1);
+        servo_catching_block_2.setPosition(servo_position_2);//init
 
         int case_servo = 0;
         int case_motor = 0;
@@ -89,19 +90,34 @@ public class catching_raising_block extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        servo_position_1 = 0.45;
+        servo_position_2 = 0.38;
+        servo_catching_block_1.setPosition(servo_position_1);
+        servo_catching_block_2.setPosition(servo_position_2);
+
+        sleep(3000);
+
+        power = 0.90;
+        motor_raising.setPower(power);
+        sleep(1800);
+        power = 0.00;
+        motor_raising.setPower(power);//ceshi
+
         while (opModeIsActive()) {
             if(gamepad1.a){
                 switch(case_servo){
                     case 0:
-                        servo_position = 0.75;
-                        servo_catching_block_1.setPosition(servo_position);
-                        servo_catching_block_2.setPosition(servo_position);
+                        servo_position_1 = 0.45;
+                        servo_position_2 = 0.38;
+                        servo_catching_block_1.setPosition(servo_position_1);
+                        servo_catching_block_2.setPosition(servo_position_2);
                         case_servo = 1;
                         break;
                     case 1:
-                        servo_position = 0.00;
-                        servo_catching_block_1.setPosition(servo_position);
-                        servo_catching_block_2.setPosition(servo_position);
+                        servo_position_1 = 0.70;
+                        servo_position_2 = 0.10;
+                        servo_catching_block_1.setPosition(servo_position_1);
+                        servo_catching_block_2.setPosition(servo_position_2);
                         case_servo = 0;
                         break;
                 }
@@ -109,7 +125,7 @@ public class catching_raising_block extends LinearOpMode {
             if(gamepad1.x){
                 switch(case_motor){
                     case 0:
-                        power = 0.70;
+                        power = 0.90;
                         motor_raising.setPower(power);
                         sleep(3000);
                         power = 0.00;
