@@ -90,8 +90,8 @@ public class catching_raising_block extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        servo_position_1 = 0.45;
-        servo_position_2 = 0.38;
+        servo_position_1 = 0.40;
+        servo_position_2 = 0.40;
         servo_catching_block_1.setPosition(servo_position_1);
         servo_catching_block_2.setPosition(servo_position_2);
 
@@ -99,7 +99,7 @@ public class catching_raising_block extends LinearOpMode {
 
         power = 0.90;
         motor_raising.setPower(power);
-        sleep(1800);
+        sleep(1650);
         power = 0.00;
         motor_raising.setPower(power);//ceshi
 
@@ -107,8 +107,8 @@ public class catching_raising_block extends LinearOpMode {
             if(gamepad1.a){
                 switch(case_servo){
                     case 0:
-                        servo_position_1 = 0.45;
-                        servo_position_2 = 0.38;
+                        servo_position_1 = 0.40;
+                        servo_position_2 = 0.40;
                         servo_catching_block_1.setPosition(servo_position_1);
                         servo_catching_block_2.setPosition(servo_position_2);
                         case_servo = 1;
@@ -127,15 +127,15 @@ public class catching_raising_block extends LinearOpMode {
                     case 0:
                         power = 0.90;
                         motor_raising.setPower(power);
-                        sleep(3000);
+                        sleep(1700);
                         power = 0.00;
                         motor_raising.setPower(power);
                         case_motor = 1;
                         break;
                     case 1:
-                        power = -0.20;
+                        power = -0.22;
                         motor_raising.setPower(power);
-                        sleep(3000);
+                        sleep(1700);
                         power = 0.00;
                         motor_raising.setPower(power);
                         case_motor = 0;
