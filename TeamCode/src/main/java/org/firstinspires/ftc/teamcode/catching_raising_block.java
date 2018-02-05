@@ -66,7 +66,7 @@ public class catching_raising_block extends LinearOpMode {
 
     DcMotor motor_raising;
 
-    double servo_position_1 = 0.70;
+    double servo_position_1 = 0.70 ;
     double servo_position_2 = 0.10;
     double power = 0.50;
 
