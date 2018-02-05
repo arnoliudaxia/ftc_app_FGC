@@ -90,7 +90,7 @@ public class catching_raising_block extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        servo_position_1 = 0.40;
+        /*servo_position_1 = 0.40;
         servo_position_2 = 0.40;
         servo_catching_block_1.setPosition(servo_position_1);
         servo_catching_block_2.setPosition(servo_position_2);
@@ -102,6 +102,7 @@ public class catching_raising_block extends LinearOpMode {
         sleep(1650);
         power = 0.00;
         motor_raising.setPower(power);//ceshi
+        */
 
         while (opModeIsActive()) {
             if(gamepad1.a){
@@ -133,9 +134,9 @@ public class catching_raising_block extends LinearOpMode {
                         case_motor = 1;
                         break;
                     case 1:
-                        power = -0.22;
+                        power = -0.25;
                         motor_raising.setPower(power);
-                        sleep(1700);
+                        sleep(2000);
                         power = 0.00;
                         motor_raising.setPower(power);
                         case_motor = 0;
