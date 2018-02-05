@@ -128,7 +128,7 @@ public class catching_raising_block extends LinearOpMode {
                     case 0:
                         power = 0.90;
                         motor_raising.setPower(power);
-                        sleep(1700);
+                        sleep(2000);
                         power = 0.00;
                         motor_raising.setPower(power);
                         case_motor = 1;
