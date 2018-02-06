@@ -56,10 +56,10 @@ public class Translation_moving extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor motor_zuoqian = null;
-    private DcMotor motor_youqian = null;
-    private DcMotor motor_zuohou = null;
-    private DcMotor motor_youhou = null;
+    DcMotor motor_zuoqian;
+    DcMotor motor_youqian;
+    DcMotor motor_zuohou;
+    DcMotor motor_youhou;
 
     @Override
     public void runOpMode() {
@@ -87,11 +87,11 @@ public class Translation_moving extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            while (x_right_stick == 0) {
+            while (gamepad1.right_stick_x == 0) {
                 Translation();
             }
 
-            while (x_right_stick != 0) {
+            while (gamepad1.right_stick_x != 0) {
                 turn();
             }
 
@@ -110,21 +110,16 @@ public class Translation_moving extends LinearOpMode {
         }
     }
 
-    double x_right_stick = gamepad1.left_stick_x;
-
     double power_zuoqian;
     double power_youqian;
     double power_zuohou;
     double power_youhou;
 
-    double x_left_stick = gamepad1.left_stick_x;
-    double y_left_stick = -gamepad1.left_stick_y;
-
     private void turn() {
-        power_zuoqian = Range.clip(x_right_stick,-1.0,1.0);
-        power_youqian = Range.clip(-x_right_stick,-1.0,1.0);
-        power_zuohou = Range.clip(x_right_stick,-1.0,1.0);
-        power_youhou = Range.clip(-x_right_stick,-1.0,1.0);
+        power_zuoqian = Range.clip(gamepad1.right_stick_x,-1.0,1.0);
+        power_youqian = Range.clip(-gamepad1.right_stick_x,-1.0,1.0);
+        power_zuohou = Range.clip(gamepad1.right_stick_x,-1.0,1.0);
+        power_youhou = Range.clip(-gamepad1.right_stick_x,-1.0,1.0);
 
         motor_zuoqian.setPower(power_zuoqian);
         motor_youqian.setPower(power_youqian);
@@ -136,10 +131,10 @@ public class Translation_moving extends LinearOpMode {
 
     private void Translation() {
 
-        power_zuoqian = Range.clip(y_left_stick + x_left_stick,-1.0,1.0);
-        power_youqian = Range.clip(y_left_stick - x_left_stick,-1.0,1.0);
-        power_zuohou = Range.clip(y_left_stick - x_left_stick,-1.0,1.0);
-        power_youhou = Range.clip(y_left_stick + x_left_stick,-1.0,1.0);
+        power_zuoqian = Range.clip(gamepad1.left_stick_y + gamepad1.left_stick_x,-1.0,1.0);
+        power_youqian = Range.clip(gamepad1.left_stick_y - gamepad1.left_stick_x,-1.0,1.0);
+        power_zuohou = Range.clip(gamepad1.left_stick_y - gamepad1.left_stick_x,-1.0,1.0);
+        power_youhou = Range.clip(gamepad1.left_stick_y + gamepad1.left_stick_x,-1.0,1.0);
 
         motor_zuoqian.setPower(power_zuoqian);
         motor_youqian.setPower(power_youqian);
