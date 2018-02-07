@@ -121,6 +121,44 @@ public class Translation_moving extends LinearOpMode {
             }
 
 
+
+            /*if (gamepad1.dpad_up == true){
+                motor_zuoqian.setPower(1);
+                motor_youqian.setPower(-1);
+                motor_zuohou.setPower(-1);
+                motor_youhou.setPower(-1);
+                sleep(50);
+            }
+
+            else if (gamepad1.dpad_down == true){
+                motor_zuoqian.setPower(-1);
+                motor_youqian.setPower(1);
+                motor_zuohou.setPower(1);
+                motor_youhou.setPower(1);
+                sleep(50);
+            }
+
+            else if (gamepad1.dpad_left == true){
+                motor_zuoqian.setPower(-1);
+                motor_youqian.setPower(-1);
+                motor_zuohou.setPower(1);
+                motor_youhou.setPower(-1);
+                sleep(50);
+            }
+
+            else if (gamepad1.dpad_right == true){
+                motor_zuoqian.setPower(1);
+                motor_youqian.setPower(1);
+                motor_zuohou.setPower(-1);
+                motor_youhou.setPower(1);
+                sleep(50);
+            }
+
+            else if (gamepad1.left_trigger != 0){
+
+            }*/
+
+
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
             // leftPower  = -gamepad1.left_stick_y ;
