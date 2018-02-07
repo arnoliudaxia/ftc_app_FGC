@@ -81,18 +81,42 @@ public class Translation_moving extends LinearOpMode {
         motor_youqian.setDirection(DcMotor.Direction.REVERSE);
         motor_youhou.setDirection(DcMotor.Direction.REVERSE);
 
+        double power_zuoqian;
+        double power_youqian;
+        double power_zuohou;
+        double power_youhou;
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            while (gamepad1.right_stick_x == 0) {
-                Translation();
+            if (gamepad1.right_stick_x == 0) {
+                power_zuoqian = Range.clip(gamepad1.left_stick_y - gamepad1.left_stick_x,-1.0,1.0);
+                power_youqian = Range.clip(gamepad1.left_stick_y + gamepad1.left_stick_x,-1.0,1.0);
+                power_zuohou = Range.clip(gamepad1.left_stick_y + gamepad1.left_stick_x,-1.0,1.0);
+                power_youhou = Range.clip(gamepad1.left_stick_y - gamepad1.left_stick_x,-1.0,1.0);
+
+                motor_zuoqian.setPower(power_zuoqian);
+                motor_youqian.setPower(-power_youqian);
+                motor_zuohou.setPower(-power_zuohou);
+                motor_youhou.setPower(-power_youhou);
+                sleep(50);
             }
 
-            while (gamepad1.right_stick_x != 0) {
-                turn();
+            else {
+                power_zuoqian = Range.clip(gamepad1.left_trigger,-1.0,1.0);
+                power_youqian = Range.clip(-gamepad1.left_trigger,-1.0,1.0);
+                power_zuohou = Range.clip(gamepad1.left_trigger,-1.0,1.0);
+                power_youhou = Range.clip(-gamepad1.left_trigger,-1.0,1.0);
+
+                motor_zuoqian.setPower(power_zuoqian);
+                motor_youqian.setPower(power_youqian);
+                motor_zuohou.setPower(power_zuohou);
+                motor_youhou.setPower(power_youhou);
+
+                sleep(50);
             }
 
 
@@ -105,41 +129,8 @@ public class Translation_moving extends LinearOpMode {
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",power_zuoqian,power_youqian,power_zuohou,power_youhou);
+            //telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",power_zuoqian,power_youqian,power_zuohou,power_youhou);
             telemetry.update();
         }
-    }
-
-    double power_zuoqian;
-    double power_youqian;
-    double power_zuohou;
-    double power_youhou;
-
-    private void turn() {
-        power_zuoqian = Range.clip(gamepad1.right_stick_x,-1.0,1.0);
-        power_youqian = Range.clip(-gamepad1.right_stick_x,-1.0,1.0);
-        power_zuohou = Range.clip(gamepad1.right_stick_x,-1.0,1.0);
-        power_youhou = Range.clip(-gamepad1.right_stick_x,-1.0,1.0);
-
-        motor_zuoqian.setPower(power_zuoqian);
-        motor_youqian.setPower(power_youqian);
-        motor_zuohou.setPower(power_zuohou);
-        motor_youhou.setPower(power_youhou);
-
-        sleep(50);
-    }
-
-    private void Translation() {
-
-        power_zuoqian = Range.clip(gamepad1.left_stick_y + gamepad1.left_stick_x,-1.0,1.0);
-        power_youqian = Range.clip(gamepad1.left_stick_y - gamepad1.left_stick_x,-1.0,1.0);
-        power_zuohou = Range.clip(gamepad1.left_stick_y - gamepad1.left_stick_x,-1.0,1.0);
-        power_youhou = Range.clip(gamepad1.left_stick_y + gamepad1.left_stick_x,-1.0,1.0);
-
-        motor_zuoqian.setPower(power_zuoqian);
-        motor_youqian.setPower(power_youqian);
-        motor_zuohou.setPower(power_zuohou);
-        motor_youhou.setPower(power_youhou);
-        sleep(50);
     }
 }
