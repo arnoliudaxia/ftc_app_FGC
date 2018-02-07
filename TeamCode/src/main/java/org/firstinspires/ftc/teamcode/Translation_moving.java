@@ -92,24 +92,25 @@ public class Translation_moving extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if (gamepad1.right_stick_x == 0) {
-                power_zuoqian = Range.clip(gamepad1.left_stick_y - gamepad1.left_stick_x,-1.0,1.0);
-                power_youqian = Range.clip(gamepad1.left_stick_y + gamepad1.left_stick_x,-1.0,1.0);
-                power_zuohou = Range.clip(gamepad1.left_stick_y + gamepad1.left_stick_x,-1.0,1.0);
-                power_youhou = Range.clip(gamepad1.left_stick_y - gamepad1.left_stick_x,-1.0,1.0);
+            if (gamepad1.left_trigger + gamepad1.right_trigger == 0) {
+                power_zuoqian = gamepad1.left_stick_y - gamepad1.left_stick_x;
+                power_youqian = gamepad1.left_stick_y + gamepad1.left_stick_x;
+                power_zuohou = gamepad1.left_stick_y + gamepad1.left_stick_x;
+                power_youhou = gamepad1.left_stick_y - gamepad1.left_stick_x;
 
                 motor_zuoqian.setPower(power_zuoqian);
                 motor_youqian.setPower(-power_youqian);
                 motor_zuohou.setPower(-power_zuohou);
                 motor_youhou.setPower(-power_youhou);
+
                 sleep(50);
             }
 
             else {
-                power_zuoqian = Range.clip(gamepad1.left_trigger,-1.0,1.0);
-                power_youqian = Range.clip(-gamepad1.left_trigger,-1.0,1.0);
-                power_zuohou = Range.clip(gamepad1.left_trigger,-1.0,1.0);
-                power_youhou = Range.clip(-gamepad1.left_trigger,-1.0,1.0);
+                power_zuoqian = -gamepad1.left_trigger+gamepad1.right_trigger;
+                power_youqian = gamepad1.left_trigger-gamepad1.right_trigger;
+                power_zuohou = -gamepad1.left_trigger+gamepad1.right_trigger;
+                power_youhou = gamepad1.left_trigger-gamepad1.right_trigger;
 
                 motor_zuoqian.setPower(power_zuoqian);
                 motor_youqian.setPower(power_youqian);
@@ -129,7 +130,7 @@ public class Translation_moving extends LinearOpMode {
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            //telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",power_zuoqian,power_youqian,power_zuohou,power_youhou);
+            telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",power_zuoqian,power_youqian,power_zuohou,power_youhou);
             telemetry.update();
         }
     }
