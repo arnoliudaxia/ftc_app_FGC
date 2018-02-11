@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -61,6 +62,15 @@ public class Translation_moving extends LinearOpMode {
     DcMotor motor_zuohou;
     DcMotor motor_youhou;
 
+    Servo servo_catching_block_1;
+    Servo servo_catching_block_2;
+
+    DcMotor motor_raising;
+
+    double servo_position_1 = 0.40;
+    double servo_position_2 = 0.00;
+    double power = 0.50;
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -86,13 +96,26 @@ public class Translation_moving extends LinearOpMode {
         double power_zuohou;
         double power_youhou;
 
+        servo_catching_block_1 = hardwareMap.servo.get("servo_catching_block_1");
+        servo_catching_block_2 = hardwareMap.servo.get("servo_catching_block_2");
+
+        motor_raising = hardwareMap.dcMotor.get("motor_raising");
+
+        servo_catching_block_1.setPosition(servo_position_1);
+        servo_catching_block_2.setPosition(servo_position_2);//init
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
+        power_zuoqian = 0;
+        power_youqian = 0;
+        power_zuohou = 0;
+        power_youhou = 0;
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if (gamepad1.left_trigger + gamepad1.right_trigger == 0) {
+            if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0) {
                 power_zuoqian = gamepad1.left_stick_y - gamepad1.left_stick_x;
                 power_youqian = gamepad1.left_stick_y + gamepad1.left_stick_x;
                 power_zuohou = gamepad1.left_stick_y + gamepad1.left_stick_x;
@@ -102,11 +125,59 @@ public class Translation_moving extends LinearOpMode {
                 motor_youqian.setPower(-power_youqian);
                 motor_zuohou.setPower(-power_zuohou);
                 motor_youhou.setPower(-power_youhou);
+            }
 
-                sleep(50);
+            if (gamepad1.left_bumper == true){
+                motor_zuoqian.setPower(0.6);
+                motor_youqian.setPower(0.6);
+                motor_zuohou.setPower(-0.6);
+                motor_youhou.setPower(0.6);
+            }
+
+            else if (gamepad1.right_bumper == true){
+                motor_zuoqian.setPower(-0.6);
+                motor_youqian.setPower(-0.6);
+                motor_zuohou.setPower(0.6);
+                motor_youhou.setPower(-0.6);
             }
 
             else {
+                motor_zuoqian.setPower(0);
+                motor_youqian.setPower(0);
+                motor_zuohou.setPower(0);
+                motor_youhou.setPower(0);
+            }
+
+            if(gamepad2.x) {
+                servo_position_1 = 0.00;
+                servo_position_2 = 0.40;
+                servo_catching_block_1.setPosition(servo_position_1);
+                servo_catching_block_2.setPosition(servo_position_2);
+            }
+
+            else if(gamepad2.b){
+                servo_position_1 = 0.40;
+                servo_position_2 = 0.00;
+                servo_catching_block_1.setPosition(servo_position_1);
+                servo_catching_block_2.setPosition(servo_position_2);
+            }
+
+            if(gamepad2.y){
+                power = 1.0;
+                motor_raising.setPower(power);
+            }
+
+            else if(gamepad2.a){
+                power = -1.0;
+                motor_raising.setPower(power);
+            }
+
+            else {
+                power = 0.08;
+                motor_raising.setPower(power);
+            }
+
+            /*else {
                 power_zuoqian = -gamepad1.left_trigger+gamepad1.right_trigger;
                 power_youqian = gamepad1.left_trigger-gamepad1.right_trigger;
                 power_zuohou = -gamepad1.left_trigger+gamepad1.right_trigger;
@@ -118,7 +189,7 @@ public class Translation_moving extends LinearOpMode {
                 motor_youhou.setPower(power_youhou);
 
                 sleep(50);
-            }
+            }*/
 
 
 
