@@ -61,16 +61,6 @@ public class Translation_moving extends LinearOpMode {
     DcMotor motor_youqian;
     DcMotor motor_zuohou;
     DcMotor motor_youhou;
-
-    Servo servo_catching_block_1;
-    Servo servo_catching_block_2;
-
-    DcMotor motor_raising;
-
-    double servo_position_1 = 0.40;
-    double servo_position_2 = 0.00;
-    double power = 0.50;
-
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -95,14 +85,6 @@ public class Translation_moving extends LinearOpMode {
         double power_youqian;
         double power_zuohou;
         double power_youhou;
-
-        servo_catching_block_1 = hardwareMap.servo.get("servo_catching_block_1");
-        servo_catching_block_2 = hardwareMap.servo.get("servo_catching_block_2");
-
-        motor_raising = hardwareMap.dcMotor.get("motor_raising");
-
-        servo_catching_block_1.setPosition(servo_position_1);
-        servo_catching_block_2.setPosition(servo_position_2);//init
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -147,89 +129,6 @@ public class Translation_moving extends LinearOpMode {
                 motor_zuohou.setPower(0);
                 motor_youhou.setPower(0);
             }
-
-            if(gamepad2.x) {
-                servo_position_1 = 0.00;
-                servo_position_2 = 0.40;
-                servo_catching_block_1.setPosition(servo_position_1);
-                servo_catching_block_2.setPosition(servo_position_2);
-            }
-
-            else if(gamepad2.b){
-                servo_position_1 = 0.40;
-                servo_position_2 = 0.00;
-                servo_catching_block_1.setPosition(servo_position_1);
-                servo_catching_block_2.setPosition(servo_position_2);
-            }
-
-            if(gamepad2.y){
-                power = 1.0;
-                motor_raising.setPower(power);
-            }
-
-            else if(gamepad2.a){
-                power = -1.0;
-                motor_raising.setPower(power);
-            }
-
-            else {
-                power = 0.08;
-                motor_raising.setPower(power);
-            }
-
-            /*else {
-                power_zuoqian = -gamepad1.left_trigger+gamepad1.right_trigger;
-                power_youqian = gamepad1.left_trigger-gamepad1.right_trigger;
-                power_zuohou = -gamepad1.left_trigger+gamepad1.right_trigger;
-                power_youhou = gamepad1.left_trigger-gamepad1.right_trigger;
-
-                motor_zuoqian.setPower(power_zuoqian);
-                motor_youqian.setPower(power_youqian);
-                motor_zuohou.setPower(power_zuohou);
-                motor_youhou.setPower(power_youhou);
-
-                sleep(50);
-            }*/
-
-
-
-            /*if (gamepad1.dpad_up == true){
-                motor_zuoqian.setPower(1);
-                motor_youqian.setPower(-1);
-                motor_zuohou.setPower(-1);
-                motor_youhou.setPower(-1);
-                sleep(50);
-            }
-
-            else if (gamepad1.dpad_down == true){
-                motor_zuoqian.setPower(-1);
-                motor_youqian.setPower(1);
-                motor_zuohou.setPower(1);
-                motor_youhou.setPower(1);
-                sleep(50);
-            }
-
-            else if (gamepad1.dpad_left == true){
-                motor_zuoqian.setPower(-1);
-                motor_youqian.setPower(-1);
-                motor_zuohou.setPower(1);
-                motor_youhou.setPower(-1);
-                sleep(50);
-            }
-
-            else if (gamepad1.dpad_right == true){
-                motor_zuoqian.setPower(1);
-                motor_youqian.setPower(1);
-                motor_zuohou.setPower(-1);
-                motor_youhou.setPower(1);
-                sleep(50);
-            }
-
-            else if (gamepad1.left_trigger != 0){
-
-            }*/
-
-
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
             // leftPower  = -gamepad1.left_stick_y ;
