@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -66,9 +67,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@Autonomous(name="Concept: VuMark Id", group ="Concept")
-@Disabled
-public class ConceptVuMarkIdentification extends LinearOpMode {
+@TeleOp(name="ConceptVuMarkIdentification_DN", group ="Concept")
+//@Disabled
+public class ConceptVuMarkIdentification_DN extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -104,7 +105,7 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
          * Once you've obtained a license key, copy the string from the Vuforia web site
          * and paste it in to your code onthe next line, between the double quotes.
          */
-        parameters.vuforiaLicenseKey = "AcuhAX7/////AAAAmajQ8hCCzkQ/jgsGYHtzdfJAX5jFWu6OruN0EVesmSeo+m8FKtw9HexPxtE4G2EWjPx/kFe5dcd7oTi0ZYOUENJIr/bP+de6Iz3X12Nv46jRn07ywhorHvSA+FJbqZxLOxsr1ZxlEuBfH45s7K0woMUQjTGzQTcEozTRld/zAxWf9vyShez7WrjkHqJQmsYeuWLeheKvWi/Ncm60lyYHYFTzctYYf2vx4pYWR6z+N/ra26Jj0bNXGLYqKUzmjiatOmwVzXW04n/jp8p/JKljzT5N4SDgYrT7wEJGpmCX6YvWbh/1MLR2fGZ4lUHyYVE7v7BW/ZvOJNf8DpEWVQFVuvcyKD61Q5ft2557nuJMahsI";
+        parameters.vuforiaLicenseKey = "AVBZ8J//////AAAAmUh1NI3160yckxL9jxR0wQcUr8yieqkZdNjB+5YalDuty4KXzCOkSolr6sHq3/fpV/RIj6mOgl8bULILxJBdKOoGjAMVic54WUzwQk0Le88nb3sV20pEMonnqTnWvKp/pmpe5PPJJQE2gjs58sJSX7ROIBRMsDjVhu09ep3cmmyVhdIBLjkgvKafXDVtjpzAJJ/3HDenn2ocZ10F66ZHgSg7muIuMsobb30shiby9l9E30KN8Hy6GXu8BQlaBMzy4sRclYcCApVw/hFUUNN25tCFc0ex2Zn71AWr/1DyPwEWiva0M+75k8L3Nz2NTqv2bEruKLahBbjmT2haZ0cfOhiUuDwA4bfpfTyg0iRv0hHV";
 
         /*
          * We also indicate which camera on the RC that we wish to use.

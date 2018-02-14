@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Translation_moving", group="Linear Opmode")
+@TeleOp(name="Catching_block", group="Linear Opmode")
 //@Disabled
 public class Catching_block extends LinearOpMode {
 
