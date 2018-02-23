@@ -65,7 +65,7 @@ public class MovingandCatching_block extends LinearOpMode {
 
     DcMotor motor_raising;
 
-    double servo_position_1 = 0.40;
+    double servo_position_1 = 0.385;
     double servo_position_2 = 0.00;
     double power = 0.50;
 
@@ -154,7 +154,7 @@ public class MovingandCatching_block extends LinearOpMode {
             }
 
             else if(gamepad2.b){
-                servo_position_1 = 0.40;
+                servo_position_1 = 0.385;
                 servo_position_2 = 0.00;
                 servo_catching_block_1.setPosition(servo_position_1);
                 servo_catching_block_2.setPosition(servo_position_2);
