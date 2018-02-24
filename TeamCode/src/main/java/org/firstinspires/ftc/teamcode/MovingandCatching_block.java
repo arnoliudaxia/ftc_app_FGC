@@ -65,8 +65,8 @@ public class MovingandCatching_block extends LinearOpMode {
 
     DcMotor motor_raising;
 
-    double servo_position_1 = 0.385;
-    double servo_position_2 = 0.00;
+    double servo_position_1 = 0.35;
+    double servo_position_2 = 0.15;
     double power = 0.50;
 
     @Override
@@ -125,6 +125,34 @@ public class MovingandCatching_block extends LinearOpMode {
                 motor_youhou.setPower(-power_youhou);
             }
 
+            if (gamepad1.dpad_up == true){
+                motor_zuoqian.setPower(-0.7);
+                motor_youqian.setPower(0.7);
+                motor_zuohou.setPower(0.7);
+                motor_youhou.setPower(0.7);
+            }
+
+            else if (gamepad1.dpad_down == true){
+                motor_zuoqian.setPower(0.7);
+                motor_youqian.setPower(-0.7);
+                motor_zuohou.setPower(-0.7);
+                motor_youhou.setPower(-0.7);
+            }
+
+            else if (gamepad1.dpad_left == true){
+                motor_zuoqian.setPower(0.7);
+                motor_youqian.setPower(0.7);
+                motor_zuohou.setPower(0.7);
+                motor_youhou.setPower(-0.7);
+            }
+
+            else if (gamepad1.dpad_right == true){
+                motor_zuoqian.setPower(-0.7);
+                motor_youqian.setPower(-0.7);
+                motor_zuohou.setPower(-0.7);
+                motor_youhou.setPower(0.7);
+            }
+
             if (gamepad1.left_bumper == true){
                 motor_zuoqian.setPower(0.6);
                 motor_youqian.setPower(0.6);
@@ -139,6 +167,30 @@ public class MovingandCatching_block extends LinearOpMode {
                 motor_youhou.setPower(-0.6);
             }
 
+            else if(gamepad1.left_trigger != 0){
+                power_zuoqian = gamepad1.left_trigger;
+                power_youqian = gamepad1.left_trigger;
+                power_zuohou = -gamepad1.left_trigger;
+                power_youhou = gamepad1.left_trigger;
+
+                motor_zuoqian.setPower(power_zuoqian);
+                motor_youqian.setPower(power_youqian);
+                motor_zuohou.setPower(power_zuohou);
+                motor_youhou.setPower(power_youhou);
+            }
+
+            else if(gamepad1.right_trigger != 0){
+                power_zuoqian = -gamepad1.right_trigger;
+                power_youqian = -gamepad1.right_trigger;
+                power_zuohou = gamepad1.right_trigger;
+                power_youhou = -gamepad1.right_trigger;
+
+                motor_zuoqian.setPower(power_zuoqian);
+                motor_youqian.setPower(power_youqian);
+                motor_zuohou.setPower(power_zuohou);
+                motor_youhou.setPower(power_youhou);
+            }
+
             else {
                 motor_zuoqian.setPower(0);
                 motor_youqian.setPower(0);
@@ -148,14 +200,14 @@ public class MovingandCatching_block extends LinearOpMode {
 
             if(gamepad2.x) {
                 servo_position_1 = 0.00;
-                servo_position_2 = 0.40;
+                servo_position_2 = 0.5;
                 servo_catching_block_1.setPosition(servo_position_1);
                 servo_catching_block_2.setPosition(servo_position_2);
             }
 
             else if(gamepad2.b){
-                servo_position_1 = 0.385;
-                servo_position_2 = 0.00;
+                servo_position_1 = 0.35;
+                servo_position_2 = 0.15;
                 servo_catching_block_1.setPosition(servo_position_1);
                 servo_catching_block_2.setPosition(servo_position_2);
             }
@@ -189,49 +241,15 @@ public class MovingandCatching_block extends LinearOpMode {
                 sleep(50);
             }*/
 
+            //else if (gamepad0.5.left_trigger != 0){
 
-
-            /*if (gamepad1.dpad_up == true){
-                motor_zuoqian.setPower(1);
-                motor_youqian.setPower(-1);
-                motor_zuohou.setPower(-1);
-                motor_youhou.setPower(-1);
-                sleep(50);
-            }
-
-            else if (gamepad1.dpad_down == true){
-                motor_zuoqian.setPower(-1);
-                motor_youqian.setPower(1);
-                motor_zuohou.setPower(1);
-                motor_youhou.setPower(1);
-                sleep(50);
-            }
-
-            else if (gamepad1.dpad_left == true){
-                motor_zuoqian.setPower(-1);
-                motor_youqian.setPower(-1);
-                motor_zuohou.setPower(1);
-                motor_youhou.setPower(-1);
-                sleep(50);
-            }
-
-            else if (gamepad1.dpad_right == true){
-                motor_zuoqian.setPower(1);
-                motor_youqian.setPower(1);
-                motor_zuohou.setPower(-1);
-                motor_youhou.setPower(1);
-                sleep(50);
-            }
-
-            else if (gamepad1.left_trigger != 0){
-
-            }*/
+            //}
 
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
+            // leftPower  = -gamepad0.5.left_stick_y ;
+            // rightPower = -gamepad0.5.right_stick_y ;
 
             // Send calculated power to wheels
 

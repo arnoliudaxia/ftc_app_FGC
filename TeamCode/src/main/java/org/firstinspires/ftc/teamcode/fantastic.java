@@ -34,7 +34,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -50,17 +49,32 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="baby", group="Linear Opmode")
+@TeleOp(name="fantastic", group="Linear Opmode")
 //@Disabled
-public class baby extends LinearOpMode {
+public class fantastic extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    DcMotor motor_zuoqian;
+    DcMotor motor_youqian;
+    DcMotor motor_zuohou;
+    DcMotor motor_youhou;
+
     DcMotor motor_catching_baby_1;
     DcMotor motor_catching_baby_2;
 
     Servo servo_catching_baby_1;
     Servo servo_catching_baby_2;
+
+    Servo servo_catching_block_1;
+    Servo servo_catching_block_2;
+
+    DcMotor motor_raising;
+
+    double servo_position_1 = 0.35;
+    double servo_position_2 = 0.15;
+    double power = 0.50;
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -69,8 +83,22 @@ public class baby extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
+        motor_zuoqian  = hardwareMap.get(DcMotor.class, "motor_zuoqian");
+        motor_youqian = hardwareMap.get(DcMotor.class, "motor_youqian");
+        motor_zuohou = hardwareMap.get(DcMotor.class, "motor_zuohou");
+        motor_youhou = hardwareMap.get(DcMotor.class, "motor_youhou");
+
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
+        motor_zuoqian.setDirection(DcMotor.Direction.FORWARD);
+        motor_zuohou.setDirection(DcMotor.Direction.FORWARD);
+        motor_youqian.setDirection(DcMotor.Direction.REVERSE);
+        motor_youhou.setDirection(DcMotor.Direction.REVERSE);
+
+        double power_zuoqian;
+        double power_youqian;
+        double power_zuohou;
+        double power_youhou;
 
         double power_baby_1;
         double power_baby_2;
@@ -80,9 +108,10 @@ public class baby extends LinearOpMode {
 
         boolean safe_case = true;
 
-        // Wait for the game to start (driver presses PLAY)
-        waitForStart();
-        runtime.reset();
+        servo_catching_block_1 = hardwareMap.servo.get("servo_catching_block_1");
+        servo_catching_block_2 = hardwareMap.servo.get("servo_catching_block_2");
+
+        motor_raising = hardwareMap.dcMotor.get("motor_raising");
 
         motor_catching_baby_1  = hardwareMap.get(DcMotor.class, "motor_catching_baby_1");
         motor_catching_baby_2 = hardwareMap.get(DcMotor.class, "motor_catching_baby_2");
@@ -92,8 +121,134 @@ public class baby extends LinearOpMode {
 
         servo_catching_baby_1.setPosition(servo_baby_position_1);
 
+        servo_catching_block_1.setPosition(servo_position_1);
+        servo_catching_block_2.setPosition(servo_position_2);
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+        runtime.reset();
+
+        power_zuoqian = 0;
+        power_youqian = 0;
+        power_zuohou = 0;
+        power_youhou = 0;
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0) {
+                power_zuoqian = gamepad1.left_stick_y - gamepad1.left_stick_x;
+                power_youqian = gamepad1.left_stick_y + gamepad1.left_stick_x;
+                power_zuohou = gamepad1.left_stick_y + gamepad1.left_stick_x;
+                power_youhou = gamepad1.left_stick_y - gamepad1.left_stick_x;
+
+                motor_zuoqian.setPower(power_zuoqian);
+                motor_youqian.setPower(-power_youqian);
+                motor_zuohou.setPower(-power_zuohou);
+                motor_youhou.setPower(-power_youhou);
+            }
+
+            if (gamepad1.dpad_up == true){
+                motor_zuoqian.setPower(-0.7);
+                motor_youqian.setPower(0.7);
+                motor_zuohou.setPower(0.7);
+                motor_youhou.setPower(0.7);
+            }
+
+            else if (gamepad1.dpad_down == true){
+                motor_zuoqian.setPower(0.7);
+                motor_youqian.setPower(-0.7);
+                motor_zuohou.setPower(-0.7);
+                motor_youhou.setPower(-0.7);
+            }
+
+            else if (gamepad1.dpad_left == true){
+                motor_zuoqian.setPower(0.7);
+                motor_youqian.setPower(0.7);
+                motor_zuohou.setPower(0.7);
+                motor_youhou.setPower(-0.7);
+            }
+
+            else if (gamepad1.dpad_right == true){
+                motor_zuoqian.setPower(-0.7);
+                motor_youqian.setPower(-0.7);
+                motor_zuohou.setPower(-0.7);
+                motor_youhou.setPower(0.7);
+            }
+
+            if (gamepad1.left_bumper == true){
+                motor_zuoqian.setPower(0.6);
+                motor_youqian.setPower(0.6);
+                motor_zuohou.setPower(-0.6);
+                motor_youhou.setPower(0.6);
+            }
+
+            else if (gamepad1.right_bumper == true){
+                motor_zuoqian.setPower(-0.6);
+                motor_youqian.setPower(-0.6);
+                motor_zuohou.setPower(0.6);
+                motor_youhou.setPower(-0.6);
+            }
+
+            else if(gamepad1.left_trigger != 0){
+                power_zuoqian = gamepad1.left_trigger;
+                power_youqian = gamepad1.left_trigger;
+                power_zuohou = -gamepad1.left_trigger;
+                power_youhou = gamepad1.left_trigger;
+
+                motor_zuoqian.setPower(power_zuoqian);
+                motor_youqian.setPower(power_youqian);
+                motor_zuohou.setPower(power_zuohou);
+                motor_youhou.setPower(power_youhou);
+            }
+
+            else if(gamepad1.right_trigger != 0){
+                power_zuoqian = -gamepad1.right_trigger;
+                power_youqian = -gamepad1.right_trigger;
+                power_zuohou = gamepad1.right_trigger;
+                power_youhou = -gamepad1.right_trigger;
+
+                motor_zuoqian.setPower(power_zuoqian);
+                motor_youqian.setPower(power_youqian);
+                motor_zuohou.setPower(power_zuohou);
+                motor_youhou.setPower(power_youhou);
+            }
+
+            else {
+                motor_zuoqian.setPower(0);
+                motor_youqian.setPower(0);
+                motor_zuohou.setPower(0);
+                motor_youhou.setPower(0);
+            }
+
+            if(gamepad2.x) {
+                servo_position_1 = 0.00;
+                servo_position_2 = 0.5;
+                servo_catching_block_1.setPosition(servo_position_1);
+                servo_catching_block_2.setPosition(servo_position_2);
+            }
+
+            else if(gamepad2.b){
+                servo_position_1 = 0.35;
+                servo_position_2 = 0.15;
+                servo_catching_block_1.setPosition(servo_position_1);
+                servo_catching_block_2.setPosition(servo_position_2);
+            }
+
+            if(gamepad2.y){
+                power = 1.0;
+                motor_raising.setPower(power);
+            }
+
+            else if(gamepad2.a){
+                power = -1.0;
+                motor_raising.setPower(power);
+            }
+
+            else {
+                power = 0.08;
+                motor_raising.setPower(power);
+            }
+
             if(gamepad2.left_bumper == true && gamepad2.right_bumper == true){
                 safe_case = false;
             }
@@ -138,21 +293,16 @@ public class baby extends LinearOpMode {
                 motor_catching_baby_1.setPower(0);
                 motor_catching_baby_2.setPower(0);
             }
-            //else {
-                //motor_catching_baby_1.setPower(0);
-                //motor_catching_baby_2.setPower(0);
-            //}
-
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
+            // leftPower  = -gamepad0.5.left_stick_y ;
+            // rightPower = -gamepad0.5.right_stick_y ;
 
             // Send calculated power to wheels
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            //telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",power_zuoqian,power_youqian,power_zuohou,power_youhou);
+            telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",power_zuoqian,power_youqian,power_zuohou,power_youhou);
             telemetry.update();
         }
     }
