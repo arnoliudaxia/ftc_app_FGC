@@ -58,11 +58,15 @@ public class Catching_block extends LinearOpMode {
     Servo servo_catching_block_1;
     Servo servo_catching_block_2;
 
+    Servo servo_kicking_ball;
+
     DcMotor motor_raising;
 
     double servo_position_1 = 0.40;
     double servo_position_2 = 0.00;
     double power_raising = 0.50;
+
+    double servo_position_ball = 1;
 
     @Override
     public void runOpMode() {
@@ -80,14 +84,35 @@ public class Catching_block extends LinearOpMode {
 
         motor_raising = hardwareMap.dcMotor.get("motor_raising");
 
+        servo_kicking_ball = hardwareMap.get(Servo.class,"servo_kicking_ball");
+
         servo_catching_block_1.setPosition(servo_position_1);
         servo_catching_block_2.setPosition(servo_position_2);//init
+
+        servo_kicking_ball.setPosition(servo_position_ball);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
+            if(gamepad2.dpad_up == true){
+                if(servo_position_ball <= 1){
+                    servo_position_ball = servo_position_ball + 0.02;
+                }
+                sleep(50);
+            }
+
+            if(gamepad2.dpad_down == true){
+                if(servo_position_ball >= 0){
+                    servo_position_ball = servo_position_ball - 0.02;
+                }
+                sleep(50);
+            }
+
+            servo_kicking_ball.setPosition(servo_position_ball);
+
             if(gamepad2.x) {
                 servo_position_1 = 0.00;
                 servo_position_2 = 0.40;
