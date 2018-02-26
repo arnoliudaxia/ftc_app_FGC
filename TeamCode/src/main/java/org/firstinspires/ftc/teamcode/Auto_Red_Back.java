@@ -79,8 +79,6 @@ public class Auto_Red_Back extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
-    OpenGLMatrix lastLocation = null;
-
     private ElapsedTime runtime = new ElapsedTime();
     DcMotor motor_zuoqian;
     DcMotor motor_youqian;
@@ -107,6 +105,10 @@ public class Auto_Red_Back extends LinearOpMode {
 
     double power_baby_1;
     double power_baby_2;
+
+
+
+    OpenGLMatrix lastLocation = null;
 
     VuforiaLocalizer vuforia;
 
@@ -171,32 +173,12 @@ public class Auto_Red_Back extends LinearOpMode {
 
         relicTrackables.activate();
 
-            /*RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-
-                telemetry.addData("VuMark", "%s visible!", vuMark);
-
-                telemetry.addData("VuMark", "not visible");
-            }*/
 
             servo_position_ball = 0.2;
             servo_kicking_ball.setPosition(servo_position_ball);
             sleep(1000);
 
-        motor_zuoqian.setPower(-0.2);
-        motor_youqian.setPower(-0.2);
-        motor_zuohou.setPower(0.2);
-        motor_youhou.setPower(-0.2);
-
-        sleep(200);
-
-        motor_zuoqian.setPower(0.2);
-        motor_youqian.setPower(0.2);
-        motor_zuohou.setPower(-0.2);
-        motor_youhou.setPower(0.2);
-        sleep(200);
-
-            /*if (sensorColor.blue()<sensorColor.red()){
+            if (sensorColor.blue()<sensorColor.red()){
                 motor_zuoqian.setPower(-1);
                 motor_youqian.setPower(1);
                 motor_zuohou.setPower(1);
@@ -204,20 +186,27 @@ public class Auto_Red_Back extends LinearOpMode {
 
                 sleep(400);
 
+                motor_zuoqian.setPower(0);
+                motor_youqian.setPower(0);
+                motor_zuohou.setPower(0);
+                motor_youhou.setPower(0);
+
+                sleep(2000);
+
                 servo_position_ball = 0.6;
                 servo_kicking_ball.setPosition(servo_position_ball);
 
-                sleep(200);
+                sleep(300);
 
                 servo_position_ball = 0.8;
                 servo_kicking_ball.setPosition(servo_position_ball);
 
-                sleep(200);
+                sleep(300);
 
                 servo_position_ball = 1;
                 servo_kicking_ball.setPosition(servo_position_ball);
 
-                sleep(200);
+                sleep(300);
 
                 sleep(100);
 
@@ -235,27 +224,41 @@ public class Auto_Red_Back extends LinearOpMode {
             }
 
             else {
-                motor_zuoqian.setPower(0.5);
-                motor_youqian.setPower(-0.5);
-                motor_zuohou.setPower(-0.5);
-                motor_youhou.setPower(-0.5);
+                motor_zuoqian.setPower(-0.1);
+                motor_youqian.setPower(-0.1);
+                motor_zuohou.setPower(0.1);
+                motor_youhou.setPower(-0.1);
 
-                sleep(80);
+                sleep(500);
+
+                motor_zuoqian.setPower(0.1);
+                motor_youqian.setPower(0.1);
+                motor_zuohou.setPower(-0.1);
+                motor_youhou.setPower(0.1);
+
+                sleep(500);
+
+                motor_zuoqian.setPower(0);
+                motor_youqian.setPower(0);
+                motor_zuohou.setPower(0);
+                motor_youhou.setPower(0);
+
+                sleep(2000);
 
                 servo_position_ball = 0.6;
                 servo_kicking_ball.setPosition(servo_position_ball);
 
-                sleep(200);
+                sleep(300);
 
                 servo_position_ball = 0.8;
                 servo_kicking_ball.setPosition(servo_position_ball);
 
-                sleep(200);
+                sleep(300);
 
                 servo_position_ball = 1;
                 servo_kicking_ball.setPosition(servo_position_ball);
 
-                sleep(200);
+                sleep(300);
 
                 motor_zuoqian.setPower(-1);
                 motor_youqian.setPower(1);
@@ -276,12 +279,62 @@ public class Auto_Red_Back extends LinearOpMode {
                 motor_youqian.setPower(0);
                 motor_zuohou.setPower(0);
                 motor_youhou.setPower(0);
-            }*/
+            }
+
+            Pose();
+
+
+
+
+
 
             telemetry.update();
     }
 
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+    }
+
+    void Pose(){
+
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+        if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+
+            telemetry.addData("VuMark", "%s visible", vuMark);
+
+            OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
+            telemetry.addData("Pose", format(pose));
+
+            if (pose != null) {
+                VectorF trans = pose.getTranslation();
+                Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+
+                double tX = trans.get(0);
+                double tY = trans.get(1);
+                double tZ = trans.get(2);
+
+                double rX = rot.firstAngle;
+                double rY = rot.secondAngle;
+                double rZ = rot.thirdAngle;
+
+                lastLocation = pose;
+
+                telemetry.addData("tX= ",tX);
+                telemetry.addData("tY= ",tY);
+                telemetry.addData("tZ= ",tZ);
+
+                telemetry.addData("rX= ",rX);
+                telemetry.addData("rY= ",rY);
+                telemetry.addData("rZ= ",rZ);
+            }
+        }
+        else {
+            telemetry.addData("VuMark", "not visible");
+        }
+
     }
 }

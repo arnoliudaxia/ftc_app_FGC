@@ -147,42 +147,42 @@ public class fantastic extends LinearOpMode {
                 motor_youhou.setPower(-power_youhou);
             }
 
-            if (gamepad1.dpad_up == true){
+            if (gamepad1.dpad_up){
                 motor_zuoqian.setPower(-0.7);
                 motor_youqian.setPower(0.7);
                 motor_zuohou.setPower(0.7);
                 motor_youhou.setPower(0.7);
             }
 
-            else if (gamepad1.dpad_down == true){
+            else if (gamepad1.dpad_down){
                 motor_zuoqian.setPower(0.7);
                 motor_youqian.setPower(-0.7);
                 motor_zuohou.setPower(-0.7);
                 motor_youhou.setPower(-0.7);
             }
 
-            else if (gamepad1.dpad_left == true){
+            else if (gamepad1.dpad_left){
                 motor_zuoqian.setPower(0.7);
                 motor_youqian.setPower(0.7);
                 motor_zuohou.setPower(0.7);
                 motor_youhou.setPower(-0.7);
             }
 
-            else if (gamepad1.dpad_right == true){
+            else if (gamepad1.dpad_right){
                 motor_zuoqian.setPower(-0.7);
                 motor_youqian.setPower(-0.7);
                 motor_zuohou.setPower(-0.7);
                 motor_youhou.setPower(0.7);
             }
 
-            if (gamepad1.left_bumper == true){
+            if (gamepad1.left_bumper){
                 motor_zuoqian.setPower(0.6);
                 motor_youqian.setPower(0.6);
                 motor_zuohou.setPower(-0.6);
                 motor_youhou.setPower(0.6);
             }
 
-            else if (gamepad1.right_bumper == true){
+            else if (gamepad1.right_bumper){
                 motor_zuoqian.setPower(-0.6);
                 motor_youqian.setPower(-0.6);
                 motor_zuohou.setPower(0.6);
@@ -249,21 +249,22 @@ public class fantastic extends LinearOpMode {
                 motor_raising.setPower(power);
             }
 
-            if(gamepad2.left_bumper == true && gamepad2.right_bumper == true){
+            if(gamepad2.left_bumper && gamepad2.right_bumper){
                 safe_case = false;
             }
 
-            if(gamepad2.right_stick_button == true){
+            if(gamepad2.right_stick_button){
                 safe_case = true;
             }
 
-            if(gamepad2.dpad_right == true && safe_case == false){
-                if(servo_baby_position_1 <= 1){
+            if(gamepad2.dpad_right && !safe_case) {
+                if (servo_baby_position_1 <= 1) {
                     servo_baby_position_1 = servo_baby_position_1 + 0.02;
                 }
                 sleep(50);
             }
-            if(gamepad2.dpad_left == true && safe_case == false){
+
+            if(gamepad2.dpad_left && !safe_case){
                 if(servo_baby_position_1 >= 0){
                     servo_baby_position_1 = servo_baby_position_1 - 0.02;
                 }
@@ -272,7 +273,7 @@ public class fantastic extends LinearOpMode {
 
             servo_catching_baby_1.setPosition(servo_baby_position_1);
 
-            if(gamepad2.dpad_up == true && safe_case == false){
+            if(gamepad2.dpad_up && !safe_case){
                 power_baby_1 = 0.8;
                 power_baby_2 = -0.55;
                 motor_catching_baby_1.setPower(power_baby_1);
@@ -282,14 +283,14 @@ public class fantastic extends LinearOpMode {
                 motor_catching_baby_1.setPower(0);
             }
 
-            if(gamepad2.dpad_down == true && safe_case == false){
+            power_baby_2 = 0.4;
+            if(gamepad2.dpad_down && !safe_case){
                 power_baby_1 = -0.8;
-                power_baby_2 = 0.4;
                 motor_catching_baby_1.setPower(power_baby_1);
                 motor_catching_baby_2.setPower(power_baby_2);
             }
 
-            if(gamepad2.left_stick_button == true && safe_case == false){
+            if(gamepad2.left_stick_button && !safe_case){
                 motor_catching_baby_1.setPower(0);
                 motor_catching_baby_2.setPower(0);
             }
