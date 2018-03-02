@@ -124,6 +124,8 @@ public class fantastic extends LinearOpMode {
         servo_catching_block_1.setPosition(servo_position_1);
         servo_catching_block_2.setPosition(servo_position_2);
 
+        servo_catching_baby_1.setPosition(servo_baby_position_1);
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -271,7 +273,6 @@ public class fantastic extends LinearOpMode {
                 sleep(50);
             }
 
-            servo_catching_baby_1.setPosition(servo_baby_position_1);
 
             if(gamepad2.dpad_up && !safe_case){
                 power_baby_1 = 0.8;

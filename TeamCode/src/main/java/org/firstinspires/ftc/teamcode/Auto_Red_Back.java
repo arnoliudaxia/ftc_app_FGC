@@ -173,25 +173,37 @@ public class Auto_Red_Back extends LinearOpMode {
 
         relicTrackables.activate();
 
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
+        servo_position_ball = 0.5;
+        servo_kicking_ball.setPosition(servo_position_ball);
+
+        sleep(300);
+
+        servo_position_ball = 0.35;
+        servo_kicking_ball.setPosition(servo_position_ball);
+
+        sleep(300);
+
 
             servo_position_ball = 0.2;
             servo_kicking_ball.setPosition(servo_position_ball);
             sleep(1000);
 
             if (sensorColor.blue()<sensorColor.red()){
-                motor_zuoqian.setPower(-1);
-                motor_youqian.setPower(1);
-                motor_zuohou.setPower(1);
-                motor_youhou.setPower(1);
+                motor_zuoqian.setPower(-0.4);
+                motor_youqian.setPower(0.4);
+                motor_zuohou.setPower(0.4);
+                motor_youhou.setPower(0.4);
 
-                sleep(400);
+                sleep(1200);
 
-                motor_zuoqian.setPower(0);
-                motor_youqian.setPower(0);
-                motor_zuohou.setPower(0);
-                motor_youhou.setPower(0);
+                motor_zuoqian.setPower(-0.2);
+                motor_youqian.setPower(0.2);
+                motor_zuohou.setPower(0.2);
+                motor_youhou.setPower(0.2);
 
-                sleep(2000);
+                sleep(200);
 
                 servo_position_ball = 0.6;
                 servo_kicking_ball.setPosition(servo_position_ball);
@@ -210,12 +222,12 @@ public class Auto_Red_Back extends LinearOpMode {
 
                 sleep(100);
 
-                motor_zuoqian.setPower(0.5);
-                motor_youqian.setPower(-0.5);
-                motor_zuohou.setPower(-0.5);
-                motor_youhou.setPower(-0.5);
+                motor_zuoqian.setPower(0.3);
+                motor_youqian.setPower(-0.3);
+                motor_zuohou.setPower(-0.3);
+                motor_youhou.setPower(-0.3);
 
-                sleep(1000);
+                sleep(800);
 
                 motor_zuoqian.setPower(0);
                 motor_youqian.setPower(0);
@@ -224,26 +236,19 @@ public class Auto_Red_Back extends LinearOpMode {
             }
 
             else {
-                motor_zuoqian.setPower(-0.1);
-                motor_youqian.setPower(-0.1);
-                motor_zuohou.setPower(0.1);
-                motor_youhou.setPower(-0.1);
+                    motor_zuoqian.setPower(0.5);
+                    motor_youqian.setPower(-0.5);
+                    motor_zuohou.setPower(-0.5);
+                    motor_youhou.setPower(-0.5);
 
-                sleep(500);
-
-                motor_zuoqian.setPower(0.1);
-                motor_youqian.setPower(0.1);
-                motor_zuohou.setPower(-0.1);
-                motor_youhou.setPower(0.1);
-
-                sleep(500);
+                    sleep(1200);
 
                 motor_zuoqian.setPower(0);
                 motor_youqian.setPower(0);
                 motor_zuohou.setPower(0);
                 motor_youhou.setPower(0);
 
-                sleep(2000);
+                sleep(500);
 
                 servo_position_ball = 0.6;
                 servo_kicking_ball.setPosition(servo_position_ball);
@@ -260,68 +265,64 @@ public class Auto_Red_Back extends LinearOpMode {
 
                 sleep(300);
 
+                /*motor_zuoqian.setPower(0.2);
+                motor_youqian.setPower(0.2);
+                motor_zuohou.setPower(-0.2);
+                motor_youhou.setPower(0.2);
+
+                sleep(150);*/
+
+                motor_zuoqian.setPower(-0.5);
+                motor_youqian.setPower(0.5);
+                motor_zuohou.setPower(0.5);
+                motor_youhou.setPower(0.5);
+
+                sleep(800);
+
+                motor_zuoqian.setPower(1);
+                motor_youqian.setPower(1);
+                motor_zuohou.setPower(1);
+                motor_youhou.setPower(-1);
+
+                sleep(700);
+
                 motor_zuoqian.setPower(-1);
                 motor_youqian.setPower(1);
                 motor_zuohou.setPower(1);
                 motor_youhou.setPower(1);
 
-                sleep(1400);
-
-
-                motor_zuoqian.setPower(0.5);
-                motor_youqian.setPower(-0.5);
-                motor_zuohou.setPower(-0.5);
-                motor_youhou.setPower(-0.5);
-
-                sleep(1000);
-
-                motor_zuoqian.setPower(0);
-                motor_youqian.setPower(0);
-                motor_zuohou.setPower(0);
-                motor_youhou.setPower(0);
+                sleep(700);
             }
 
-            Pose();
 
-
-
-
-
-
-            telemetry.update();
-    }
-
-    String format(OpenGLMatrix transformationMatrix) {
-        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-    }
-
-    void Pose(){
-
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
-
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
         if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
+                /* Found an instance of the template. In the actual game, you will probably
+                 * loop until this condition occurs, then move on to act accordingly depending
+                 * on which VuMark was visible. */
             telemetry.addData("VuMark", "%s visible", vuMark);
 
+                /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
+                 * it is perhaps unlikely that you will actually need to act on this pose information, but
+                 * we illustrate it nevertheless, for completeness. */
             OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
             telemetry.addData("Pose", format(pose));
 
+                /* We further illustrate how to decompose the pose into useful rotational and
+                 * translational components */
             if (pose != null) {
                 VectorF trans = pose.getTranslation();
                 Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
+                // Extract the X, Y, and Z components of the offset of the target relative to the robot
                 double tX = trans.get(0);
                 double tY = trans.get(1);
                 double tZ = trans.get(2);
 
+                // Extract the rotational components of the target relative to the robot
                 double rX = rot.firstAngle;
                 double rY = rot.secondAngle;
                 double rZ = rot.thirdAngle;
-
-                lastLocation = pose;
 
                 telemetry.addData("tX= ",tX);
                 telemetry.addData("tY= ",tY);
@@ -335,6 +336,21 @@ public class Auto_Red_Back extends LinearOpMode {
         else {
             telemetry.addData("VuMark", "not visible");
         }
+
+
+
+
+
+
+        telemetry.update();
+    }
+
+    String format(OpenGLMatrix transformationMatrix) {
+        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+    }
+
+    void Pose(){
+
 
     }
 }
