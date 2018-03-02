@@ -75,8 +75,8 @@ public class baby extends LinearOpMode {
         double power_baby_1;
         double power_baby_2;
 
-        double servo_baby_position_1 = 0.5;
-        double servo_baby_position_2;
+        double servo_baby_position_1 = 0;
+        double servo_baby_position_2 = 0.5;
 
         boolean safe_case = true;
 
@@ -91,50 +91,69 @@ public class baby extends LinearOpMode {
         servo_catching_baby_2 = hardwareMap.get(Servo.class,"servo_catching_baby_2");
 
         servo_catching_baby_1.setPosition(servo_baby_position_1);
+        servo_catching_baby_2.setPosition(servo_baby_position_2);
+
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if(gamepad2.left_bumper == true && gamepad2.right_bumper == true){
+            if(gamepad2.left_bumper && gamepad2.right_bumper){
                 safe_case = false;
             }
 
-            if(gamepad2.right_stick_button == true){
+            if(gamepad2.right_stick_button){
                 safe_case = true;
             }
 
-            if(gamepad2.dpad_right == true && safe_case == false){
+            if(gamepad2.dpad_right){
                 if(servo_baby_position_1 <= 1){
                     servo_baby_position_1 = servo_baby_position_1 + 0.02;
                 }
                 sleep(50);
             }
-            if(gamepad2.dpad_left == true && safe_case == false){
+            if(gamepad2.dpad_left){
                 if(servo_baby_position_1 >= 0){
                     servo_baby_position_1 = servo_baby_position_1 - 0.02;
                 }
                 sleep(50);
             }
 
+            if(gamepad2.right_bumper){
+                if(servo_baby_position_2 <= 1){
+                    servo_baby_position_2 = servo_baby_position_2 + 0.02;
+                }
+                sleep(50);
+            }
+
+            if(gamepad2.left_bumper){
+                if(servo_baby_position_2 >= 0){
+                    servo_baby_position_2 = servo_baby_position_2 - 0.02;
+                }
+                sleep(50);
+            }
+
             servo_catching_baby_1.setPosition(servo_baby_position_1);
 
-            if(gamepad2.dpad_up == true && safe_case == false){
+            servo_catching_baby_2.setPosition(servo_baby_position_2);
+
+            if(gamepad2.dpad_up && !safe_case){
                 power_baby_1 = 0.8;
-                power_baby_2 = -0.55;
+                power_baby_2 = -0.5;
                 motor_catching_baby_1.setPower(power_baby_1);
                 motor_catching_baby_2.setPower(power_baby_2);
             }
+
             else{
                 motor_catching_baby_1.setPower(0);
             }
 
-            if(gamepad2.dpad_down == true && safe_case == false){
+            if(gamepad2.dpad_down && !safe_case){
                 power_baby_1 = -0.8;
-                power_baby_2 = 0.4;
+                power_baby_2 = 0.2;
                 motor_catching_baby_1.setPower(power_baby_1);
                 motor_catching_baby_2.setPower(power_baby_2);
             }
 
-            if(gamepad2.left_stick_button == true && safe_case == false){
+            if(gamepad2.left_stick_button){
                 motor_catching_baby_1.setPower(0);
                 motor_catching_baby_2.setPower(0);
             }
