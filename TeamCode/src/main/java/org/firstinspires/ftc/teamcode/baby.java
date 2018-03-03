@@ -61,28 +61,18 @@ public class baby extends LinearOpMode {
 
     Servo servo_catching_baby_1;
     Servo servo_catching_baby_2;
+
+    double power_baby_1;
+    double power_baby_2;
+
+    double servo_baby_position_1 = 0;
+    double servo_baby_position_2 = 0.8;
+
+    boolean safe_case = true;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-
-        double power_baby_1;
-        double power_baby_2;
-
-        double servo_baby_position_1 = 0;
-        double servo_baby_position_2 = 0.5;
-
-        boolean safe_case = true;
-
-        // Wait for the game to start (driver presses PLAY)
-        waitForStart();
-        runtime.reset();
 
         motor_catching_baby_1  = hardwareMap.get(DcMotor.class, "motor_catching_baby_1");
         motor_catching_baby_2 = hardwareMap.get(DcMotor.class, "motor_catching_baby_2");
@@ -93,15 +83,27 @@ public class baby extends LinearOpMode {
         servo_catching_baby_1.setPosition(servo_baby_position_1);
         servo_catching_baby_2.setPosition(servo_baby_position_2);
 
+        // Initialize the hardware variables. Note that the strings used here as parameters
+        // to 'get' must correspond to the names assigned during the robot configuration
+        // step (using the FTC Robot Controller app on the phone).
+        // Most robots need the motor on one side to be reversed to drive forward
+        // Reverse the motor that runs backwards when connected directly to the battery
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+        runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if(gamepad2.left_bumper && gamepad2.right_bumper){
+            if(gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1){
                 safe_case = false;
             }
 
             if(gamepad2.right_stick_button){
                 safe_case = true;
+
+                motor_catching_baby_1.setPower(0);
+                motor_catching_baby_2.setPower(0);
             }
 
             if(gamepad2.dpad_right){
@@ -118,22 +120,16 @@ public class baby extends LinearOpMode {
             }
 
             if(gamepad2.right_bumper){
-                if(servo_baby_position_2 <= 1){
-                    servo_baby_position_2 = servo_baby_position_2 + 0.02;
-                }
-                sleep(50);
+                servo_baby_position_2 = 0.15;
+                servo_catching_baby_2.setPosition(servo_baby_position_2);
             }
 
             if(gamepad2.left_bumper){
-                if(servo_baby_position_2 >= 0){
-                    servo_baby_position_2 = servo_baby_position_2 - 0.02;
-                }
-                sleep(50);
+                servo_baby_position_2 = 0.8;
+                servo_catching_baby_2.setPosition(servo_baby_position_2);
             }
 
             servo_catching_baby_1.setPosition(servo_baby_position_1);
-
-            servo_catching_baby_2.setPosition(servo_baby_position_2);
 
             if(gamepad2.dpad_up && !safe_case){
                 power_baby_1 = 0.8;
@@ -153,10 +149,6 @@ public class baby extends LinearOpMode {
                 motor_catching_baby_2.setPower(power_baby_2);
             }
 
-            if(gamepad2.left_stick_button){
-                motor_catching_baby_1.setPower(0);
-                motor_catching_baby_2.setPower(0);
-            }
             //else {
                 //motor_catching_baby_1.setPower(0);
                 //motor_catching_baby_2.setPower(0);

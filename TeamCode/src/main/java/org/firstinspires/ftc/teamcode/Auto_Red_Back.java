@@ -54,6 +54,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.CENTER;
+import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.LEFT;
+import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.RIGHT;
+
 /**
  * This OpMode illustrates the basics of using the Vuforia engine to determine
  * the identity of Vuforia VuMarks encountered on the field. The code is structured as
@@ -94,7 +98,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
     double servo_position_block_1 = 0.0;
     double servo_position_block_2 = 0.5;
-    double power = 0.50;
+    double power_raising = 0.50;
 
     double servo_position_ball = 1;
 
@@ -153,7 +157,6 @@ public class Auto_Red_Back extends LinearOpMode {
         servo_catching_block_1.setPosition(servo_position_block_1);
         servo_catching_block_2.setPosition(servo_position_block_2);
 
-
         float hsvValues[] = {0F, 0F, 0F};
 
         final float values[] = hsvValues;
@@ -167,13 +170,12 @@ public class Auto_Red_Back extends LinearOpMode {
         int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
         final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
+
+
         telemetry.addData(">", "Press Play to start");
         telemetry.update();
+
         waitForStart();
-
-        relicTrackables.activate();
-
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
         servo_position_ball = 0.5;
         servo_kicking_ball.setPosition(servo_position_ball);
@@ -186,171 +188,305 @@ public class Auto_Red_Back extends LinearOpMode {
         sleep(300);
 
 
-            servo_position_ball = 0.2;
-            servo_kicking_ball.setPosition(servo_position_ball);
-            sleep(1000);
+        servo_position_ball = 0.2;
+        servo_kicking_ball.setPosition(servo_position_ball);
 
-            if (sensorColor.blue()<sensorColor.red()){
-                motor_zuoqian.setPower(-0.4);
-                motor_youqian.setPower(0.4);
-                motor_zuohou.setPower(0.4);
-                motor_youhou.setPower(0.4);
+        sleep(300);
 
-                sleep(1200);
+        power_raising = 1;
+        motor_raising.setPower(power_raising);
 
-                motor_zuoqian.setPower(-0.2);
-                motor_youqian.setPower(0.2);
-                motor_zuohou.setPower(0.2);
-                motor_youhou.setPower(0.2);
+        sleep(1200);
 
-                sleep(200);
-
-                servo_position_ball = 0.6;
-                servo_kicking_ball.setPosition(servo_position_ball);
-
-                sleep(300);
-
-                servo_position_ball = 0.8;
-                servo_kicking_ball.setPosition(servo_position_ball);
-
-                sleep(300);
-
-                servo_position_ball = 1;
-                servo_kicking_ball.setPosition(servo_position_ball);
-
-                sleep(300);
-
-                sleep(100);
-
-                motor_zuoqian.setPower(0.3);
-                motor_youqian.setPower(-0.3);
-                motor_zuohou.setPower(-0.3);
-                motor_youhou.setPower(-0.3);
-
-                sleep(800);
-
-                motor_zuoqian.setPower(0);
-                motor_youqian.setPower(0);
-                motor_zuohou.setPower(0);
-                motor_youhou.setPower(0);
-            }
-
-            else {
-                    motor_zuoqian.setPower(0.5);
-                    motor_youqian.setPower(-0.5);
-                    motor_zuohou.setPower(-0.5);
-                    motor_youhou.setPower(-0.5);
-
-                    sleep(1200);
-
-                motor_zuoqian.setPower(0);
-                motor_youqian.setPower(0);
-                motor_zuohou.setPower(0);
-                motor_youhou.setPower(0);
-
-                sleep(500);
-
-                servo_position_ball = 0.6;
-                servo_kicking_ball.setPosition(servo_position_ball);
-
-                sleep(300);
-
-                servo_position_ball = 0.8;
-                servo_kicking_ball.setPosition(servo_position_ball);
-
-                sleep(300);
-
-                servo_position_ball = 1;
-                servo_kicking_ball.setPosition(servo_position_ball);
-
-                sleep(300);
-
-                /*motor_zuoqian.setPower(0.2);
-                motor_youqian.setPower(0.2);
-                motor_zuohou.setPower(-0.2);
-                motor_youhou.setPower(0.2);
-
-                sleep(150);*/
-
-                motor_zuoqian.setPower(-0.5);
-                motor_youqian.setPower(0.5);
-                motor_zuohou.setPower(0.5);
-                motor_youhou.setPower(0.5);
-
-                sleep(800);
-
-                motor_zuoqian.setPower(1);
-                motor_youqian.setPower(1);
-                motor_zuohou.setPower(1);
-                motor_youhou.setPower(-1);
-
-                sleep(700);
-
-                motor_zuoqian.setPower(-1);
-                motor_youqian.setPower(1);
-                motor_zuohou.setPower(1);
-                motor_youhou.setPower(1);
-
-                sleep(700);
-            }
+        power_raising = 0.08;
+        motor_raising.setPower(power_raising);
 
 
-        if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+        relicTrackables.activate();
+
+        while (opModeIsActive()) {
+
+            /**
+             * See if any of the instances of {@link relicTemplate} are currently visible.
+             * {@link RelicRecoveryVuMark} is an enum which can have the following values:
+             * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
+             * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
+             */
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
                 /* Found an instance of the template. In the actual game, you will probably
                  * loop until this condition occurs, then move on to act accordingly depending
                  * on which VuMark was visible. */
-            telemetry.addData("VuMark", "%s visible", vuMark);
+                telemetry.addData("VuMark", "%s visible", vuMark);
 
                 /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
                  * it is perhaps unlikely that you will actually need to act on this pose information, but
                  * we illustrate it nevertheless, for completeness. */
-            OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
-            telemetry.addData("Pose", format(pose));
 
-                /* We further illustrate how to decompose the pose into useful rotational and
-                 * translational components */
-            if (pose != null) {
-                VectorF trans = pose.getTranslation();
-                Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+                if (sensorColor.blue() < sensorColor.red()) {
+                    motor_zuoqian.setPower(-0.4);
+                    motor_youqian.setPower(0.4);
+                    motor_zuohou.setPower(0.4);
+                    motor_youhou.setPower(0.4);
 
-                // Extract the X, Y, and Z components of the offset of the target relative to the robot
-                double tX = trans.get(0);
-                double tY = trans.get(1);
-                double tZ = trans.get(2);
+                    sleep(1050);
 
-                // Extract the rotational components of the target relative to the robot
-                double rX = rot.firstAngle;
-                double rY = rot.secondAngle;
-                double rZ = rot.thirdAngle;
+                    motor_zuoqian.setPower(-0.2);
+                    motor_youqian.setPower(0.2);
+                    motor_zuohou.setPower(0.2);
+                    motor_youhou.setPower(0.2);
 
-                telemetry.addData("tX= ",tX);
-                telemetry.addData("tY= ",tY);
-                telemetry.addData("tZ= ",tZ);
+                    servo_position_ball = 0.6;
+                    servo_kicking_ball.setPosition(servo_position_ball);
 
-                telemetry.addData("rX= ",rX);
-                telemetry.addData("rY= ",rY);
-                telemetry.addData("rZ= ",rZ);
+                    sleep(200);
+
+                    servo_position_ball = 0.8;
+                    servo_kicking_ball.setPosition(servo_position_ball);
+
+                    sleep(200);
+
+                    motor_zuoqian.setPower(0.35);
+                    motor_youqian.setPower(-0.35);
+                    motor_zuohou.setPower(-0.35);
+                    motor_youhou.setPower(-0.35);
+
+                    sleep(1000);
+
+                    motor_zuoqian.setPower(0);
+                    motor_youqian.setPower(0);
+                    motor_zuohou.setPower(0);
+                    motor_youhou.setPower(0);
+                }
+
+                else {
+                    motor_zuoqian.setPower(0.3);
+                    motor_youqian.setPower(-0.3);
+                    motor_zuohou.setPower(-0.3);
+                    motor_youhou.setPower(-0.3);
+
+                    sleep(750);
+
+                    servo_position_ball = 0.6;
+                    servo_kicking_ball.setPosition(servo_position_ball);
+
+                    sleep(200);
+
+                    servo_position_ball = 0.8;
+                    servo_kicking_ball.setPosition(servo_position_ball);
+
+                    sleep(200);
+
+                    motor_zuoqian.setPower(0);
+                    motor_youqian.setPower(0);
+                    motor_zuohou.setPower(0);
+                    motor_youhou.setPower(0);
+
+                    sleep(500);
+
+                    motor_zuoqian.setPower(-0.3);
+                    motor_youqian.setPower(0.3);
+                    motor_zuohou.setPower(0.3);
+                    motor_youhou.setPower(0.3);
+
+                    sleep(1100);
+
+                    motor_zuoqian.setPower(0.3);
+                    motor_youqian.setPower(-0.3);
+                    motor_zuohou.setPower(-0.3);
+                    motor_youhou.setPower(-0.3);
+
+                    sleep(200);
+
+                    motor_zuoqian.setPower(0);
+                    motor_youqian.setPower(0);
+                    motor_zuohou.setPower(0);
+                    motor_youhou.setPower(0);
+
+                    sleep(500);
+
+                    motor_zuoqian.setPower(1);
+                    motor_youqian.setPower(1);
+                    motor_zuohou.setPower(1);
+                    motor_youhou.setPower(-1);//zuo
+
+                    sleep(1020);
+
+                    motor_zuoqian.setPower(-0.3);
+                    motor_youqian.setPower(-0.3);
+                    motor_zuohou.setPower(0.3);
+                    motor_youhou.setPower(-0.3);//you zhuan
+
+                    sleep(60);
+
+                    motor_zuoqian.setPower(0);
+                    motor_youqian.setPower(0);
+                    motor_zuohou.setPower(0);
+                    motor_youhou.setPower(0);
+
+                    sleep(500);
+
+                    motor_zuoqian.setPower(-1);
+                    motor_youqian.setPower(1);
+                    motor_zuohou.setPower(1);
+                    motor_youhou.setPower(1);//qian
+
+                    sleep(625);
+
+                    motor_zuoqian.setPower(0);
+                    motor_youqian.setPower(0);
+                    motor_zuohou.setPower(0);
+                    motor_youhou.setPower(0);
+
+                    sleep(400);
+
+                    motor_zuoqian.setPower(-0.3);
+                    motor_youqian.setPower(-0.3);
+                    motor_zuohou.setPower(-0.3);
+                    motor_youhou.setPower(0.3);//you
+
+                    sleep(1100);
+
+                    motor_zuoqian.setPower(0);
+                    motor_youqian.setPower(0);
+                    motor_zuohou.setPower(0);
+                    motor_youhou.setPower(0);
+
+                    sleep(400);
+
+                    motor_zuoqian.setPower(-1);
+                    motor_youqian.setPower(1);
+                    motor_zuohou.setPower(1);
+                    motor_youhou.setPower(1);//qian
+
+                    sleep(525);
+
+                    motor_zuoqian.setPower(0);
+                    motor_youqian.setPower(0);
+                    motor_zuohou.setPower(0);
+                    motor_youhou.setPower(0);
+
+                    sleep(400);
+
+                    if(vuMark == LEFT){
+                        motor_zuoqian.setPower(0.6);
+                        motor_youqian.setPower(0.6);
+                        motor_zuohou.setPower(0.6);
+                        motor_youhou.setPower(-0.6);
+
+                        sleep(200);
+                    }
+
+                    if(vuMark == CENTER){
+                        motor_zuoqian.setPower(-0.6);
+                        motor_youqian.setPower(-0.6);
+                        motor_zuohou.setPower(-0.6);
+                        motor_youhou.setPower(0.6);
+
+                        sleep(495);
+
+                        motor_zuoqian.setPower(-0.3);
+                        motor_youqian.setPower(-0.3);
+                        motor_zuohou.setPower(0.3);
+                        motor_youhou.setPower(-0.3);
+
+                        sleep(50);
+                    }
+
+                    if(vuMark == RIGHT){
+                        motor_zuoqian.setPower(-0.6);
+                        motor_youqian.setPower(-0.6);
+                        motor_zuohou.setPower(-0.6);
+                        motor_youhou.setPower(0.6);
+
+                        sleep(1200);
+                    }
+
+                    motor_zuoqian.setPower(-0.4);
+                    motor_youqian.setPower(0.4);
+                    motor_zuohou.setPower(0.4);
+                    motor_youhou.setPower(0.4);
+                    sleep(100);
+
+                    motor_zuoqian.setPower(0);
+                    motor_youqian.setPower(0);
+                    motor_zuohou.setPower(0);
+                    motor_youhou.setPower(0);
+
+                    power_raising = -1;
+                    motor_raising.setPower(power_raising);
+
+                    sleep(900);
+
+                    power_raising = 0;
+                    motor_raising.setPower(power_raising);
+
+                    servo_position_block_1 = 0.35;
+                    servo_position_block_2 = 0.15;
+                    servo_catching_block_1.setPosition(servo_position_block_1);
+                    servo_catching_block_2.setPosition(servo_position_block_2);
+
+                    sleep(300);
+
+                    motor_zuoqian.setPower(-0.4);
+                    motor_youqian.setPower(0.4);
+                    motor_zuohou.setPower(0.4);
+                    motor_youhou.setPower(0.4);
+
+                    sleep(600);
+
+                    //cao zuo
+                    motor_zuoqian.setPower(0.3);
+                    motor_youqian.setPower(-0.3);
+                    motor_zuohou.setPower(-0.3);
+                    motor_youhou.setPower(-0.3);
+
+                    sleep(90);
+
+                    motor_zuoqian.setPower(0.6);
+                    motor_youqian.setPower(0.6);
+                    motor_zuohou.setPower(-0.6);
+                    motor_youhou.setPower(0.6);
+
+                    sleep(500);
+
+                    motor_zuoqian.setPower(-0.6);
+                    motor_youqian.setPower(-0.6);
+                    motor_zuohou.setPower(0.6);
+                    motor_youhou.setPower(-0.6);
+
+                    sleep(500);
+
+                    motor_zuoqian.setPower(-0.3);
+                    motor_youqian.setPower(0.3);
+                    motor_zuohou.setPower(0.3);
+                    motor_youhou.setPower(0.3);
+
+                    sleep(450);
+                }
+
+                motor_zuoqian.setPower(0);
+                motor_youqian.setPower(0);
+                motor_zuohou.setPower(0);
+                motor_youhou.setPower(0);
+
+                sleep(100000);
             }
+
+            else {
+                telemetry.addData("VuMark", "not visible");
+            }
+
+
+            telemetry.update();
         }
-        else {
-            telemetry.addData("VuMark", "not visible");
+    }
+
+        String format(OpenGLMatrix transformationMatrix) {
+            return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
         }
-
-
-
-
-
-
-        telemetry.update();
-    }
-
-    String format(OpenGLMatrix transformationMatrix) {
-        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-    }
-
-    void Pose(){
-
-
-    }
 }
+
+
+
