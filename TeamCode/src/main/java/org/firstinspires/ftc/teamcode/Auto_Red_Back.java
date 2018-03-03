@@ -107,11 +107,6 @@ public class Auto_Red_Back extends LinearOpMode {
     double power_zuohou;
     double power_youhou;
 
-    double power_baby_1;
-    double power_baby_2;
-
-
-
     OpenGLMatrix lastLocation = null;
 
     VuforiaLocalizer vuforia;
@@ -155,11 +150,11 @@ public class Auto_Red_Back extends LinearOpMode {
         motor_youhou.setDirection(DcMotor.Direction.REVERSE);
 
         servo_catching_block_1.setPosition(servo_position_block_1);
-        servo_catching_block_2.setPosition(servo_position_block_2);
+        servo_catching_block_2.setPosition(servo_position_block_2);//初始化夹持方块的夹子，自动阶段默认夹持方块（比赛开始自带一方块）
 
-        float hsvValues[] = {0F, 0F, 0F};
+        float hsvValues[] = {0F, 0F, 0F};//颜色传感器HSV相关
 
-        final float values[] = hsvValues;
+        final float values[] = hsvValues;//颜色传感器HSV相关
 
         // sometimes it helps to multiply the raw RGB values with a scale factor
         // to amplify/attentuate the measured values.
@@ -191,15 +186,15 @@ public class Auto_Red_Back extends LinearOpMode {
         servo_position_ball = 0.2;
         servo_kicking_ball.setPosition(servo_position_ball);
 
-        sleep(300);
+        sleep(300);//以上三步为 缓降 击宝石的杆子
 
         power_raising = 1;
-        motor_raising.setPower(power_raising);
+        motor_raising.setPower(power_raising);//抬升滑轨
 
         sleep(1200);
 
         power_raising = 0.08;
-        motor_raising.setPower(power_raising);
+        motor_raising.setPower(power_raising);//卡住滑轨
 
 
         relicTrackables.activate();
@@ -212,8 +207,8 @@ public class Auto_Red_Back extends LinearOpMode {
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {//如果壁画密码被破译
 
                 /* Found an instance of the template. In the actual game, you will probably
                  * loop until this condition occurs, then move on to act accordingly depending
@@ -224,18 +219,18 @@ public class Auto_Red_Back extends LinearOpMode {
                  * it is perhaps unlikely that you will actually need to act on this pose information, but
                  * we illustrate it nevertheless, for completeness. */
 
-                if (sensorColor.blue() < sensorColor.red()) {
+                if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
                     motor_zuoqian.setPower(-0.4);
                     motor_youqian.setPower(0.4);
                     motor_zuohou.setPower(0.4);
-                    motor_youhou.setPower(0.4);
+                    motor_youhou.setPower(0.4);//前进
 
                     sleep(1050);
 
                     motor_zuoqian.setPower(-0.2);
                     motor_youqian.setPower(0.2);
                     motor_zuohou.setPower(0.2);
-                    motor_youhou.setPower(0.2);
+                    motor_youhou.setPower(0.2);//缓停
 
                     servo_position_ball = 0.6;
                     servo_kicking_ball.setPosition(servo_position_ball);
@@ -243,14 +238,14 @@ public class Auto_Red_Back extends LinearOpMode {
                     sleep(200);
 
                     servo_position_ball = 0.8;
-                    servo_kicking_ball.setPosition(servo_position_ball);
+                    servo_kicking_ball.setPosition(servo_position_ball);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
 
                     sleep(200);
 
                     motor_zuoqian.setPower(0.35);
                     motor_youqian.setPower(-0.35);
                     motor_zuohou.setPower(-0.35);
-                    motor_youhou.setPower(-0.35);
+                    motor_youhou.setPower(-0.35);//轻怼平衡板定位
 
                     sleep(1000);
 
@@ -258,13 +253,15 @@ public class Auto_Red_Back extends LinearOpMode {
                     motor_youqian.setPower(0);
                     motor_zuohou.setPower(0);
                     motor_youhou.setPower(0);
+
+                    //这里未完（这里if是在前方宝石是蓝色的前提下的，比较简单。下面else 为后方是蓝色宝石的前提下的程序，较为麻烦，所以先写了下面的。）
                 }
 
-                else {
+                else {//判断为 红色宝石
                     motor_zuoqian.setPower(0.3);
                     motor_youqian.setPower(-0.3);
                     motor_zuohou.setPower(-0.3);
-                    motor_youhou.setPower(-0.3);
+                    motor_youhou.setPower(-0.3);//后退
 
                     sleep(750);
 
@@ -276,7 +273,7 @@ public class Auto_Red_Back extends LinearOpMode {
                     servo_position_ball = 0.8;
                     servo_kicking_ball.setPosition(servo_position_ball);
 
-                    sleep(200);
+                    sleep(200);//缓升击宝石杆子
 
                     motor_zuoqian.setPower(0);
                     motor_youqian.setPower(0);
@@ -288,14 +285,14 @@ public class Auto_Red_Back extends LinearOpMode {
                     motor_zuoqian.setPower(-0.3);
                     motor_youqian.setPower(0.3);
                     motor_zuohou.setPower(0.3);
-                    motor_youhou.setPower(0.3);
+                    motor_youhou.setPower(0.3);//轻怼平衡板定位
 
                     sleep(1100);
 
                     motor_zuoqian.setPower(0.3);
                     motor_youqian.setPower(-0.3);
                     motor_zuohou.setPower(-0.3);
-                    motor_youhou.setPower(-0.3);
+                    motor_youhou.setPower(-0.3);//后退一点点
 
                     sleep(200);
 
@@ -309,15 +306,14 @@ public class Auto_Red_Back extends LinearOpMode {
                     motor_zuoqian.setPower(1);
                     motor_youqian.setPower(1);
                     motor_zuohou.setPower(1);
-                    motor_youhou.setPower(-1);//zuo
+                    motor_youhou.setPower(-1);//左平移
 
                     sleep(1020);
 
                     motor_zuoqian.setPower(-0.3);
                     motor_youqian.setPower(-0.3);
                     motor_zuohou.setPower(0.3);
-                    motor_youhou.setPower(-0.3);//you zhuan
-
+                    motor_youhou.setPower(-0.3);//右转微调（左平移会歪）
                     sleep(60);
 
                     motor_zuoqian.setPower(0);
@@ -330,7 +326,7 @@ public class Auto_Red_Back extends LinearOpMode {
                     motor_zuoqian.setPower(-1);
                     motor_youqian.setPower(1);
                     motor_zuohou.setPower(1);
-                    motor_youhou.setPower(1);//qian
+                    motor_youhou.setPower(1);//前进
 
                     sleep(625);
 
@@ -344,7 +340,7 @@ public class Auto_Red_Back extends LinearOpMode {
                     motor_zuoqian.setPower(-0.3);
                     motor_youqian.setPower(-0.3);
                     motor_zuohou.setPower(-0.3);
-                    motor_youhou.setPower(0.3);//you
+                    motor_youhou.setPower(0.3);//右平移，轻怼平衡板定位
 
                     sleep(1100);
 
@@ -358,7 +354,7 @@ public class Auto_Red_Back extends LinearOpMode {
                     motor_zuoqian.setPower(-1);
                     motor_youqian.setPower(1);
                     motor_zuohou.setPower(1);
-                    motor_youhou.setPower(1);//qian
+                    motor_youhou.setPower(1);//前进
 
                     sleep(525);
 
@@ -367,13 +363,13 @@ public class Auto_Red_Back extends LinearOpMode {
                     motor_zuohou.setPower(0);
                     motor_youhou.setPower(0);
 
-                    sleep(400);
+                    sleep(400);//此时机器开始判断VuMark
 
                     if(vuMark == LEFT){
                         motor_zuoqian.setPower(0.6);
                         motor_youqian.setPower(0.6);
                         motor_zuohou.setPower(0.6);
-                        motor_youhou.setPower(-0.6);
+                        motor_youhou.setPower(-0.6);//左平移
 
                         sleep(200);
                     }
@@ -382,14 +378,14 @@ public class Auto_Red_Back extends LinearOpMode {
                         motor_zuoqian.setPower(-0.6);
                         motor_youqian.setPower(-0.6);
                         motor_zuohou.setPower(-0.6);
-                        motor_youhou.setPower(0.6);
+                        motor_youhou.setPower(0.6);//右平移
 
                         sleep(495);
 
                         motor_zuoqian.setPower(-0.3);
                         motor_youqian.setPower(-0.3);
                         motor_zuohou.setPower(0.3);
-                        motor_youhou.setPower(-0.3);
+                        motor_youhou.setPower(-0.3);//前进一点点
 
                         sleep(50);
                     }
@@ -398,7 +394,7 @@ public class Auto_Red_Back extends LinearOpMode {
                         motor_zuoqian.setPower(-0.6);
                         motor_youqian.setPower(-0.6);
                         motor_zuohou.setPower(-0.6);
-                        motor_youhou.setPower(0.6);
+                        motor_youhou.setPower(0.6);//右平移
 
                         sleep(1200);
                     }
@@ -406,7 +402,8 @@ public class Auto_Red_Back extends LinearOpMode {
                     motor_zuoqian.setPower(-0.4);
                     motor_youqian.setPower(0.4);
                     motor_zuohou.setPower(0.4);
-                    motor_youhou.setPower(0.4);
+                    motor_youhou.setPower(0.4);//前进一点点
+
                     sleep(100);
 
                     motor_zuoqian.setPower(0);
@@ -415,53 +412,53 @@ public class Auto_Red_Back extends LinearOpMode {
                     motor_youhou.setPower(0);
 
                     power_raising = -1;
-                    motor_raising.setPower(power_raising);
+                    motor_raising.setPower(power_raising);//下降滑轨
 
                     sleep(900);
 
                     power_raising = 0;
-                    motor_raising.setPower(power_raising);
+                    motor_raising.setPower(power_raising);//停止滑轨
 
                     servo_position_block_1 = 0.35;
                     servo_position_block_2 = 0.15;
                     servo_catching_block_1.setPosition(servo_position_block_1);
-                    servo_catching_block_2.setPosition(servo_position_block_2);
+                    servo_catching_block_2.setPosition(servo_position_block_2);//松开方块夹子
 
                     sleep(300);
 
                     motor_zuoqian.setPower(-0.4);
                     motor_youqian.setPower(0.4);
                     motor_zuohou.setPower(0.4);
-                    motor_youhou.setPower(0.4);
+                    motor_youhou.setPower(0.4);//往前怼
 
                     sleep(600);
 
-                    //cao zuo
+                    //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
                     motor_zuoqian.setPower(0.3);
                     motor_youqian.setPower(-0.3);
                     motor_zuohou.setPower(-0.3);
-                    motor_youhou.setPower(-0.3);
+                    motor_youhou.setPower(-0.3);//后退一点点
 
                     sleep(90);
 
                     motor_zuoqian.setPower(0.6);
                     motor_youqian.setPower(0.6);
                     motor_zuohou.setPower(-0.6);
-                    motor_youhou.setPower(0.6);
+                    motor_youhou.setPower(0.6);//左转
 
                     sleep(500);
 
                     motor_zuoqian.setPower(-0.6);
                     motor_youqian.setPower(-0.6);
                     motor_zuohou.setPower(0.6);
-                    motor_youhou.setPower(-0.6);
+                    motor_youhou.setPower(-0.6);//右转
 
                     sleep(500);
 
                     motor_zuoqian.setPower(-0.3);
                     motor_youqian.setPower(0.3);
                     motor_zuohou.setPower(0.3);
-                    motor_youhou.setPower(0.3);
+                    motor_youhou.setPower(0.3);//往前推一点点
 
                     sleep(450);
                 }
@@ -469,7 +466,7 @@ public class Auto_Red_Back extends LinearOpMode {
                 motor_zuoqian.setPower(0);
                 motor_youqian.setPower(0);
                 motor_zuohou.setPower(0);
-                motor_youhou.setPower(0);
+                motor_youhou.setPower(0);//停止
 
                 sleep(100000);
             }
@@ -482,7 +479,6 @@ public class Auto_Red_Back extends LinearOpMode {
             telemetry.update();
         }
     }
-
         String format(OpenGLMatrix transformationMatrix) {
             return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
         }
