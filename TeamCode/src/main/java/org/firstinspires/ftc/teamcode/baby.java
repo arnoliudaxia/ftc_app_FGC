@@ -56,6 +56,7 @@ public class baby extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+
     DcMotor motor_catching_baby_1;
     DcMotor motor_catching_baby_2;
 
@@ -69,6 +70,7 @@ public class baby extends LinearOpMode {
     double servo_baby_position_2 = 0.8;
 
     boolean safe_case = true;
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -112,6 +114,7 @@ public class baby extends LinearOpMode {
                 }
                 sleep(50);
             }
+
             if(gamepad2.dpad_left){
                 if(servo_baby_position_1 >= 0){
                     servo_baby_position_1 = servo_baby_position_1 - 0.02;

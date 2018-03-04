@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -55,6 +56,7 @@ public class fantastic extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+
     DcMotor motor_zuoqian;
     DcMotor motor_youqian;
     DcMotor motor_zuohou;
@@ -71,9 +73,22 @@ public class fantastic extends LinearOpMode {
 
     DcMotor motor_raising;
 
-    double servo_position_1 = 0.35;
-    double servo_position_2 = 0.15;
+    double servo_block_position_1 = 0.35;
+    double servo_block_position_2 = 0.15;
     double power = 0.50;
+
+    double power_zuoqian;
+    double power_youqian;
+    double power_zuohou;
+    double power_youhou;
+
+    double power_baby_1;
+    double power_baby_2;
+
+    double servo_baby_position_1 = 0;
+    double servo_baby_position_2 = 0.8;
+
+    boolean safe_case = true;
 
     @Override
     public void runOpMode() {
@@ -95,19 +110,6 @@ public class fantastic extends LinearOpMode {
         motor_youqian.setDirection(DcMotor.Direction.REVERSE);
         motor_youhou.setDirection(DcMotor.Direction.REVERSE);
 
-        double power_zuoqian;
-        double power_youqian;
-        double power_zuohou;
-        double power_youhou;
-
-        double power_baby_1;
-        double power_baby_2;
-
-        double servo_baby_position_1 = 0.5;
-        double servo_baby_position_2;
-
-        boolean safe_case = true;
-
         servo_catching_block_1 = hardwareMap.servo.get("servo_catching_block_1");
         servo_catching_block_2 = hardwareMap.servo.get("servo_catching_block_2");
 
@@ -120,11 +122,10 @@ public class fantastic extends LinearOpMode {
         servo_catching_baby_2 = hardwareMap.get(Servo.class,"servo_catching_baby_2");
 
         servo_catching_baby_1.setPosition(servo_baby_position_1);
+        servo_catching_baby_2.setPosition(servo_baby_position_2);
 
-        servo_catching_block_1.setPosition(servo_position_1);
-        servo_catching_block_2.setPosition(servo_position_2);
-
-        servo_catching_baby_1.setPosition(servo_baby_position_1);
+        servo_catching_block_1.setPosition(servo_block_position_1);
+        servo_catching_block_2.setPosition(servo_block_position_2);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -223,17 +224,17 @@ public class fantastic extends LinearOpMode {
             }
 
             if(gamepad2.x) {
-                servo_position_1 = 0.00;
-                servo_position_2 = 0.5;
-                servo_catching_block_1.setPosition(servo_position_1);
-                servo_catching_block_2.setPosition(servo_position_2);
+                servo_block_position_1 = 0.00;
+                servo_block_position_2 = 0.5;
+                servo_catching_block_1.setPosition(servo_block_position_1);
+                servo_catching_block_2.setPosition(servo_block_position_2);
             }
 
             else if(gamepad2.b){
-                servo_position_1 = 0.35;
-                servo_position_2 = 0.15;
-                servo_catching_block_1.setPosition(servo_position_1);
-                servo_catching_block_2.setPosition(servo_position_2);
+                servo_block_position_1 = 0.35;
+                servo_block_position_2 = 0.15;
+                servo_catching_block_1.setPosition(servo_block_position_1);
+                servo_catching_block_2.setPosition(servo_block_position_2);
             }
 
             if(gamepad2.y){
@@ -251,54 +252,71 @@ public class fantastic extends LinearOpMode {
                 motor_raising.setPower(power);
             }
 
-            if(gamepad2.left_bumper && gamepad2.right_bumper){
+            //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
+            if(gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1){
                 safe_case = false;
             }
 
             if(gamepad2.right_stick_button){
                 safe_case = true;
+
+                motor_catching_baby_1.setPower(0);
+                motor_catching_baby_2.setPower(0);
             }
 
-            if(gamepad2.dpad_right && !safe_case) {
-                if (servo_baby_position_1 <= 1) {
+            if(gamepad2.dpad_right){
+                if(servo_baby_position_1 <= 1){
                     servo_baby_position_1 = servo_baby_position_1 + 0.02;
                 }
                 sleep(50);
             }
 
-            if(gamepad2.dpad_left && !safe_case){
+            if(gamepad2.dpad_left){
                 if(servo_baby_position_1 >= 0){
                     servo_baby_position_1 = servo_baby_position_1 - 0.02;
                 }
                 sleep(50);
             }
 
+            if(gamepad2.right_bumper){
+                servo_baby_position_2 = 0.15;
+                servo_catching_baby_2.setPosition(servo_baby_position_2);
+            }
+
+            if(gamepad2.left_bumper){
+                servo_baby_position_2 = 0.8;
+                servo_catching_baby_2.setPosition(servo_baby_position_2);
+            }
+
+            servo_catching_baby_1.setPosition(servo_baby_position_1);
 
             if(gamepad2.dpad_up && !safe_case){
                 power_baby_1 = 0.8;
-                power_baby_2 = -0.55;
+                power_baby_2 = -0.5;
                 motor_catching_baby_1.setPower(power_baby_1);
                 motor_catching_baby_2.setPower(power_baby_2);
             }
+
             else{
                 motor_catching_baby_1.setPower(0);
             }
 
-            power_baby_2 = 0.4;
             if(gamepad2.dpad_down && !safe_case){
                 power_baby_1 = -0.8;
+                power_baby_2 = 0.2;
                 motor_catching_baby_1.setPower(power_baby_1);
                 motor_catching_baby_2.setPower(power_baby_2);
             }
 
-            if(gamepad2.left_stick_button && !safe_case){
-                motor_catching_baby_1.setPower(0);
-                motor_catching_baby_2.setPower(0);
-            }
+            //else {
+                //motor_catching_baby_1.setPower(0);
+                //motor_catching_baby_2.setPower(0);
+            //}
+
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad0.5.left_stick_y ;
-            // rightPower = -gamepad0.5.right_stick_y ;
+            // leftPower  = -gamepad1.left_stick_y ;
+            // rightPower = -gamepad1.right_stick_y ;
 
             // Send calculated power to wheels
 
