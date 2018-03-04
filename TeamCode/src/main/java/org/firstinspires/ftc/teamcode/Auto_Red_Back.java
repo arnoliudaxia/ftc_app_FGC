@@ -314,7 +314,7 @@ public class Auto_Red_Back extends LinearOpMode {
                     motor_youqian.setPower(-0.3);
                     motor_zuohou.setPower(0.3);
                     motor_youhou.setPower(-0.3);//右转微调（左平移会歪）
-                    sleep(60);
+                    sleep(20);
 
                     motor_zuoqian.setPower(0);
                     motor_youqian.setPower(0);
@@ -342,7 +342,7 @@ public class Auto_Red_Back extends LinearOpMode {
                     motor_zuohou.setPower(-0.3);
                     motor_youhou.setPower(0.3);//右平移，轻怼平衡板定位
 
-                    sleep(1100);
+                    sleep(1200);
 
                     motor_zuoqian.setPower(0);
                     motor_youqian.setPower(0);
@@ -382,12 +382,12 @@ public class Auto_Red_Back extends LinearOpMode {
 
                         sleep(495);
 
-                        motor_zuoqian.setPower(-0.3);
+                        /*motor_zuoqian.setPower(-0.3);
                         motor_youqian.setPower(-0.3);
                         motor_zuohou.setPower(0.3);
                         motor_youhou.setPower(-0.3);//前进一点点
 
-                        sleep(50);
+                        sleep(20);*/
                     }
 
                     if(vuMark == RIGHT){
@@ -416,7 +416,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     sleep(900);
 
-                    power_raising = 0;
+                    power_raising = 0.05;
                     motor_raising.setPower(power_raising);//停止滑轨
 
                     servo_position_block_1 = 0.35;

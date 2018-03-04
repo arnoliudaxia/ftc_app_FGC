@@ -75,20 +75,85 @@ public class fantastic extends LinearOpMode {
 
     double servo_block_position_1 = 0.35;
     double servo_block_position_2 = 0.15;
-    double power = 0.50;
+    double power_raising = 0.50;
 
     double power_zuoqian;
     double power_youqian;
     double power_zuohou;
     double power_youhou;
 
-    double power_baby_1;
-    double power_baby_2;
-
     double servo_baby_position_1 = 0;
     double servo_baby_position_2 = 0.8;
 
-    boolean safe_case = true;
+    boolean arm_safe_case = true;
+    boolean robot_case_1 = false;
+    boolean robot_case_2 = false;
+
+    public void qianjin(double power,int power_mode){
+        motor_zuoqian.setPower(-power/power_mode);
+        motor_youqian.setPower(power/power_mode);
+        motor_zuohou.setPower(power/power_mode);
+        motor_youhou.setPower(power/power_mode);
+    }
+
+    public void houtui(double power,int power_mode){
+        motor_zuoqian.setPower(power/power_mode);
+        motor_youqian.setPower(-power/power_mode);
+        motor_zuohou.setPower(-power/power_mode);
+        motor_youhou.setPower(-power/power_mode);
+    }
+
+    public void zuopingyi(double power,int power_mode){
+        motor_zuoqian.setPower(power/power_mode);
+        motor_youqian.setPower(power/power_mode);
+        motor_zuohou.setPower(power/power_mode);
+        motor_youhou.setPower(-power/power_mode);
+    }
+
+    public void youpingyi(double power,int power_mode){
+        motor_zuoqian.setPower(-power/power_mode);
+        motor_youqian.setPower(-power/power_mode);
+        motor_zuohou.setPower(-power/power_mode);
+        motor_youhou.setPower(power/power_mode);
+    }
+
+    public void zuozhuan(double power,int power_mode){
+        motor_zuoqian.setPower(power/power_mode);
+        motor_youqian.setPower(power/power_mode);
+        motor_zuohou.setPower(-power/power_mode);
+        motor_youhou.setPower(power/power_mode);
+    }
+
+    public void youzhuan(double power,int power_mode){
+        motor_zuoqian.setPower(-power/power_mode);
+        motor_youqian.setPower(-power/power_mode);
+        motor_zuohou.setPower(power/power_mode);
+        motor_youhou.setPower(-power/power_mode);
+    }
+
+    public void catching_block(double servo_block_position_1,double servo_block_position_2){
+        servo_catching_block_1.setPosition(servo_block_position_1);
+        servo_catching_block_2.setPosition(servo_block_position_2);
+    }
+
+    public void catching_baby(double power_baby_1,double power_baby_2){
+        motor_catching_baby_1.setPower(power_baby_1);
+        motor_catching_baby_2.setPower(power_baby_2);
+    }
+
+    public int switch_power(){
+        if(gamepad1.a && gamepad1.x){
+            return (3);
+        }
+
+        else if(gamepad1.a || gamepad1.x){
+            return (2);
+        }
+
+        else{
+            return (1);
+        }
+    }
 
     @Override
     public void runOpMode() {
@@ -121,7 +186,6 @@ public class fantastic extends LinearOpMode {
         servo_catching_baby_1 = hardwareMap.get(Servo.class,"servo_catching_baby_1");
         servo_catching_baby_2 = hardwareMap.get(Servo.class,"servo_catching_baby_2");
 
-        servo_catching_baby_1.setPosition(servo_baby_position_1);
         servo_catching_baby_2.setPosition(servo_baby_position_2);
 
         servo_catching_block_1.setPosition(servo_block_position_1);
@@ -138,192 +202,139 @@ public class fantastic extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0) {
-                power_zuoqian = gamepad1.left_stick_y - gamepad1.left_stick_x;
-                power_youqian = gamepad1.left_stick_y + gamepad1.left_stick_x;
-                power_zuohou = gamepad1.left_stick_y + gamepad1.left_stick_x;
-                power_youhou = gamepad1.left_stick_y - gamepad1.left_stick_x;
+            if ((gamepad1.left_stick_button && gamepad1.right_stick_button) || robot_case_1) {
+                int PowerMode = switch_power();
 
-                motor_zuoqian.setPower(power_zuoqian);
-                motor_youqian.setPower(-power_youqian);
-                motor_zuohou.setPower(-power_zuohou);
-                motor_youhou.setPower(-power_youhou);
-            }
+                robot_case_1 = true;
 
-            if (gamepad1.dpad_up){
-                motor_zuoqian.setPower(-0.7);
-                motor_youqian.setPower(0.7);
-                motor_zuohou.setPower(0.7);
-                motor_youhou.setPower(0.7);
-            }
+                if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0) {
+                    power_zuoqian = gamepad1.left_stick_y - gamepad1.left_stick_x;
+                    power_youqian = gamepad1.left_stick_y + gamepad1.left_stick_x;
+                    power_zuohou = gamepad1.left_stick_y + gamepad1.left_stick_x;
+                    power_youhou = gamepad1.left_stick_y - gamepad1.left_stick_x;
 
-            else if (gamepad1.dpad_down){
-                motor_zuoqian.setPower(0.7);
-                motor_youqian.setPower(-0.7);
-                motor_zuohou.setPower(-0.7);
-                motor_youhou.setPower(-0.7);
-            }
-
-            else if (gamepad1.dpad_left){
-                motor_zuoqian.setPower(0.7);
-                motor_youqian.setPower(0.7);
-                motor_zuohou.setPower(0.7);
-                motor_youhou.setPower(-0.7);
-            }
-
-            else if (gamepad1.dpad_right){
-                motor_zuoqian.setPower(-0.7);
-                motor_youqian.setPower(-0.7);
-                motor_zuohou.setPower(-0.7);
-                motor_youhou.setPower(0.7);
-            }
-
-            if (gamepad1.left_bumper){
-                motor_zuoqian.setPower(0.6);
-                motor_youqian.setPower(0.6);
-                motor_zuohou.setPower(-0.6);
-                motor_youhou.setPower(0.6);
-            }
-
-            else if (gamepad1.right_bumper){
-                motor_zuoqian.setPower(-0.6);
-                motor_youqian.setPower(-0.6);
-                motor_zuohou.setPower(0.6);
-                motor_youhou.setPower(-0.6);
-            }
-
-            else if(gamepad1.left_trigger != 0){
-                power_zuoqian = gamepad1.left_trigger;
-                power_youqian = gamepad1.left_trigger;
-                power_zuohou = -gamepad1.left_trigger;
-                power_youhou = gamepad1.left_trigger;
-
-                motor_zuoqian.setPower(power_zuoqian);
-                motor_youqian.setPower(power_youqian);
-                motor_zuohou.setPower(power_zuohou);
-                motor_youhou.setPower(power_youhou);
-            }
-
-            else if(gamepad1.right_trigger != 0){
-                power_zuoqian = -gamepad1.right_trigger;
-                power_youqian = -gamepad1.right_trigger;
-                power_zuohou = gamepad1.right_trigger;
-                power_youhou = -gamepad1.right_trigger;
-
-                motor_zuoqian.setPower(power_zuoqian);
-                motor_youqian.setPower(power_youqian);
-                motor_zuohou.setPower(power_zuohou);
-                motor_youhou.setPower(power_youhou);
-            }
-
-            else {
-                motor_zuoqian.setPower(0);
-                motor_youqian.setPower(0);
-                motor_zuohou.setPower(0);
-                motor_youhou.setPower(0);
-            }
-
-            if(gamepad2.x) {
-                servo_block_position_1 = 0.00;
-                servo_block_position_2 = 0.5;
-                servo_catching_block_1.setPosition(servo_block_position_1);
-                servo_catching_block_2.setPosition(servo_block_position_2);
-            }
-
-            else if(gamepad2.b){
-                servo_block_position_1 = 0.35;
-                servo_block_position_2 = 0.15;
-                servo_catching_block_1.setPosition(servo_block_position_1);
-                servo_catching_block_2.setPosition(servo_block_position_2);
-            }
-
-            if(gamepad2.y){
-                power = 1.0;
-                motor_raising.setPower(power);
-            }
-
-            else if(gamepad2.a){
-                power = -1.0;
-                motor_raising.setPower(power);
-            }
-
-            else {
-                power = 0.08;
-                motor_raising.setPower(power);
-            }
-
-            //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
-            if(gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1){
-                safe_case = false;
-            }
-
-            if(gamepad2.right_stick_button){
-                safe_case = true;
-
-                motor_catching_baby_1.setPower(0);
-                motor_catching_baby_2.setPower(0);
-            }
-
-            if(gamepad2.dpad_right){
-                if(servo_baby_position_1 <= 1){
-                    servo_baby_position_1 = servo_baby_position_1 + 0.02;
+                    motor_zuoqian.setPower(power_zuoqian / PowerMode);
+                    motor_youqian.setPower(-power_youqian / PowerMode);
+                    motor_zuohou.setPower(-power_zuohou / PowerMode);
+                    motor_youhou.setPower(-power_youhou / PowerMode);
                 }
-                sleep(50);
-            }
 
-            if(gamepad2.dpad_left){
-                if(servo_baby_position_1 >= 0){
-                    servo_baby_position_1 = servo_baby_position_1 - 0.02;
+                if (gamepad1.dpad_up || gamepad1.dpad_left || gamepad1.dpad_right || gamepad1.dpad_down) {
+                    if (gamepad1.dpad_up) {
+                        qianjin(0.7, PowerMode);
+                    } else if (gamepad1.dpad_down) {
+                        houtui(0.7, PowerMode);
+                    } else if (gamepad1.dpad_left) {
+                        zuopingyi(0.7, PowerMode);
+                    } else if (gamepad1.dpad_right) {
+                        youpingyi(0.7, PowerMode);
+                    }
                 }
-                sleep(50);
-            }
 
-            if(gamepad2.right_bumper){
-                servo_baby_position_2 = 0.15;
-                servo_catching_baby_2.setPosition(servo_baby_position_2);
-            }
 
-            if(gamepad2.left_bumper){
-                servo_baby_position_2 = 0.8;
-                servo_catching_baby_2.setPosition(servo_baby_position_2);
-            }
+                if (gamepad1.left_bumper || gamepad1.right_bumper) {
+                    if (gamepad1.left_bumper) {
+                        zuopingyi(0.6, PowerMode);
+                    } else if (gamepad1.right_bumper) {
+                        youpingyi(0.6, PowerMode);
+                    }
+                }
 
-            servo_catching_baby_1.setPosition(servo_baby_position_1);
+                if (gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {
+                    zuozhuan(gamepad1.left_trigger - gamepad1.right_trigger, PowerMode);
+                } else {
+                    qianjin(0, PowerMode);
+                }
 
-            if(gamepad2.dpad_up && !safe_case){
-                power_baby_1 = 0.8;
-                power_baby_2 = -0.5;
-                motor_catching_baby_1.setPower(power_baby_1);
-                motor_catching_baby_2.setPower(power_baby_2);
-            }
+                if (gamepad1.left_stick_button && gamepad1.right_stick_button) {
+                    robot_case_1 = false;
+                }
 
-            else{
-                motor_catching_baby_1.setPower(0);
-            }
 
-            if(gamepad2.dpad_down && !safe_case){
-                power_baby_1 = -0.8;
-                power_baby_2 = 0.2;
-                motor_catching_baby_1.setPower(power_baby_1);
-                motor_catching_baby_2.setPower(power_baby_2);
-            }
+                if (gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1) {
+                    arm_safe_case = false;
+                }
 
-            //else {
+                if (gamepad2.right_stick_button) {
+                    arm_safe_case = true;
+                    catching_baby(0, 0);
+                }
+
+                if (gamepad2.x) {
+                    catching_block(0.00, 0.5);
+                } else if (gamepad2.b) {
+                    catching_block(0.35, 0.15);
+                }
+
+                if (gamepad2.y) {
+                    power_raising = 1.0;
+                    motor_raising.setPower(power_raising);
+                } else if (gamepad2.a) {
+                    power_raising = -1.0;
+                    motor_raising.setPower(power_raising);
+                } else {
+                    power_raising = 0.08;
+                    motor_raising.setPower(power_raising);
+                }
+
+                //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
+                if (gamepad2.dpad_right) {
+                    if (servo_baby_position_1 <= 1) {
+                        servo_baby_position_1 = servo_baby_position_1 + 0.02;
+                    }
+                    sleep(50);
+                }
+
+                if (gamepad2.dpad_left) {
+                    if (servo_baby_position_1 >= 0) {
+                        servo_baby_position_1 = servo_baby_position_1 - 0.02;
+                    }
+                    sleep(50);
+                }
+
+                if (gamepad2.right_bumper) {
+                    servo_baby_position_2 = 0.15;
+                    servo_catching_baby_2.setPosition(servo_baby_position_2);
+                }
+
+                if (gamepad2.left_bumper) {
+                    servo_baby_position_2 = 0.8;
+                    servo_catching_baby_2.setPosition(servo_baby_position_2);
+                }
+
+                servo_catching_baby_1.setPosition(servo_baby_position_1);
+
+                if (gamepad2.dpad_up && !arm_safe_case) {
+                    catching_baby(0.8, -0.45);
+                } else {
+                    motor_catching_baby_1.setPower(0);
+                }
+
+                if (gamepad2.dpad_down && !arm_safe_case) {
+                    catching_baby(-0.8, 0.2);
+                }
+
+                if(gamepad1.x && gamepad1.y && gamepad1.a && gamepad1.b){
+                    robot_case_1 = false;
+                }
+
+                //else {
                 //motor_catching_baby_1.setPower(0);
                 //motor_catching_baby_2.setPower(0);
-            //}
+                //}
 
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
+                // Tank Mode uses one stick to control each wheel.
+                // - This requires no math, but it is hard to drive forward slowly and keep straight.
+                // leftPower  = -gamepad1.left_stick_y ;
+                // rightPower = -gamepad1.right_stick_y ;
 
-            // Send calculated power to wheels
+                // Send calculated power to wheels
 
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",power_zuoqian,power_youqian,power_zuohou,power_youhou);
-            telemetry.update();
+                // Show the elapsed game time and wheel power.
+                telemetry.addData("Status", "Run Time: " + runtime.toString());
+                telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", power_zuoqian, power_youqian, power_zuohou, power_youhou);
+                telemetry.update();
+            }
         }
     }
 }
