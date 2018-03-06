@@ -86,49 +86,58 @@ public class fantastic extends LinearOpMode {
     double servo_baby_position_2 = 0.8;
 
     boolean arm_safe_case = true;
+    boolean catching_baby_case = false;
     boolean robot_case_1 = false;
     boolean robot_case_2 = false;
 
-    public void qianjin(double power,int power_mode){
-        motor_zuoqian.setPower(-power/power_mode);
-        motor_youqian.setPower(power/power_mode);
-        motor_zuohou.setPower(power/power_mode);
-        motor_youhou.setPower(power/power_mode);
+    double PowerMode = 1;
+
+    public void qianjin(double power,double power_mode){
+        double FinalPower = Range.clip(power/power_mode, 0, 1);
+        motor_zuoqian.setPower(-FinalPower);
+        motor_youqian.setPower(FinalPower);
+        motor_zuohou.setPower(FinalPower);
+        motor_youhou.setPower(FinalPower);
     }
 
-    public void houtui(double power,int power_mode){
-        motor_zuoqian.setPower(power/power_mode);
-        motor_youqian.setPower(-power/power_mode);
-        motor_zuohou.setPower(-power/power_mode);
-        motor_youhou.setPower(-power/power_mode);
+    public void houtui(double power,double power_mode){
+        double FinalPower = Range.clip(power/power_mode, 0, 1);
+        motor_zuoqian.setPower(FinalPower);
+        motor_youqian.setPower(-FinalPower);
+        motor_zuohou.setPower(-FinalPower);
+        motor_youhou.setPower(-FinalPower);
     }
 
-    public void zuopingyi(double power,int power_mode){
-        motor_zuoqian.setPower(power/power_mode);
-        motor_youqian.setPower(power/power_mode);
-        motor_zuohou.setPower(power/power_mode);
-        motor_youhou.setPower(-power/power_mode);
+    public void zuopingyi(double power,double power_mode){
+        double FinalPower = Range.clip(power/power_mode, 0, 1);
+        motor_zuoqian.setPower(FinalPower);
+        motor_youqian.setPower(FinalPower);
+        motor_zuohou.setPower(FinalPower);
+        motor_youhou.setPower(-FinalPower);
     }
 
-    public void youpingyi(double power,int power_mode){
-        motor_zuoqian.setPower(-power/power_mode);
-        motor_youqian.setPower(-power/power_mode);
-        motor_zuohou.setPower(-power/power_mode);
-        motor_youhou.setPower(power/power_mode);
+    public void youpingyi(double power,double power_mode){
+        double FinalPower = Range.clip(power/power_mode, 0, 1);
+        motor_zuoqian.setPower(-FinalPower);
+        motor_youqian.setPower(-FinalPower);
+        motor_zuohou.setPower(-FinalPower);
+        motor_youhou.setPower(FinalPower);
     }
 
-    public void zuozhuan(double power,int power_mode){
-        motor_zuoqian.setPower(power/power_mode);
-        motor_youqian.setPower(power/power_mode);
-        motor_zuohou.setPower(-power/power_mode);
-        motor_youhou.setPower(power/power_mode);
+    public void zuozhuan(double power,double power_mode){
+        double FinalPower = Range.clip(power/power_mode, -1, 1);
+        motor_zuoqian.setPower(FinalPower);
+        motor_youqian.setPower(FinalPower);
+        motor_zuohou.setPower(-FinalPower);
+        motor_youhou.setPower(FinalPower);
     }
 
-    public void youzhuan(double power,int power_mode){
-        motor_zuoqian.setPower(-power/power_mode);
-        motor_youqian.setPower(-power/power_mode);
-        motor_zuohou.setPower(power/power_mode);
-        motor_youhou.setPower(-power/power_mode);
+    public void youzhuan(double power,double power_mode){
+        double FinalPower = Range.clip(power/power_mode, -1, 1);
+        motor_zuoqian.setPower(-FinalPower);
+        motor_youqian.setPower(-FinalPower);
+        motor_zuohou.setPower(FinalPower);
+        motor_youhou.setPower(-FinalPower);
     }
 
     public void catching_block(double servo_block_position_1,double servo_block_position_2){
@@ -136,23 +145,32 @@ public class fantastic extends LinearOpMode {
         servo_catching_block_2.setPosition(servo_block_position_2);
     }
 
-    public void catching_baby(double power_baby_1,double power_baby_2){
+    public void motor_catching_baby(double power_baby_1,double power_baby_2){
         motor_catching_baby_1.setPower(power_baby_1);
         motor_catching_baby_2.setPower(power_baby_2);
     }
 
-    public int switch_power(){
-        if(gamepad1.a && gamepad1.x){
-            return (3);
+    public void servo_catching_baby_1(double servo_baby_position_1){
+        servo_catching_baby_1.setPosition(servo_baby_position_1);
+    }
+
+    public void servo_catching_baby_2(double servo_baby_position_2){
+        servo_catching_baby_2.setPosition(servo_baby_position_2);
+    }
+
+    public double switch_PowerMode(){
+        if(gamepad1.x){
+            return (2.5);
         }
 
-        else if(gamepad1.a || gamepad1.x){
-            return (2);
-        }
-
-        else{
+        else if(gamepad1.a){
             return (1);
         }
+
+        else {
+            return (PowerMode);
+        }
+
     }
 
     @Override
@@ -202,10 +220,7 @@ public class fantastic extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if ((gamepad1.left_stick_button && gamepad1.right_stick_button) || robot_case_1) {
-                int PowerMode = switch_power();
-
-                robot_case_1 = true;
+                PowerMode = switch_PowerMode();
 
                 if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0) {
                     power_zuoqian = gamepad1.left_stick_y - gamepad1.left_stick_x;
@@ -234,21 +249,18 @@ public class fantastic extends LinearOpMode {
 
                 if (gamepad1.left_bumper || gamepad1.right_bumper) {
                     if (gamepad1.left_bumper) {
-                        zuopingyi(0.6, PowerMode);
+                        zuopingyi(1, 1);
                     } else if (gamepad1.right_bumper) {
-                        youpingyi(0.6, PowerMode);
+                        youpingyi(1, 1);
                     }
                 }
 
                 if (gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {
-                    zuozhuan(gamepad1.left_trigger - gamepad1.right_trigger, PowerMode);
+                    zuozhuan(gamepad1.left_trigger - gamepad1.right_trigger, PowerMode+0.5);
                 } else {
                     qianjin(0, PowerMode);
                 }
 
-                if (gamepad1.left_stick_button && gamepad1.right_stick_button) {
-                    robot_case_1 = false;
-                }
 
 
                 if (gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1) {
@@ -257,7 +269,7 @@ public class fantastic extends LinearOpMode {
 
                 if (gamepad2.right_stick_button) {
                     arm_safe_case = true;
-                    catching_baby(0, 0);
+                    motor_catching_baby(0, 0);
                 }
 
                 if (gamepad2.x) {
@@ -278,40 +290,48 @@ public class fantastic extends LinearOpMode {
                 }
 
                 //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
-                if (gamepad2.dpad_right) {
+                if (gamepad2.right_trigger != 0) {
                     if (servo_baby_position_1 <= 1) {
                         servo_baby_position_1 = servo_baby_position_1 + 0.02;
                     }
                     sleep(50);
                 }
 
-                if (gamepad2.dpad_left) {
+                if (gamepad2.left_trigger != 0) {
                     if (servo_baby_position_1 >= 0) {
                         servo_baby_position_1 = servo_baby_position_1 - 0.02;
                     }
                     sleep(50);
                 }
 
-                if (gamepad2.right_bumper) {
-                    servo_baby_position_2 = 0.15;
-                    servo_catching_baby_2.setPosition(servo_baby_position_2);
+                servo_catching_baby_1(servo_baby_position_1);
+
+                if (gamepad2.right_bumper && !catching_baby_case) {
+                    servo_catching_baby_2(0.12);
+                    catching_baby_case =true;
+
+                    while (gamepad2.right_bumper){
+                        sleep(100);
+                    }
                 }
 
-                if (gamepad2.left_bumper) {
-                    servo_baby_position_2 = 0.8;
-                    servo_catching_baby_2.setPosition(servo_baby_position_2);
-                }
+                if (gamepad2.right_bumper && catching_baby_case) {
+                    servo_catching_baby_2(0.8);
+                    catching_baby_case =false;
 
-                servo_catching_baby_1.setPosition(servo_baby_position_1);
+                    while (gamepad2.right_bumper){
+                        sleep(100);
+                    }
+                }
 
                 if (gamepad2.dpad_up && !arm_safe_case) {
-                    catching_baby(0.8, -0.45);
+                    motor_catching_baby(0.8, -0.48);
                 } else {
                     motor_catching_baby_1.setPower(0);
                 }
 
                 if (gamepad2.dpad_down && !arm_safe_case) {
-                    catching_baby(-0.8, 0.2);
+                    motor_catching_baby(-0.8, 0.2);
                 }
 
                 if(gamepad1.x && gamepad1.y && gamepad1.a && gamepad1.b){
@@ -334,7 +354,6 @@ public class fantastic extends LinearOpMode {
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", power_zuoqian, power_youqian, power_zuohou, power_youhou);
                 telemetry.update();
-            }
         }
     }
 }
