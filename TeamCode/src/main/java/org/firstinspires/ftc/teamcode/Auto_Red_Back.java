@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -114,6 +115,63 @@ public class Auto_Red_Back extends LinearOpMode {
     ColorSensor sensorColor;
     DistanceSensor sensorDistance;
 
+
+
+    public void qianjin(double power){
+        motor_zuoqian.setPower(-power);
+        motor_youqian.setPower(power);
+        motor_zuohou.setPower(power);
+        motor_youhou.setPower(power);
+    }
+
+    public void houtui(double power){
+        motor_zuoqian.setPower(power);
+        motor_youqian.setPower(-power);
+        motor_zuohou.setPower(-power);
+        motor_youhou.setPower(-power);
+    }
+
+    public void zuopingyi(double power){
+        motor_zuoqian.setPower(power);
+        motor_youqian.setPower(power);
+        motor_zuohou.setPower(power);
+        motor_youhou.setPower(-power);
+    }
+
+    public void youpingyi(double power){
+        motor_zuoqian.setPower(-power);
+        motor_youqian.setPower(-power);
+        motor_zuohou.setPower(-power);
+        motor_youhou.setPower(power);
+    }
+
+    public void zuozhuan(double power){
+        motor_zuoqian.setPower(power);
+        motor_youqian.setPower(power);
+        motor_zuohou.setPower(-power);
+        motor_youhou.setPower(power);
+    }
+
+    public void youzhuan(double power){
+        motor_zuoqian.setPower(-power);
+        motor_youqian.setPower(-power);
+        motor_zuohou.setPower(power);
+        motor_youhou.setPower(-power);
+    }
+
+    public void catching_block(double servo_block_position_1,double servo_block_position_2) {
+        servo_catching_block_1.setPosition(servo_block_position_1);
+        servo_catching_block_2.setPosition(servo_block_position_2);
+    }
+
+    public void kicking_ball(double servo_position_ball){
+        servo_kicking_ball.setPosition(servo_position_ball);
+    }
+
+    public void raising(double power_raising){
+        motor_raising.setPower(power_raising);
+    }
+
     @Override public void runOpMode() {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -172,29 +230,24 @@ public class Auto_Red_Back extends LinearOpMode {
 
         waitForStart();
 
-        servo_position_ball = 0.5;
-        servo_kicking_ball.setPosition(servo_position_ball);
+        kicking_ball(0.5);
 
         sleep(300);
 
-        servo_position_ball = 0.35;
-        servo_kicking_ball.setPosition(servo_position_ball);
+        kicking_ball(0.35);
 
         sleep(300);
 
 
-        servo_position_ball = 0.2;
-        servo_kicking_ball.setPosition(servo_position_ball);
+        kicking_ball(0.2);
 
         sleep(300);//以上三步为 缓降 击宝石的杆子
 
-        power_raising = 1;
-        motor_raising.setPower(power_raising);//抬升滑轨
+        raising(1);//抬升滑轨
 
         sleep(1200);
 
-        power_raising = 0.08;
-        motor_raising.setPower(power_raising);//卡住滑轨
+        raising(0.08);//卡住滑轨
 
 
         relicTrackables.activate();
@@ -220,253 +273,152 @@ public class Auto_Red_Back extends LinearOpMode {
                  * we illustrate it nevertheless, for completeness. */
 
                 if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
-                    motor_zuoqian.setPower(-0.4);
-                    motor_youqian.setPower(0.4);
-                    motor_zuohou.setPower(0.4);
-                    motor_youhou.setPower(0.4);//前进
+                    qianjin(0.4);//前进
 
                     sleep(1050);
 
-                    motor_zuoqian.setPower(-0.2);
-                    motor_youqian.setPower(0.2);
-                    motor_zuohou.setPower(0.2);
-                    motor_youhou.setPower(0.2);//缓停
 
-                    servo_position_ball = 0.6;
-                    servo_kicking_ball.setPosition(servo_position_ball);
+                    qianjin(0.2);//缓停
+
+                    kicking_ball(0.6);
 
                     sleep(200);
 
-                    servo_position_ball = 0.8;
-                    servo_kicking_ball.setPosition(servo_position_ball);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
+                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
 
                     sleep(200);
 
-                    motor_zuoqian.setPower(0.35);
-                    motor_youqian.setPower(-0.35);
-                    motor_zuohou.setPower(-0.35);
-                    motor_youhou.setPower(-0.35);//轻怼平衡板定位
+
+                    houtui(0.35);//轻怼平衡板定位
 
                     sleep(1000);
 
-                    motor_zuoqian.setPower(0);
-                    motor_youqian.setPower(0);
-                    motor_zuohou.setPower(0);
-                    motor_youhou.setPower(0);
+                    qianjin(0);
 
                     //这里未完（这里if是在前方宝石是蓝色的前提下的，比较简单。下面else 为后方是蓝色宝石的前提下的程序，较为麻烦，所以先写了下面的。）
                 }
 
                 else {//判断为 红色宝石
-                    motor_zuoqian.setPower(0.3);
-                    motor_youqian.setPower(-0.3);
-                    motor_zuohou.setPower(-0.3);
-                    motor_youhou.setPower(-0.3);//后退
+                    houtui(0.3);//后退
 
                     sleep(750);
 
-                    servo_position_ball = 0.6;
-                    servo_kicking_ball.setPosition(servo_position_ball);
+                    kicking_ball(0.6);
 
                     sleep(200);
 
-                    servo_position_ball = 0.8;
-                    servo_kicking_ball.setPosition(servo_position_ball);
+                    kicking_ball(0.8);
 
                     sleep(200);//缓升击宝石杆子
 
-                    motor_zuoqian.setPower(0);
-                    motor_youqian.setPower(0);
-                    motor_zuohou.setPower(0);
-                    motor_youhou.setPower(0);
+                    qianjin(0);
 
                     sleep(500);
 
-                    motor_zuoqian.setPower(-0.3);
-                    motor_youqian.setPower(0.3);
-                    motor_zuohou.setPower(0.3);
-                    motor_youhou.setPower(0.3);//轻怼平衡板定位
+                    qianjin(0.3);//轻怼平衡板定位
 
                     sleep(1100);
 
-                    motor_zuoqian.setPower(0.3);
-                    motor_youqian.setPower(-0.3);
-                    motor_zuohou.setPower(-0.3);
-                    motor_youhou.setPower(-0.3);//后退一点点
+                    houtui(0.3);//后退一点点
 
                     sleep(200);
 
-                    motor_zuoqian.setPower(0);
-                    motor_youqian.setPower(0);
-                    motor_zuohou.setPower(0);
-                    motor_youhou.setPower(0);
+                   qianjin(0);
 
                     sleep(500);
 
-                    motor_zuoqian.setPower(1);
-                    motor_youqian.setPower(1);
-                    motor_zuohou.setPower(1);
-                    motor_youhou.setPower(-1);//左平移
+                    zuopingyi(1);//左平移
 
                     sleep(1020);
 
-                    motor_zuoqian.setPower(-0.3);
-                    motor_youqian.setPower(-0.3);
-                    motor_zuohou.setPower(0.3);
-                    motor_youhou.setPower(-0.3);//右转微调（左平移会歪）
+                    youzhuan(0.3);//右转微调（左平移会歪）
                     sleep(20);
 
-                    motor_zuoqian.setPower(0);
-                    motor_youqian.setPower(0);
-                    motor_zuohou.setPower(0);
-                    motor_youhou.setPower(0);
+                    qianjin(0);
 
                     sleep(500);
 
-                    motor_zuoqian.setPower(-1);
-                    motor_youqian.setPower(1);
-                    motor_zuohou.setPower(1);
-                    motor_youhou.setPower(1);//前进
+                    qianjin(1);//前进
 
                     sleep(625);
 
-                    motor_zuoqian.setPower(0);
-                    motor_youqian.setPower(0);
-                    motor_zuohou.setPower(0);
-                    motor_youhou.setPower(0);
+                    qianjin(0);
 
                     sleep(400);
 
-                    motor_zuoqian.setPower(-0.3);
-                    motor_youqian.setPower(-0.3);
-                    motor_zuohou.setPower(-0.3);
-                    motor_youhou.setPower(0.3);//右平移，轻怼平衡板定位
+                    youpingyi(0.3);//右平移，轻怼平衡板定位
 
                     sleep(1200);
 
-                    motor_zuoqian.setPower(0);
-                    motor_youqian.setPower(0);
-                    motor_zuohou.setPower(0);
-                    motor_youhou.setPower(0);
+                    qianjin(0);
 
                     sleep(400);
 
-                    motor_zuoqian.setPower(-1);
-                    motor_youqian.setPower(1);
-                    motor_zuohou.setPower(1);
-                    motor_youhou.setPower(1);//前进
+                    qianjin(1);//前进
 
                     sleep(525);
 
-                    motor_zuoqian.setPower(0);
-                    motor_youqian.setPower(0);
-                    motor_zuohou.setPower(0);
-                    motor_youhou.setPower(0);
+                    qianjin(0);
 
                     sleep(400);//此时机器开始判断VuMark
 
                     if(vuMark == LEFT){
-                        motor_zuoqian.setPower(0.6);
-                        motor_youqian.setPower(0.6);
-                        motor_zuohou.setPower(0.6);
-                        motor_youhou.setPower(-0.6);//左平移
+                        zuopingyi(0.6);//左平移
 
                         sleep(200);
                     }
 
                     if(vuMark == CENTER){
-                        motor_zuoqian.setPower(-0.6);
-                        motor_youqian.setPower(-0.6);
-                        motor_zuohou.setPower(-0.6);
-                        motor_youhou.setPower(0.6);//右平移
+                        youpingyi(0.6);//右平移
 
                         sleep(495);
-
-                        /*motor_zuoqian.setPower(-0.3);
-                        motor_youqian.setPower(-0.3);
-                        motor_zuohou.setPower(0.3);
-                        motor_youhou.setPower(-0.3);//前进一点点
-
-                        sleep(20);*/
                     }
 
                     if(vuMark == RIGHT){
-                        motor_zuoqian.setPower(-0.6);
-                        motor_youqian.setPower(-0.6);
-                        motor_zuohou.setPower(-0.6);
-                        motor_youhou.setPower(0.6);//右平移
+                        youpingyi(0.6);//右平移
 
                         sleep(1200);
                     }
 
-                    motor_zuoqian.setPower(-0.4);
-                    motor_youqian.setPower(0.4);
-                    motor_zuohou.setPower(0.4);
-                    motor_youhou.setPower(0.4);//前进一点点
+                    qianjin(0.4);//前进一点点
 
                     sleep(100);
 
-                    motor_zuoqian.setPower(0);
-                    motor_youqian.setPower(0);
-                    motor_zuohou.setPower(0);
-                    motor_youhou.setPower(0);
+                    qianjin(0);
 
-                    power_raising = -1;
-                    motor_raising.setPower(power_raising);//下降滑轨
+                    raising(-1);//下降滑轨
 
                     sleep(900);
 
-                    power_raising = 0.05;
-                    motor_raising.setPower(power_raising);//停止滑轨
+                    raising(0.08);//停止滑轨
 
-                    servo_position_block_1 = 0.35;
-                    servo_position_block_2 = 0.15;
-                    servo_catching_block_1.setPosition(servo_position_block_1);
-                    servo_catching_block_2.setPosition(servo_position_block_2);//松开方块夹子
+                    catching_block(0.35,0.15);//松开方块夹子
 
                     sleep(300);
 
-                    motor_zuoqian.setPower(-0.4);
-                    motor_youqian.setPower(0.4);
-                    motor_zuohou.setPower(0.4);
-                    motor_youhou.setPower(0.4);//往前怼
+                    qianjin(0.4);//往前怼
 
                     sleep(600);
 
                     //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
-                    motor_zuoqian.setPower(0.3);
-                    motor_youqian.setPower(-0.3);
-                    motor_zuohou.setPower(-0.3);
-                    motor_youhou.setPower(-0.3);//后退一点点
+                    houtui(0.3);//后退一点点
 
                     sleep(90);
 
-                    motor_zuoqian.setPower(0.6);
-                    motor_youqian.setPower(0.6);
-                    motor_zuohou.setPower(-0.6);
-                    motor_youhou.setPower(0.6);//左转
+                    zuozhuan(0.6);//左转
 
                     sleep(500);
 
-                    motor_zuoqian.setPower(-0.6);
-                    motor_youqian.setPower(-0.6);
-                    motor_zuohou.setPower(0.6);
-                    motor_youhou.setPower(-0.6);//右转
+                    youzhuan(0.6);//右转
 
                     sleep(500);
 
-                    motor_zuoqian.setPower(-0.3);
-                    motor_youqian.setPower(0.3);
-                    motor_zuohou.setPower(0.3);
-                    motor_youhou.setPower(0.3);//往前推一点点
+                    qianjin(0.3);//往前推一点点
 
                     sleep(450);
                 }
 
-                motor_zuoqian.setPower(0);
-                motor_youqian.setPower(0);
-                motor_zuohou.setPower(0);
-                motor_youhou.setPower(0);//停止
+                qianjin(0);//停止
 
                 sleep(100000);
             }
