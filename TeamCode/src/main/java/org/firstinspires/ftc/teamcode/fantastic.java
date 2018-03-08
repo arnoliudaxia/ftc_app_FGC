@@ -158,6 +158,10 @@ public class fantastic extends LinearOpMode {
         servo_catching_baby_2.setPosition(servo_baby_position_2);
     }
 
+    public void raising(double power_raising){
+        motor_raising.setPower(power_raising);
+    }
+
     public double switch_PowerMode(){
         if(gamepad1.x){
             return (2.5);
@@ -279,14 +283,11 @@ public class fantastic extends LinearOpMode {
                 }
 
                 if (gamepad2.y) {
-                    power_raising = 1.0;
-                    motor_raising.setPower(power_raising);
+                    raising(1);
                 } else if (gamepad2.a) {
-                    power_raising = -1.0;
-                    motor_raising.setPower(power_raising);
+                    raising(-1);
                 } else {
-                    power_raising = 0.08;
-                    motor_raising.setPower(power_raising);
+                    raising(0.08);
                 }
 
                 //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
@@ -335,7 +336,7 @@ public class fantastic extends LinearOpMode {
                 }
 
                 if(gamepad1.x && gamepad1.y && gamepad1.a && gamepad1.b){
-                    robot_case_1 = false;
+                    break;
                 }
 
                 //else {
