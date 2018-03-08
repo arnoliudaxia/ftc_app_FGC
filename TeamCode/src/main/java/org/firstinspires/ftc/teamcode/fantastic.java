@@ -73,8 +73,8 @@ public class fantastic extends LinearOpMode {
 
     DcMotor motor_raising;
 
-    double servo_block_position_1 = 0.35;
-    double servo_block_position_2 = 0.15;
+    double servo_block_position_1 = 0;
+    double servo_block_position_2 = 0.5;
     double power_raising = 0.50;
 
     double power_zuoqian;
@@ -273,9 +273,9 @@ public class fantastic extends LinearOpMode {
                 }
 
                 if (gamepad2.x) {
-                    catching_block(0.00, 0.5);
-                } else if (gamepad2.b) {
                     catching_block(0.35, 0.15);
+                } else if (gamepad2.b) {
+                    catching_block(0.00, 0.5);
                 }
 
                 if (gamepad2.y) {
