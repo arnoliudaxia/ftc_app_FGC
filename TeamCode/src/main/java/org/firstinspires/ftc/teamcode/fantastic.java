@@ -73,10 +73,6 @@ public class fantastic extends LinearOpMode {
 
     DcMotor motor_raising;
 
-    double servo_block_position_1 = 0.35;
-    double servo_block_position_2 = 0.15;
-    double power_raising = 0.50;
-
     double power_zuoqian;
     double power_youqian;
     double power_zuohou;
@@ -210,8 +206,7 @@ public class fantastic extends LinearOpMode {
 
         servo_catching_baby_2.setPosition(servo_baby_position_2);
 
-        servo_catching_block_1.setPosition(servo_block_position_1);
-        servo_catching_block_2.setPosition(servo_block_position_2);
+        catching_block(0.35,0.15);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
