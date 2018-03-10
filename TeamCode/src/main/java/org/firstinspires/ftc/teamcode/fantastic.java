@@ -210,7 +210,7 @@ public class fantastic extends LinearOpMode {
 
         servo_catching_baby_2.setPosition(servo_baby_position_2);
 
-        catching_block(0.0,0.5);
+        catching_block(0.35,0.3);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -276,9 +276,9 @@ public class fantastic extends LinearOpMode {
                 }
 
                 if (gamepad2.x) {
-                    catching_block(0.35, 0.15);
+                    catching_block(0.65, 0.0);
                 } else if (gamepad2.b) {
-                    catching_block(0.00, 0.5);
+                    catching_block(0.35, 0.3);
                 }
 
                 if (gamepad2.y) {

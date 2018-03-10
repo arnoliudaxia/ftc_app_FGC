@@ -97,8 +97,8 @@ public class Auto_Red_Back extends LinearOpMode {
 
     DcMotor motor_raising;
 
-    double servo_position_block_1 = 0.0;
-    double servo_position_block_2 = 0.5;
+    double servo_position_block_1 = 0.70;
+    double servo_position_block_2 = 0.00;
     double power_raising = 0.50;
 
     double servo_position_ball = 1;
@@ -291,9 +291,88 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     houtui(0.35);//轻怼平衡板定位
 
-                    sleep(1000);
+                    sleep(650);
 
                     qianjin(0);
+
+                    sleep(400);
+
+                    qianjin(0.5);
+
+                    sleep(350);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+
+                    if (vuMark == LEFT){
+                        zuopingyi(1);//左平移
+
+                        sleep(1030);
+
+                    }
+
+                    else if (vuMark == CENTER){
+                        zuopingyi(1);//左平移
+
+                        sleep(700);
+                    }
+
+                    else if (vuMark == RIGHT){
+                        zuopingyi(1);//左平移
+
+                        sleep(320);
+                    }
+
+                    qianjin(0);
+
+                    sleep(500);
+
+                    youzhuan(0.3);
+
+                    sleep(210);
+
+                    qianjin(0);
+
+                    sleep(250);
+
+                    qianjin(0.4);//前进一点点
+
+                    sleep(200);
+
+                    qianjin(0);
+
+                    raising(-1);//下降滑轨
+
+                    sleep(950);
+
+                    raising(0.08);//停止滑轨
+
+                    catching_block(0.35, 0.15);//松开方块夹子
+
+                    sleep(300);
+
+                    qianjin(0.4);//往前怼
+
+                    sleep(900);
+
+                    //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
+                    houtui(0.3);//后退一点点
+
+                    sleep(90);
+
+                    youzhuan(0.6);//右转
+
+                    sleep(500);
+
+                    zuozhuan(0.6);//左转
+
+                    sleep(500);
+
+                    qianjin(0.3);//往前推一点点
+
+                    sleep(450);
 
                     //这里未完（这里if是在前方宝石是蓝色的前提下的，比较简单。下面else 为后方是蓝色宝石的前提下的程序，较为麻烦，所以先写了下面的。）
                 }
@@ -319,11 +398,15 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     sleep(1100);
 
+                    qianjin(0);
+
+                    sleep(300);
+
                     houtui(0.3);//后退一点点
 
-                    sleep(200);
+                    sleep(250);
 
-                   qianjin(0);
+                    qianjin(0);
 
                     sleep(500);
 
@@ -332,7 +415,8 @@ public class Auto_Red_Back extends LinearOpMode {
                     sleep(1020);
 
                     youzhuan(0.3);//右转微调（左平移会歪）
-                    sleep(20);
+
+                    sleep(15);
 
                     qianjin(0);
 
@@ -340,7 +424,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     qianjin(1);//前进
 
-                    sleep(625);
+                    sleep(630);
 
                     qianjin(0);
 
@@ -362,23 +446,24 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     sleep(400);//此时机器开始判断VuMark
 
-                    if(vuMark == LEFT){
-                        zuopingyi(0.6);//左平移
+                    if (vuMark == LEFT) {
+                        youpingyi(0.6);//右平移
 
-                        sleep(200);
+                        sleep(30);
                     }
 
-                    if(vuMark == CENTER){
+                    if (vuMark == CENTER) {
                         youpingyi(0.6);//右平移
 
                         sleep(495);
                     }
 
-                    if(vuMark == RIGHT){
+                    if (vuMark == RIGHT) {
                         youpingyi(0.6);//右平移
 
-                        sleep(1200);
+                        sleep(1000);
                     }
+
 
                     qianjin(0.4);//前进一点点
 
@@ -388,11 +473,11 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     raising(-1);//下降滑轨
 
-                    sleep(900);
+                    sleep(950);
 
                     raising(0.08);//停止滑轨
 
-                    catching_block(0.35,0.15);//松开方块夹子
+                    catching_block(0.35, 0.15);//松开方块夹子
 
                     sleep(300);
 
