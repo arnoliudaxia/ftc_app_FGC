@@ -276,7 +276,7 @@ public class fantastic extends LinearOpMode {
                 }
 
                 if (gamepad2.x) {
-                    catching_block(0.65, 0.0);
+                    catching_block(0.70, 0.0);
                 } else if (gamepad2.b) {
                     catching_block(0.35, 0.3);
                 }
