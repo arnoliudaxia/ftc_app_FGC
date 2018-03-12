@@ -416,7 +416,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     youzhuan(0.3);//右转微调（左平移会歪）
 
-                    sleep(15);
+                    sleep(10);
 
                     qianjin(0);
 
@@ -462,6 +462,18 @@ public class Auto_Red_Back extends LinearOpMode {
                         youpingyi(0.6);//右平移
 
                         sleep(1000);
+
+                        qianjin(0);
+
+                        sleep(400);
+
+                        qianjin(1);
+
+                        sleep(120);
+
+                        qianjin(0);
+
+                        sleep(300);
                     }
 
 
@@ -483,7 +495,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     qianjin(0.4);//往前怼
 
-                    sleep(600);
+                    sleep(650);
 
                     //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
                     houtui(0.3);//后退一点点
