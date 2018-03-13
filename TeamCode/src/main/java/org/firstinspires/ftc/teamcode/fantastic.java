@@ -73,10 +73,6 @@ public class fantastic extends LinearOpMode {
 
     DcMotor motor_raising;
 
-    double servo_block_position_1 = 0;
-    double servo_block_position_2 = 0.5;
-    double power_raising = 0.50;
-
     double power_zuoqian;
     double power_youqian;
     double power_zuohou;
