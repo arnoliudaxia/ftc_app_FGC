@@ -99,6 +99,14 @@ public class Auto_Red_Back extends LinearOpMode {
 
     double servo_position_block_1 = 0.70;
     double servo_position_block_2 = 0.00;
+    double power_raising = 0.50;
+
+    double servo_position_ball = 1;
+
+    double power_zuoqian;
+    double power_youqian;
+    double power_zuohou;
+    double power_youhou;
 
     OpenGLMatrix lastLocation = null;
 
