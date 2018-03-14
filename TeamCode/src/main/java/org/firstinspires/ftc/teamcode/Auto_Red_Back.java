@@ -313,10 +313,10 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     }
 
-                    else if (vuMark == CENTER){
+                    else if (vuMark == CENTER){//done
                         zuopingyi(1);//左平移
 
-                        sleep(650);
+                        sleep(485);
                     }
 
                     else if (vuMark == RIGHT){
@@ -360,7 +360,7 @@ public class Auto_Red_Back extends LinearOpMode {
                     //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
                     houtui(0.3);//后退一点点
 
-                    sleep(90);
+                    sleep(140);
 
                     youzhuan(0.6);//右转
 
@@ -414,9 +414,9 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     sleep(1020);
 
-                    /*youzhuan(0.3);//右转微调（左平移会歪）
+                    youzhuan(0.3);//右转微调（左平移会歪）
 
-                    sleep(15);*/
+                    sleep(20);
 
                     qianjin(0);
 
@@ -430,7 +430,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     sleep(400);
 
-                    youpingyi(0.3);//右平移，轻怼平衡板定位
+                    youpingyi(0.35);//右平移，轻怼平衡板定位
 
                     sleep(1200);
 
@@ -488,7 +488,7 @@ public class Auto_Red_Back extends LinearOpMode {
                     //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
                     houtui(0.3);//后退一点点
 
-                    sleep(90);
+                    sleep(140);
 
                     zuozhuan(0.6);//左转
 
