@@ -299,7 +299,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     qianjin(0.5);
 
-                    sleep(350);
+                    sleep(300);
 
                     qianjin(0);
 
@@ -316,7 +316,7 @@ public class Auto_Red_Back extends LinearOpMode {
                     else if (vuMark == CENTER){
                         zuopingyi(1);//左平移
 
-                        sleep(700);
+                        sleep(650);
                     }
 
                     else if (vuMark == RIGHT){
@@ -331,7 +331,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     youzhuan(0.3);
 
-                    sleep(210);
+                    sleep(20);
 
                     qianjin(0);
 
@@ -414,9 +414,9 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     sleep(1020);
 
-                    youzhuan(0.3);//右转微调（左平移会歪）
+                    /*youzhuan(0.3);//右转微调（左平移会歪）
 
-                    sleep(15);
+                    sleep(15);*/
 
                     qianjin(0);
 
@@ -424,7 +424,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     qianjin(1);//前进
 
-                    sleep(630);
+                    sleep(600);
 
                     qianjin(0);
 
