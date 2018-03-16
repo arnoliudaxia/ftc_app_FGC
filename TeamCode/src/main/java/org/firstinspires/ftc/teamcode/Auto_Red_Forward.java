@@ -38,18 +38,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -78,9 +71,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryV
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@Autonomous(name="Auto_Red_back", group ="Concept")
+@Autonomous(name="Auto_Red_Forward", group ="Concept")
 //@Disabled
-public class Auto_Red_Back extends LinearOpMode {
+public class Auto_Red_Forward extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -273,12 +266,23 @@ public class Auto_Red_Back extends LinearOpMode {
                  * we illustrate it nevertheless, for completeness. */
 
                 if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
-                    qianjin(0.4);//前进
 
-                    sleep(1050);
+                }
 
+                else {//判断为 红色宝石
+                    youzhuan(0.2);
 
-                    qianjin(0.2);//缓停
+                    sleep(300);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    zuozhuan(0.2);
+
+                    sleep(300);
+
+                    qianjin(0);
 
                     kicking_ball(0.6);
 
@@ -288,230 +292,40 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     sleep(200);
 
-
-                    houtui(0.35);//轻怼平衡板定位
-
-                    sleep(650);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    qianjin(0.5);
-
-                    sleep(300);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-
-                    if (vuMark == LEFT){
-                        zuopingyi(1);//左平移
-
-                        sleep(1030);
-
-                    }
-
-                    else if (vuMark == CENTER){//done
-                        zuopingyi(1);//左平移
-
-                        sleep(485);
-                    }
-
-                    else if (vuMark == RIGHT){
-                        zuopingyi(1);//左平移
-
-                        sleep(320);
-                    }
-
-                    qianjin(0);
-
-                    sleep(500);
-
-                    youzhuan(0.3);
-
-                    sleep(20);
-
-                    qianjin(0);
-
-                    sleep(250);
-
-                    qianjin(0.4);//前进一点点
-
-                    sleep(200);
-
-                    qianjin(0);
-
-                    raising(-1);//下降滑轨
-
-                    sleep(950);
-
-                    raising(0.08);//停止滑轨
-
-                    catching_block(0.35, 0.15);//松开方块夹子
-
-                    sleep(300);
-
-                    qianjin(0.4);//往前怼
-
-                    sleep(900);
-
-                    //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
-                    houtui(0.3);//后退一点点
-
-                    sleep(120);
-
-                    youzhuan(0.4);//右转
-
-                    sleep(600);
-
-                    zuozhuan(0.4);//左转
-
-                    sleep(600);
-
-                    qianjin(0.3);//往前推一点点
-
-                    sleep(450);
-
-                    //这里未完（这里if是在前方宝石是蓝色的前提下的，比较简单。下面else 为后方是蓝色宝石的前提下的程序，较为麻烦，所以先写了下面的。）
-                }
-
-                else {//判断为 红色宝石
-                    houtui(0.3);//后退
-
-                    sleep(750);
-
-                    kicking_ball(0.6);
-
-                    sleep(200);
-
-                    kicking_ball(0.8);
-
-                    sleep(200);//缓升击宝石杆子
-
-                    qianjin(0);
-
-                    sleep(500);
-
-                    qianjin(0.3);//轻怼平衡板定位
-
-                    sleep(750);
-
-                    qianjin(0);
-
-                    sleep(500);
-
-                    houtui(0.3);//后退一点点
-
-                    sleep(300);
-
-                    qianjin(0);
-
-                    sleep(500);
-
-                    zuopingyi(1);//左平移
-
-                    sleep(890);
-
-                    youzhuan(0.3);//右转微调（左平移会歪）
-
-                    sleep(25);
-
-                    qianjin(0);
-
-                    sleep(500);
-
-                    qianjin(1);//前进
-
-                    sleep(600);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    youpingyi(0.35);//右平移，轻怼平衡板定位
-
-                    sleep(700);
-
-                    qianjin(0);
-
-                    sleep(500);
-
                     zuopingyi(0.4);
 
-                    sleep(80);
+                    sleep(2000);
 
                     qianjin(0);
 
-                    sleep(300);
+                    sleep(400);
 
-                    qianjin(1);//前进
+                    /*youzhuan(0.6);
+
+                    sleep(60);
+
+                    qianjin(0);
+
+                    sleep(400);*/
+
+                    youpingyi(0.28);
+
+                    sleep(800);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    qianjin(1);
 
                     sleep(500);
 
                     qianjin(0);
-
-                    sleep(400);//此时机器开始判断VuMark
-
-                    if (vuMark == LEFT) {
-                        youpingyi(0.6);//右平移
-
-                        sleep(30);
-                    }
-
-                    if (vuMark == CENTER) {
-                        youpingyi(0.6);//右平移
-
-                        sleep(500);
-                    }
-
-                    if (vuMark == RIGHT) {
-                        youpingyi(0.6);//右平移
-
-                        sleep(960);
-                    }
-
-
-                    qianjin(0.4);//前进一点点
-
-                    sleep(100);
-
-                    qianjin(0);
-
-                    raising(-1);//下降滑轨
-
-                    sleep(950);
-
-                    raising(0.08);//停止滑轨
-
-                    catching_block(0.35, 0.15);//松开方块夹子
-
-                    sleep(300);
-
-                    qianjin(0.4);//往前怼
-
-                    sleep(600);
-
-                    //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
-                    houtui(0.3);//后退一点点
-
-                    sleep(120);
-
-                    zuozhuan(0.4);//左转
-
-                    sleep(400);
-
-                    youzhuan(0.4);//右转
-
-                    sleep(400);
-
-                    qianjin(0.3);//往前推一点点
-
-                    sleep(350);
                 }
 
                 qianjin(0);//停止
+
+                sleep(100000);
             }
 
             else {
