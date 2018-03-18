@@ -311,8 +311,7 @@ public class Auto_Red_Back extends LinearOpMode {
                     if (vuMark == LEFT){
                         zuopingyi(1);//左平移
 
-                        sleep(1030);
-
+                        sleep(990);
                     }
 
                     else if (vuMark == CENTER){//done
@@ -333,7 +332,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     youzhuan(0.3);
 
-                    sleep(20);
+                    sleep(60);
 
                     qianjin(0);
 
@@ -380,7 +379,63 @@ public class Auto_Red_Back extends LinearOpMode {
                 }
 
                 else {//判断为 红色宝石
-                    houtui(0.3);//后退
+                    youzhuan(0.2);
+
+                    sleep(300);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    zuozhuan(0.2);
+
+                    sleep(300);
+
+                    qianjin(0);
+
+                    kicking_ball(0.6);
+
+                    sleep(200);
+
+                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
+
+                    sleep(200);
+
+                    zuopingyi(0.3);
+
+                    sleep(400);
+
+                    qianjin(0);
+
+                    sleep(500);
+
+                    zuopingyi(0.6);
+
+                    sleep(1000);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    zuozhuan(0.6);
+
+                    sleep(20);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    youpingyi(0.28);
+
+                    sleep(700);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    //////////////////////
+
+                    /*houtui(0.3);//后退
 
                     sleep(680);
 
@@ -418,7 +473,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     zuopingyi(1);//左平移
 
-                    sleep(890);
+                    sleep(905);
 
                     qianjin(0);
 
@@ -442,15 +497,15 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     youpingyi(0.35);//右平移，轻怼平衡板定位
 
-                    sleep(550);
+                    sleep(570);
 
                     qianjin(0);
 
-                    sleep(500);
+                    sleep(500);*/
 
                     zuopingyi(0.4);
 
-                    sleep(100);
+                    sleep(120);
 
                     qianjin(0);
 
@@ -458,28 +513,28 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     qianjin(1);//前进
 
-                    sleep(440);
+                    sleep(500);
 
                     qianjin(0);
 
                     sleep(400);//此时机器开始判断VuMark
 
                     if (vuMark == LEFT) {
-                        youpingyi(0.6);//右平移
+                        zuopingyi(0.6);//右平移
 
-                        sleep(30);
+                        sleep(80);
                     }
 
                     if (vuMark == CENTER) {
                         youpingyi(0.6);//右平移
 
-                        sleep(470);
+                        sleep(480);
                     }
 
                     if (vuMark == RIGHT) {
                         youpingyi(0.6);//右平移
 
-                        sleep(970);
+                        sleep(930);
                     }
 
 
