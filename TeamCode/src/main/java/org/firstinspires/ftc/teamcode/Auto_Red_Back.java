@@ -520,9 +520,9 @@ public class Auto_Red_Back extends LinearOpMode {
                     sleep(400);//此时机器开始判断VuMark
 
                     if (vuMark == LEFT) {
-                        zuopingyi(0.6);//右平移
+                        youpingyi(0.6);//右平移
 
-                        sleep(80);
+                        sleep(40);
                     }
 
                     if (vuMark == CENTER) {
