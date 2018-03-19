@@ -29,11 +29,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -51,101 +51,29 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Auto_ceshi", group="Linear Opmode")
-//@Disabled
-public class Auto_ceshi extends LinearOpMode {
+@TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
+@Disabled
+public class cathing_and_raising extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    Servo servo_catching_block_1;
+    Servo servo_catching_block_2;
 
-    private DcMotor motor_zuoqian;
-    private DcMotor motor_youqian;
-    private DcMotor motor_zuohou;
-    private DcMotor motor_youhou;
+    DcMotor motor_raising;
 
-    public void qianjin(double power){
-        motor_zuoqian.setPower(-power);
-        motor_youqian.setPower(power);
-        motor_zuohou.setPower(power);
-        motor_youhou.setPower(power);
-    }
-
-    public void houtui(double power){
-        motor_zuoqian.setPower(power);
-        motor_youqian.setPower(-power);
-        motor_zuohou.setPower(-power);
-        motor_youhou.setPower(-power);
-    }
-
-    public void zuopingyi(double power){
-        motor_zuoqian.setPower(power);
-        motor_youqian.setPower(power);
-        motor_zuohou.setPower(power);
-        motor_youhou.setPower(-power);
-    }
-
-    public void youpingyi(double power){
-        motor_zuoqian.setPower(-power);
-        motor_youqian.setPower(-power);
-        motor_zuohou.setPower(-power);
-        motor_youhou.setPower(power);
-    }
-
-    public void zuozhuan(double power){
-        motor_zuoqian.setPower(power);
-        motor_youqian.setPower(power);
-        motor_zuohou.setPower(-power);
-        motor_youhou.setPower(power);
-    }
-
-    public void youzhuan(double power) {
-        motor_zuoqian.setPower(-power);
-        motor_youqian.setPower(-power);
-        motor_zuohou.setPower(power);
-        motor_youhou.setPower(-power);
-
-    }
-
+    double servo_position_1 = 0.70;
+    double servo_position_2 = 0.10;
+    double power = 0.50;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        motor_zuoqian  = hardwareMap.get(DcMotor.class, "motor_zuoqian");
-        motor_youqian = hardwareMap.get(DcMotor.class, "motor_youqian");
-        motor_zuohou = hardwareMap.get(DcMotor.class, "motor_zuohou");
-        motor_youhou = hardwareMap.get(DcMotor.class, "motor_youhou");
-
-        motor_zuoqian.setDirection(DcMotor.Direction.FORWARD);
-        motor_zuohou.setDirection(DcMotor.Direction.FORWARD);
-        motor_youqian.setDirection(DcMotor.Direction.REVERSE);
-        motor_youhou.setDirection(DcMotor.Direction.REVERSE);
-
-        waitForStart();
-        runtime.reset();
-
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-
-            qianjin(1);
-
-            sleep(500);
-
-            zuopingyi(1);
-
-            sleep(500);
-
-            houtui(1);
-
-            sleep(500);
-
-            youpingyi(1);
-
-            sleep(500);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.update();
         }
     }
