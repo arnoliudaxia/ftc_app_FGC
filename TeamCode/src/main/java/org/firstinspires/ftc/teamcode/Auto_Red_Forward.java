@@ -268,7 +268,7 @@ public class Auto_Red_Forward extends LinearOpMode {
                 if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
                     zuozhuan(0.2);
 
-                    sleep(300);
+                    sleep(350);
 
                     qianjin(0);
 
@@ -276,13 +276,13 @@ public class Auto_Red_Forward extends LinearOpMode {
 
                     youzhuan(0.2);
 
-                    sleep(300);
+                    sleep(350);
                 }
 
                 else {//判断为 红色宝石
                     youzhuan(0.2);
 
-                    sleep(300);
+                    sleep(350);
 
                     qianjin(0);
 
@@ -290,7 +290,7 @@ public class Auto_Red_Forward extends LinearOpMode {
 
                     zuozhuan(0.2);
 
-                    sleep(300);
+                    sleep(350);
                 }
 
                 qianjin(0);
@@ -311,7 +311,7 @@ public class Auto_Red_Forward extends LinearOpMode {
 
                 houtui(0.35);//轻怼平衡板定位
 
-                sleep(650);
+                sleep(750);
 
                 qianjin(0);
 
@@ -337,10 +337,6 @@ public class Auto_Red_Forward extends LinearOpMode {
                     zuopingyi(0.6);//左平移
 
                     sleep(400);
-
-                    youzhuan(0.6);
-
-                    sleep(30);
                 }
 
                 else if (vuMark == CENTER){//done
@@ -350,7 +346,7 @@ public class Auto_Red_Forward extends LinearOpMode {
                 else if (vuMark == RIGHT){
                     youpingyi(0.6);
 
-                    sleep(400);
+                    sleep(420);
                 }
 
                 qianjin(0);
@@ -375,7 +371,7 @@ public class Auto_Red_Forward extends LinearOpMode {
 
                 sleep(400);
 
-                if (vuMark == LEFT){
+                if (vuMark == RIGHT){
                     houtui(0.3);//后退一点点
 
                     sleep(120);
@@ -393,7 +389,7 @@ public class Auto_Red_Forward extends LinearOpMode {
                     sleep(380);
                 }
 
-                if (vuMark == RIGHT){
+                if (vuMark == LEFT){
                     houtui(0.3);//后退一点点
 
                     sleep(120);

@@ -381,7 +381,7 @@ public class Auto_Red_Back extends LinearOpMode {
                 else {//判断为 红色宝石
                     youzhuan(0.2);
 
-                    sleep(300);
+                    sleep(350);
 
                     qianjin(0);
 
@@ -389,7 +389,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     zuozhuan(0.2);
 
-                    sleep(300);
+                    sleep(350);
 
                     qianjin(0);
 
