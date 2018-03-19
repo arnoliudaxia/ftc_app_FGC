@@ -369,9 +369,77 @@ public class Auto_Red_Forward extends LinearOpMode {
 
                 qianjin(0.4);//往前怼
 
-                sleep(1200);
+                sleep(1100);
 
                 qianjin(0);//停止
+
+                sleep(400);
+
+                if (vuMark == LEFT){
+                    houtui(0.3);//后退一点点
+
+                    sleep(120);
+
+                    youzhuan(0.4);//右转
+
+                    sleep(600);
+
+                    zuozhuan(0.4);//左转
+
+                    sleep(600);
+
+                    qianjin(0.3);//往前推一点点
+
+                    sleep(380);
+                }
+
+                if (vuMark == RIGHT){
+                    houtui(0.3);//后退一点点
+
+                    sleep(120);
+
+                    zuozhuan(0.4);//左转
+
+                    sleep(400);
+
+                    youzhuan(0.4);//右转
+
+                    sleep(400);
+
+                    qianjin(0.3);//往前推一点点
+
+                    sleep(380);
+                }
+
+                if (vuMark == CENTER){
+                    zuozhuan(0.4);
+
+                    sleep(100);
+
+                    youzhuan(0.4);
+
+                    sleep(100);
+
+                    zuozhuan(0.4);
+
+                    sleep(250);
+
+                    youzhuan(0.4);
+
+                    sleep(250);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    qianjin(0.3);
+
+                    sleep(200);
+                }
+
+                qianjin(0);
+
+                sleep(100);
 
                 break;
             }

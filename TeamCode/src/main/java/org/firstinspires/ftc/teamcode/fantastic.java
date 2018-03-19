@@ -55,9 +55,9 @@ import com.qualcomm.robotcore.util.Range;
 public class fantastic extends LinearOpMode {
 
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();//计时
 
-    DcMotor motor_zuoqian;
+    DcMotor motor_zuoqian;//定义变量
     DcMotor motor_youqian;
     DcMotor motor_zuohou;
     DcMotor motor_youhou;
@@ -337,7 +337,7 @@ public class fantastic extends LinearOpMode {
 
                 if (gamepad2.left_bumper){
                     if (servo_baby_position_2 < 1){
-                        servo_baby_position_2 = servo_baby_position_2 +0.01;
+                        servo_baby_position_2 = servo_baby_position_2 + 0.03;
 
                         servo_catching_baby_2(servo_baby_position_2);
                     }

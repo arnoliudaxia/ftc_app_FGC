@@ -317,7 +317,7 @@ public class Auto_Red_Back extends LinearOpMode {
                     else if (vuMark == CENTER){//done
                         zuopingyi(1);//左平移
 
-                        sleep(485);
+                        sleep(525);
                     }
 
                     else if (vuMark == RIGHT){
@@ -332,7 +332,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     youzhuan(0.3);
 
-                    sleep(60);
+                    sleep(100);
 
                     qianjin(0);
 
@@ -373,7 +373,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     qianjin(0.3);//往前推一点点
 
-                    sleep(450);
+                    sleep(380);
 
                     //这里未完（这里if是在前方宝石是蓝色的前提下的，比较简单。下面else 为后方是蓝色宝石的前提下的程序，较为麻烦，所以先写了下面的。）
                 }
