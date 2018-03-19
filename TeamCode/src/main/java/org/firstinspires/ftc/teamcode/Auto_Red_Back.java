@@ -55,6 +55,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+import java.security.PrivateKey;
+
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.CENTER;
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.LEFT;
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.RIGHT;
@@ -85,17 +87,17 @@ public class Auto_Red_Back extends LinearOpMode {
     public static final String TAG = "Vuforia VuMark Sample";
 
     private ElapsedTime runtime = new ElapsedTime();
-    DcMotor motor_zuoqian;
-    DcMotor motor_youqian;
-    DcMotor motor_zuohou;
-    DcMotor motor_youhou;
+    private DcMotor motor_zuoqian;
+    private DcMotor motor_youqian;
+    private DcMotor motor_zuohou;
+    private DcMotor motor_youhou;
 
-    Servo servo_catching_block_1;
-    Servo servo_catching_block_2;
+    private Servo servo_catching_block_1;
+    private Servo servo_catching_block_2;
 
-    Servo servo_kicking_ball;
+    private Servo servo_kicking_ball;
 
-    DcMotor motor_raising;
+    private DcMotor motor_raising;
 
     double servo_position_block_1 = 0.70;
     double servo_position_block_2 = 0.00;
@@ -299,7 +301,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     qianjin(0.5);
 
-                    sleep(350);
+                    sleep(300);
 
                     qianjin(0);
 
@@ -309,14 +311,13 @@ public class Auto_Red_Back extends LinearOpMode {
                     if (vuMark == LEFT){
                         zuopingyi(1);//左平移
 
-                        sleep(1030);
-
+                        sleep(990);
                     }
 
-                    else if (vuMark == CENTER){
+                    else if (vuMark == CENTER){//done
                         zuopingyi(1);//左平移
 
-                        sleep(700);
+                        sleep(485);
                     }
 
                     else if (vuMark == RIGHT){
@@ -331,7 +332,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     youzhuan(0.3);
 
-                    sleep(210);
+                    sleep(60);
 
                     qianjin(0);
 
@@ -360,15 +361,15 @@ public class Auto_Red_Back extends LinearOpMode {
                     //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
                     houtui(0.3);//后退一点点
 
-                    sleep(90);
+                    sleep(120);
 
-                    youzhuan(0.6);//右转
+                    youzhuan(0.4);//右转
 
-                    sleep(500);
+                    sleep(600);
 
-                    zuozhuan(0.6);//左转
+                    zuozhuan(0.4);//左转
 
-                    sleep(500);
+                    sleep(600);
 
                     qianjin(0.3);//往前推一点点
 
@@ -378,9 +379,65 @@ public class Auto_Red_Back extends LinearOpMode {
                 }
 
                 else {//判断为 红色宝石
-                    houtui(0.3);//后退
+                    youzhuan(0.2);
 
-                    sleep(750);
+                    sleep(300);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    zuozhuan(0.2);
+
+                    sleep(300);
+
+                    qianjin(0);
+
+                    kicking_ball(0.6);
+
+                    sleep(200);
+
+                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
+
+                    sleep(200);
+
+                    zuopingyi(0.3);
+
+                    sleep(400);
+
+                    qianjin(0);
+
+                    sleep(500);
+
+                    zuopingyi(0.6);
+
+                    sleep(1000);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    zuozhuan(0.6);
+
+                    sleep(20);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    youpingyi(0.28);
+
+                    sleep(700);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    //////////////////////
+
+                    /*houtui(0.3);//后退
+
+                    sleep(680);
 
                     kicking_ball(0.6);
 
@@ -396,15 +453,19 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     qianjin(0.3);//轻怼平衡板定位
 
-                    sleep(1100);
+                    sleep(470);
 
                     qianjin(0);
 
-                    sleep(300);
+                    sleep(500);
+
+                    qianjin(0);
+
+                    sleep(100);
 
                     houtui(0.3);//后退一点点
 
-                    sleep(250);
+                    sleep(300);
 
                     qianjin(0);
 
@@ -412,11 +473,15 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     zuopingyi(1);//左平移
 
-                    sleep(1020);
+                    sleep(905);
+
+                    qianjin(0);
+
+                    sleep(400);
 
                     youzhuan(0.3);//右转微调（左平移会歪）
 
-                    sleep(10);
+                    sleep(155);
 
                     qianjin(0);
 
@@ -424,23 +489,31 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     qianjin(1);//前进
 
-                    sleep(630);
+                    sleep(600);
 
                     qianjin(0);
 
                     sleep(400);
 
-                    youpingyi(0.3);//右平移，轻怼平衡板定位
+                    youpingyi(0.35);//右平移，轻怼平衡板定位
 
-                    sleep(1200);
+                    sleep(570);
 
                     qianjin(0);
 
-                    sleep(400);
+                    sleep(500);*/
+
+                    zuopingyi(0.4);
+
+                    sleep(120);
+
+                    qianjin(0);
+
+                    sleep(300);
 
                     qianjin(1);//前进
 
-                    sleep(525);
+                    sleep(500);
 
                     qianjin(0);
 
@@ -449,31 +522,19 @@ public class Auto_Red_Back extends LinearOpMode {
                     if (vuMark == LEFT) {
                         youpingyi(0.6);//右平移
 
-                        sleep(30);
+                        sleep(40);
                     }
 
                     if (vuMark == CENTER) {
                         youpingyi(0.6);//右平移
 
-                        sleep(495);
+                        sleep(480);
                     }
 
                     if (vuMark == RIGHT) {
                         youpingyi(0.6);//右平移
 
-                        sleep(1000);
-
-                        qianjin(0);
-
-                        sleep(400);
-
-                        qianjin(1);
-
-                        sleep(120);
-
-                        qianjin(0);
-
-                        sleep(300);
+                        sleep(930);
                     }
 
 
@@ -495,29 +556,29 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     qianjin(0.4);//往前怼
 
-                    sleep(650);
+                    sleep(900);
 
                     //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
                     houtui(0.3);//后退一点点
 
-                    sleep(90);
+                    sleep(120);
 
-                    zuozhuan(0.6);//左转
+                    zuozhuan(0.4);//左转
 
-                    sleep(500);
+                    sleep(400);
 
-                    youzhuan(0.6);//右转
+                    youzhuan(0.4);//右转
 
-                    sleep(500);
+                    sleep(400);
 
                     qianjin(0.3);//往前推一点点
 
-                    sleep(450);
+                    sleep(380);
                 }
 
                 qianjin(0);//停止
 
-                sleep(100000);
+                break;
             }
 
             else {

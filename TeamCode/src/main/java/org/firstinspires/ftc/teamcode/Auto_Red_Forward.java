@@ -266,7 +266,17 @@ public class Auto_Red_Forward extends LinearOpMode {
                  * we illustrate it nevertheless, for completeness. */
 
                 if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
+                    zuozhuan(0.2);
 
+                    sleep(300);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    youzhuan(0.2);
+
+                    sleep(300);
                 }
 
                 else {//判断为 红色宝石
@@ -281,51 +291,89 @@ public class Auto_Red_Forward extends LinearOpMode {
                     zuozhuan(0.2);
 
                     sleep(300);
-
-                    qianjin(0);
-
-                    kicking_ball(0.6);
-
-                    sleep(200);
-
-                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
-
-                    sleep(200);
-
-                    zuopingyi(0.4);
-
-                    sleep(2000);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    /*youzhuan(0.6);
-
-                    sleep(60);
-
-                    qianjin(0);
-
-                    sleep(400);*/
-
-                    youpingyi(0.28);
-
-                    sleep(800);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    qianjin(1);
-
-                    sleep(500);
-
-                    qianjin(0);
                 }
+
+                qianjin(0);
+
+                kicking_ball(0.6);
+
+                sleep(200);
+
+                kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
+
+                qianjin(0.4);//前进
+
+                sleep(1050);
+
+                qianjin(0.2);//缓停
+
+                sleep(400);
+
+                houtui(0.35);//轻怼平衡板定位
+
+                sleep(650);
+
+                qianjin(0);
+
+                sleep(400);
+
+                qianjin(0.5);
+
+                sleep(600);
+
+                qianjin(0);
+
+                sleep(400);
+
+                youzhuan(0.6);
+
+                sleep(700);
+
+                qianjin(0);
+
+                sleep(300);
+
+                if (vuMark == LEFT){
+                    zuopingyi(0.6);//左平移
+
+                    sleep(400);
+
+                    youzhuan(0.6);
+
+                    sleep(30);
+                }
+
+                else if (vuMark == CENTER){//done
+
+                }
+
+                else if (vuMark == RIGHT){
+                    youpingyi(0.6);
+
+                    sleep(400);
+                }
+
+                qianjin(0);
+
+                sleep(400);
+
+                raising(-1);//下降滑轨
+
+                sleep(950);
+
+                raising(0.08);//停止滑轨
+
+                catching_block(0.35, 0.15);//松开方块夹子
+
+                sleep(300);
+
+                qianjin(0.4);//往前怼
+
+                sleep(1200);
 
                 qianjin(0);//停止
 
-                sleep(100000);
+                break;
             }
 
             else {

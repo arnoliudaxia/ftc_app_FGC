@@ -73,10 +73,6 @@ public class fantastic extends LinearOpMode {
 
     DcMotor motor_raising;
 
-    double servo_block_position_1 = 0;
-    double servo_block_position_2 = 0.5;
-    double power_raising = 0.50;
-
     double power_zuoqian;
     double power_youqian;
     double power_zuohou;
@@ -208,8 +204,6 @@ public class fantastic extends LinearOpMode {
         servo_catching_baby_1 = hardwareMap.get(Servo.class,"servo_catching_baby_1");
         servo_catching_baby_2 = hardwareMap.get(Servo.class,"servo_catching_baby_2");
 
-        servo_catching_baby_2.setPosition(servo_baby_position_2);
-
         catching_block(0.35,0.3);
 
         // Wait for the game to start (driver presses PLAY)
@@ -268,6 +262,9 @@ public class fantastic extends LinearOpMode {
 
                 if (gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1) {
                     arm_safe_case = false;
+
+                    servo_baby_position_2 = 0.8;
+                    servo_catching_baby_2.setPosition(servo_baby_position_2);
                 }
 
                 if (gamepad2.right_stick_button) {
@@ -291,41 +288,67 @@ public class fantastic extends LinearOpMode {
 
                 //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
                 if (gamepad2.right_trigger != 0) {
-                    if (servo_baby_position_1 <= 1) {
-                        servo_baby_position_1 = servo_baby_position_1 + 0.02;
+                    if (servo_baby_position_1 < 1) {
+                        if (gamepad2.right_trigger >= 0.9){
+                            servo_baby_position_1 = servo_baby_position_1 + 0.02;
+                        }
+
+                        else {
+                            servo_baby_position_1 = servo_baby_position_1 + 0.01;
+                        }
                     }
-                    sleep(50);
+                    sleep(25);
                 }
 
                 if (gamepad2.left_trigger != 0) {
-                    if (servo_baby_position_1 >= 0) {
-                        servo_baby_position_1 = servo_baby_position_1 - 0.02;
+                    if (servo_baby_position_1 > 0) {
+                        if (gamepad2.left_trigger >= 0.9){
+                            servo_baby_position_1 = servo_baby_position_1 - 0.02;
+                        }
+
+                        else {
+                            servo_baby_position_1 = servo_baby_position_1 - 0.01;
+                        }
                     }
-                    sleep(50);
+
+                    sleep(25);
                 }
 
                 servo_catching_baby_1(servo_baby_position_1);
 
                 if (gamepad2.right_bumper && !catching_baby_case) {
-                    servo_catching_baby_2(0.12);
-                    catching_baby_case =true;
+                    servo_catching_baby_2(0.13);
+
+                    servo_baby_position_2 = 0.13;
 
                     while (gamepad2.right_bumper){
-                        sleep(100);
+                        catching_baby_case =true;
                     }
                 }
 
                 if (gamepad2.right_bumper && catching_baby_case) {
                     servo_catching_baby_2(0.8);
-                    catching_baby_case =false;
+                    servo_baby_position_2 = 0.8;
 
                     while (gamepad2.right_bumper){
-                        sleep(100);
+                        catching_baby_case =false;
+                    }
+                }
+
+                if (gamepad2.left_bumper){
+                    if (servo_baby_position_2 < 1){
+                        servo_baby_position_2 = servo_baby_position_2 +0.01;
+
+                        servo_catching_baby_2(servo_baby_position_2);
+                    }
+
+                    while (gamepad2.left_bumper){
+                        sleep(1);
                     }
                 }
 
                 if (gamepad2.dpad_up && !arm_safe_case) {
-                    motor_catching_baby(0.8, -0.48);
+                    motor_catching_baby(0.8, -0.5);
                 } else {
                     motor_catching_baby_1.setPower(0);
                 }
