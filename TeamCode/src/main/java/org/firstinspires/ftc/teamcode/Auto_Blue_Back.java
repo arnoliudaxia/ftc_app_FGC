@@ -71,7 +71,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryV
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@Autonomous(name="Auto_Blue_Forward", group ="Concept")
+@Autonomous(name="Auto_Blue_Back", group ="Concept")
 //@Disabled
 public class Auto_Blue_Back extends LinearOpMode {
 
@@ -381,7 +381,7 @@ public class Auto_Blue_Back extends LinearOpMode {
 
                 houtui(0.3);
 
-                sleep(1080);
+                sleep(1130);
 
                 qianjin(0);
 
@@ -416,7 +416,6 @@ public class Auto_Blue_Back extends LinearOpMode {
 
             break;
         }
-
 
 
             telemetry.update();

@@ -403,7 +403,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     qianjin(0.4);
 
-                    sleep(1050);
+                    sleep(1250);
 
                     qianjin(0);
 
