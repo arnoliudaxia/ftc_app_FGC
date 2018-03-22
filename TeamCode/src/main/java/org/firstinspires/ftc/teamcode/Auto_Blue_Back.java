@@ -165,6 +165,83 @@ public class Auto_Blue_Back extends LinearOpMode {
         motor_raising.setPower(power_raising);
     }
 
+    public void cube(RelicRecoveryVuMark vuMark){
+        if (vuMark == RIGHT){
+            zuopingyi(1);//左平移
+
+            sleep(990);
+        }
+
+        else if (vuMark == CENTER){//done
+            zuopingyi(1);//左平移
+
+            sleep(525);
+        }
+
+        else if (vuMark == LEFT){
+            zuopingyi(1);//左平移
+
+            sleep(320);
+        }
+
+        qianjin(0);
+
+        sleep(500);
+
+        youzhuan(0.3);
+
+        sleep(100);
+
+        qianjin(0);
+
+        sleep(250);
+
+        youzhuan(0.6);
+
+        sleep(1400);
+
+        qianjin(0);
+
+        sleep(400);
+
+        qianjin(0.4);//前进一点点
+
+        sleep(200);
+
+        qianjin(0);
+
+        raising(-1);//下降滑轨
+
+        sleep(950);
+
+        raising(0.08);//停止滑轨
+
+        catching_block(0.35, 0.15);//松开方块夹子
+
+        sleep(300);
+
+        qianjin(0.4);//往前怼
+
+        sleep(900);
+
+        //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
+        houtui(0.3);//后退一点点
+
+        sleep(120);
+
+        youzhuan(0.4);//右转
+
+        sleep(600);
+
+        zuozhuan(0.4);//左转
+
+        sleep(600);
+
+        qianjin(0.3);//往前推一点点
+
+        sleep(380);
+    }
+
     @Override public void runOpMode() {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -188,12 +265,12 @@ public class Auto_Blue_Back extends LinearOpMode {
 
         motor_raising = hardwareMap.dcMotor.get("motor_raising");
 
-        motor_zuoqian  = hardwareMap.get(DcMotor.class, "motor_zuoqian");
+        motor_zuoqian = hardwareMap.get(DcMotor.class, "motor_zuoqian");
         motor_youqian = hardwareMap.get(DcMotor.class, "motor_youqian");
         motor_zuohou = hardwareMap.get(DcMotor.class, "motor_zuohou");
         motor_youhou = hardwareMap.get(DcMotor.class, "motor_youhou");
 
-        servo_kicking_ball = hardwareMap.get(Servo.class,"servo_kicking_ball");
+        servo_kicking_ball = hardwareMap.get(Servo.class, "servo_kicking_ball");
 
         motor_zuoqian.setDirection(DcMotor.Direction.FORWARD);
         motor_zuohou.setDirection(DcMotor.Direction.FORWARD);
@@ -215,7 +292,6 @@ public class Auto_Blue_Back extends LinearOpMode {
         // color of the Robot Controller app to match the hue detected by the RGB sensor.
         int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
         final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
-
 
 
         telemetry.addData(">", "Press Play to start");
@@ -277,9 +353,7 @@ public class Auto_Blue_Back extends LinearOpMode {
                     zuozhuan(0.2);
 
                     sleep(350);
-                }
-
-                else {//判断为 红色宝石
+                } else if (sensorColor.blue() > sensorColor.red()){//判断为 红色宝石
 
                     zuozhuan(0.2);
 
@@ -301,9 +375,11 @@ public class Auto_Blue_Back extends LinearOpMode {
 
                 sleep(200);
 
-                kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
+                kicking_ball(0.8);
 
-                houtui(0.3);//轻怼平衡板定位
+                sleep(200);//缓升击宝石杆子
+
+                houtui(0.3);
 
                 sleep(1080);
 
@@ -311,145 +387,41 @@ public class Auto_Blue_Back extends LinearOpMode {
 
                 sleep(400);
 
-                qianjin(0.3);
+                qianjin(0.3);//轻怼平衡板定位
 
                 sleep(470);
 
                 qianjin(0);
 
-                sleep(400);
+                sleep(500);
 
                 houtui(0.5);
 
-                sleep(600);
-
-                qianjin(0);
-
-                sleep(400);
-
-                youzhuan(0.6);
-
-                sleep(700);
-
-                qianjin(0);
-
                 sleep(300);
 
-                if (vuMark == LEFT){
-                    zuopingyi(0.6);//左平移
-
-                    sleep(400);
-                }
-
-                else if (vuMark == CENTER){//done
-
-                }
-
-                else if (vuMark == RIGHT){
-                    youpingyi(0.6);
-
-                    sleep(420);
-                }
-
                 qianjin(0);
 
                 sleep(400);
-
-                raising(-1);//下降滑轨
-
-                sleep(950);
-
-                raising(0.08);//停止滑轨
-
-                catching_block(0.35, 0.15);//松开方块夹子
-
-                sleep(300);
-
-                qianjin(0.4);//往前怼
-
-                sleep(1100);
-
-                qianjin(0);//停止
-
-                sleep(400);
-
-                if (vuMark == RIGHT){
-                    houtui(0.3);//后退一点点
-
-                    sleep(120);
-
-                    youzhuan(0.4);//右转
-
-                    sleep(600);
-
-                    zuozhuan(0.4);//左转
-
-                    sleep(600);
-
-                    qianjin(0.3);//往前推一点点
-
-                    sleep(380);
-                }
-
-                if (vuMark == LEFT){
-                    houtui(0.3);//后退一点点
-
-                    sleep(120);
-
-                    zuozhuan(0.4);//左转
-
-                    sleep(400);
-
-                    youzhuan(0.4);//右转
-
-                    sleep(400);
-
-                    qianjin(0.3);//往前推一点点
-
-                    sleep(380);
-                }
-
-                if (vuMark == CENTER){
-                    zuozhuan(0.4);
-
-                    sleep(100);
-
-                    youzhuan(0.4);
-
-                    sleep(100);
-
-                    zuozhuan(0.4);
-
-                    sleep(250);
-
-                    youzhuan(0.4);
-
-                    sleep(250);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    qianjin(0.3);
-
-                    sleep(200);
-                }
-
-                qianjin(0);
-
-                sleep(100);
-
-                break;
             }
 
-            else {
+            else{
                 telemetry.addData("VuMark", "not visible");
             }
+
+            cube(vuMark);
+
+            qianjin(0);
+
+            sleep(100);
+
+            break;
+        }
+
 
 
             telemetry.update();
         }
-    }
+
         String format(OpenGLMatrix transformationMatrix) {
             return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
         }
