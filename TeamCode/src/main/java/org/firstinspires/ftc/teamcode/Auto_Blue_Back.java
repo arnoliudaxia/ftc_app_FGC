@@ -38,24 +38,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-
-import java.security.PrivateKey;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.CENTER;
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.LEFT;
@@ -80,24 +71,24 @@ import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryV
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@Autonomous(name="Auto_Red_back", group ="Concept")
+@Autonomous(name="Auto_Blue_Forward", group ="Concept")
 //@Disabled
-public class Auto_Red_Back extends LinearOpMode {
+public class Auto_Blue_Back extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor motor_zuoqian;
-    private DcMotor motor_youqian;
-    private DcMotor motor_zuohou;
-    private DcMotor motor_youhou;
+    DcMotor motor_zuoqian;
+    DcMotor motor_youqian;
+    DcMotor motor_zuohou;
+    DcMotor motor_youhou;
 
-    private Servo servo_catching_block_1;
-    private Servo servo_catching_block_2;
+    Servo servo_catching_block_1;
+    Servo servo_catching_block_2;
 
-    private Servo servo_kicking_ball;
+    Servo servo_kicking_ball;
 
-    private DcMotor motor_raising;
+    DcMotor motor_raising;
 
     double servo_position_block_1 = 0.70;
     double servo_position_block_2 = 0.00;
@@ -172,75 +163,6 @@ public class Auto_Red_Back extends LinearOpMode {
 
     public void raising(double power_raising){
         motor_raising.setPower(power_raising);
-    }
-
-    public void cube(RelicRecoveryVuMark vuMark){
-        if (vuMark == LEFT){
-            zuopingyi(1);//左平移
-
-            sleep(990);
-        }
-
-        else if (vuMark == CENTER){//done
-            zuopingyi(1);//左平移
-
-            sleep(525);
-        }
-
-        else if (vuMark == RIGHT){
-            zuopingyi(1);//左平移
-
-            sleep(320);
-        }
-
-        qianjin(0);
-
-        sleep(500);
-
-        youzhuan(0.3);
-
-        sleep(100);
-
-        qianjin(0);
-
-        sleep(250);
-
-        qianjin(0.4);//前进一点点
-
-        sleep(200);
-
-        qianjin(0);
-
-        raising(-1);//下降滑轨
-
-        sleep(950);
-
-        raising(0.08);//停止滑轨
-
-        catching_block(0.35, 0.15);//松开方块夹子
-
-        sleep(300);
-
-        qianjin(0.4);//往前怼
-
-        sleep(900);
-
-        //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
-        houtui(0.3);//后退一点点
-
-        sleep(120);
-
-        youzhuan(0.4);//右转
-
-        sleep(600);
-
-        zuozhuan(0.4);//左转
-
-        sleep(600);
-
-        qianjin(0.3);//往前推一点点
-
-        sleep(380);
     }
 
     @Override public void runOpMode() {
@@ -344,41 +266,6 @@ public class Auto_Red_Back extends LinearOpMode {
                  * we illustrate it nevertheless, for completeness. */
 
                 if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
-                    qianjin(0.4);//前进
-
-                    sleep(1050);
-
-                    qianjin(0.2);//缓停
-
-                    kicking_ball(0.6);
-
-                    sleep(200);
-
-                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
-
-                    sleep(200);
-
-
-                    houtui(0.35);//轻怼平衡板定位
-
-                    sleep(650);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    qianjin(0.5);
-
-                    sleep(300);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    //这里未完（这里if是在前方宝石是蓝色的前提下的，比较简单。下面else 为后方是蓝色宝石的前提下的程序，较为麻烦，所以先写了下面的。）
-                }
-
-                else {//判断为 红色宝石
                     youzhuan(0.2);
 
                     sleep(350);
@@ -390,45 +277,167 @@ public class Auto_Red_Back extends LinearOpMode {
                     zuozhuan(0.2);
 
                     sleep(350);
+                }
 
-                    qianjin(0);
+                else {//判断为 红色宝石
 
-                    kicking_ball(0.6);
+                    zuozhuan(0.2);
 
-                    sleep(200);
-
-                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
-
-                    sleep(200);
-
-                    qianjin(0.4);
-
-                    sleep(1050);
+                    sleep(350);
 
                     qianjin(0);
 
                     sleep(400);
 
-                    houtui(0.35);//轻怼平衡板定位
+                    youzhuan(0.2);
 
-                    sleep(650);
+                    sleep(350);
 
-                    qianjin(0);
+                }
 
-                    sleep(400);
+                qianjin(0);
 
-                    qianjin(0.5);
+                kicking_ball(0.6);
 
-                    sleep(300);
+                sleep(200);
 
-                    qianjin(0);
+                kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
+
+                houtui(0.3);//轻怼平衡板定位
+
+                sleep(1080);
+
+                qianjin(0);
+
+                sleep(400);
+
+                qianjin(0.3);
+
+                sleep(470);
+
+                qianjin(0);
+
+                sleep(400);
+
+                houtui(0.5);
+
+                sleep(600);
+
+                qianjin(0);
+
+                sleep(400);
+
+                youzhuan(0.6);
+
+                sleep(700);
+
+                qianjin(0);
+
+                sleep(300);
+
+                if (vuMark == LEFT){
+                    zuopingyi(0.6);//左平移
 
                     sleep(400);
                 }
 
-                cube(vuMark);
+                else if (vuMark == CENTER){//done
+
+                }
+
+                else if (vuMark == RIGHT){
+                    youpingyi(0.6);
+
+                    sleep(420);
+                }
+
+                qianjin(0);
+
+                sleep(400);
+
+                raising(-1);//下降滑轨
+
+                sleep(950);
+
+                raising(0.08);//停止滑轨
+
+                catching_block(0.35, 0.15);//松开方块夹子
+
+                sleep(300);
+
+                qianjin(0.4);//往前怼
+
+                sleep(1100);
 
                 qianjin(0);//停止
+
+                sleep(400);
+
+                if (vuMark == RIGHT){
+                    houtui(0.3);//后退一点点
+
+                    sleep(120);
+
+                    youzhuan(0.4);//右转
+
+                    sleep(600);
+
+                    zuozhuan(0.4);//左转
+
+                    sleep(600);
+
+                    qianjin(0.3);//往前推一点点
+
+                    sleep(380);
+                }
+
+                if (vuMark == LEFT){
+                    houtui(0.3);//后退一点点
+
+                    sleep(120);
+
+                    zuozhuan(0.4);//左转
+
+                    sleep(400);
+
+                    youzhuan(0.4);//右转
+
+                    sleep(400);
+
+                    qianjin(0.3);//往前推一点点
+
+                    sleep(380);
+                }
+
+                if (vuMark == CENTER){
+                    zuozhuan(0.4);
+
+                    sleep(100);
+
+                    youzhuan(0.4);
+
+                    sleep(100);
+
+                    zuozhuan(0.4);
+
+                    sleep(250);
+
+                    youzhuan(0.4);
+
+                    sleep(250);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    qianjin(0.3);
+
+                    sleep(200);
+                }
+
+                qianjin(0);
+
+                sleep(100);
 
                 break;
             }
@@ -446,74 +455,5 @@ public class Auto_Red_Back extends LinearOpMode {
         }
 }
 
-//////////////////////
-
-                    /*houtui(0.3);//后退
-
-                    sleep(680);
-
-                    kicking_ball(0.6);
-
-                    sleep(200);
-
-                    kicking_ball(0.8);
-
-                    sleep(200);//缓升击宝石杆子
-
-                    qianjin(0);
-
-                    sleep(500);
-
-                    qianjin(0.3);//轻怼平衡板定位
-
-                    sleep(470);
-
-                    qianjin(0);
-
-                    sleep(500);
-
-                    qianjin(0);
-
-                    sleep(100);
-
-                    houtui(0.3);//后退一点点
-
-                    sleep(300);
-
-                    qianjin(0);
-
-                    sleep(500);
-
-                    zuopingyi(1);//左平移
-
-                    sleep(905);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    youzhuan(0.3);//右转微调（左平移会歪）
-
-                    sleep(155);
-
-                    qianjin(0);
-
-                    sleep(500);
-
-                    qianjin(1);//前进
-
-                    sleep(600);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    youpingyi(0.35);//右平移，轻怼平衡板定位
-
-                    sleep(570);
-
-                    qianjin(0);
-
-                    sleep(500);*/
 
 
