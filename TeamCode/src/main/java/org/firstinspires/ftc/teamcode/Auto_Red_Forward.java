@@ -227,12 +227,15 @@ public class Auto_Red_Forward extends LinearOpMode {
 
         sleep(300);
 
-        kicking_ball(0.35);
+        kicking_ball(0.25);
 
-        sleep(300);
-
+        sleep(350);
 
         kicking_ball(0.2);
+
+        sleep(350);
+
+        kicking_ball(0.17);
 
         sleep(300);//以上三步为 缓降 击宝石的杆子
 
@@ -241,6 +244,8 @@ public class Auto_Red_Forward extends LinearOpMode {
         sleep(1200);
 
         raising(0.08);//卡住滑轨
+
+        sleep(1000);
 
 
         relicTrackables.activate();
@@ -274,6 +279,12 @@ public class Auto_Red_Forward extends LinearOpMode {
 
                     sleep(400);
 
+                    kicking_ball(0.6);
+
+                    sleep(200);
+
+                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
+
                     youzhuan(0.2);
 
                     sleep(320);
@@ -288,6 +299,12 @@ public class Auto_Red_Forward extends LinearOpMode {
 
                     sleep(400);
 
+                    kicking_ball(0.6);
+
+                    sleep(200);
+
+                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
+
                     zuozhuan(0.2);
 
                     sleep(320);
@@ -295,17 +312,13 @@ public class Auto_Red_Forward extends LinearOpMode {
 
                 qianjin(0);
 
-                kicking_ball(0.6);
-
-                sleep(200);
-
-                kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
+                sleep(300);
 
                 qianjin(0.4);//前进
 
-                sleep(1050);
+                sleep(950);
 
-                qianjin(0.2);//缓停
+                qianjin(0);
 
                 sleep(300);
 
@@ -342,7 +355,7 @@ public class Auto_Red_Forward extends LinearOpMode {
                 else if (vuMark == CENTER){//done
                     youpingyi(0.6);
 
-                    sleep(70);
+                    sleep(100);
                 }
 
                 else if (vuMark == RIGHT){

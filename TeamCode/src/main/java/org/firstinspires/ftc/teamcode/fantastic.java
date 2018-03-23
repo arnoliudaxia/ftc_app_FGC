@@ -253,7 +253,7 @@ public class fantastic extends LinearOpMode {
                 }
 
                 if (gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {//左、右转向
-                    zuozhuan(gamepad1.left_trigger - gamepad1.right_trigger, PowerMode+0.5);
+                    zuozhuan(gamepad1.left_trigger - gamepad1.right_trigger, PowerMode+1);
                 } else {
                     qianjin(0, PowerMode);
                 }
