@@ -57,7 +57,7 @@ public class Translation_moving extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    DcMotor motor_zuoqian;
+    DcMotor motor_zuoqian;//定义底盘电机
     DcMotor motor_youqian;
     DcMotor motor_zuohou;
     DcMotor motor_youhou;
@@ -69,19 +69,19 @@ public class Translation_moving extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        motor_zuoqian  = hardwareMap.get(DcMotor.class, "motor_zuoqian");
+        motor_zuoqian  = hardwareMap.get(DcMotor.class, "motor_zuoqian");//获得底盘硬件设备
         motor_youqian = hardwareMap.get(DcMotor.class, "motor_youqian");
         motor_zuohou = hardwareMap.get(DcMotor.class, "motor_zuohou");
         motor_youhou = hardwareMap.get(DcMotor.class, "motor_youhou");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        motor_zuoqian.setDirection(DcMotor.Direction.FORWARD);
+        motor_zuoqian.setDirection(DcMotor.Direction.FORWARD);//设置电机方向
         motor_zuohou.setDirection(DcMotor.Direction.FORWARD);
         motor_youqian.setDirection(DcMotor.Direction.REVERSE);
         motor_youhou.setDirection(DcMotor.Direction.REVERSE);
 
-        double power_zuoqian;
+        double power_zuoqian;//定义底盘电机驱动功率
         double power_youqian;
         double power_zuohou;
         double power_youhou;
@@ -90,14 +90,14 @@ public class Translation_moving extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        power_zuoqian = 0;
+        power_zuoqian = 0;//初始化电机驱动功率
         power_youqian = 0;
         power_zuohou = 0;
         power_youhou = 0;
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0) {
+            if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0) {//麦轮平移
                 power_zuoqian = gamepad1.left_stick_y - gamepad1.left_stick_x;
                 power_youqian = gamepad1.left_stick_y + gamepad1.left_stick_x;
                 power_zuohou = gamepad1.left_stick_y + gamepad1.left_stick_x;
@@ -109,14 +109,14 @@ public class Translation_moving extends LinearOpMode {
                 motor_youhou.setPower(-power_youhou);
             }
 
-            if (gamepad1.left_bumper == true){
+            if (gamepad1.left_bumper == true){//左平移
                 motor_zuoqian.setPower(0.6);
                 motor_youqian.setPower(0.6);
                 motor_zuohou.setPower(-0.6);
                 motor_youhou.setPower(0.6);
             }
 
-            else if (gamepad1.right_bumper == true){
+            else if (gamepad1.right_bumper == true){//右平移
                 motor_zuoqian.setPower(-0.6);
                 motor_youqian.setPower(-0.6);
                 motor_zuohou.setPower(0.6);

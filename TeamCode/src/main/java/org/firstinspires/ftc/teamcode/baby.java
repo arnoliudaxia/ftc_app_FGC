@@ -97,44 +97,44 @@ public class baby extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if(gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1){
+            if(gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1){//机械臂安全锁
                 safe_case = false;
             }
 
-            if(gamepad2.right_stick_button){
+            if(gamepad2.right_stick_button){//初始化机械臂
                 safe_case = true;
 
                 motor_catching_baby_1.setPower(0);
                 motor_catching_baby_2.setPower(0);
             }
 
-            if(gamepad2.dpad_right){
+            if(gamepad2.dpad_right){//降第三节机械臂
                 if(servo_baby_position_1 <= 1){
                     servo_baby_position_1 = servo_baby_position_1 + 0.02;
                 }
                 sleep(50);
             }
 
-            if(gamepad2.dpad_left){
+            if(gamepad2.dpad_left){//抬第三节机械臂
                 if(servo_baby_position_1 >= 0){
                     servo_baby_position_1 = servo_baby_position_1 - 0.02;
                 }
                 sleep(50);
             }
 
-            if(gamepad2.right_bumper){
+            if(gamepad2.right_bumper){//夹小人舵机
                 servo_baby_position_2 = 0.15;
                 servo_catching_baby_2.setPosition(servo_baby_position_2);
             }
 
-            if(gamepad2.left_bumper){
+            if(gamepad2.left_bumper){//松小人舵机
                 servo_baby_position_2 = 0.8;
                 servo_catching_baby_2.setPosition(servo_baby_position_2);
             }
 
             servo_catching_baby_1.setPosition(servo_baby_position_1);
 
-            if(gamepad2.dpad_up && !safe_case){
+            if(gamepad2.dpad_up && !safe_case){//伸出机械臂
                 power_baby_1 = 0.8;
                 power_baby_2 = -0.5;
                 motor_catching_baby_1.setPower(power_baby_1);
@@ -145,7 +145,7 @@ public class baby extends LinearOpMode {
                 motor_catching_baby_1.setPower(0);
             }
 
-            if(gamepad2.dpad_down && !safe_case){
+            if(gamepad2.dpad_down && !safe_case){//收回机械臂
                 power_baby_1 = -0.8;
                 power_baby_2 = 0.2;
                 motor_catching_baby_1.setPower(power_baby_1);

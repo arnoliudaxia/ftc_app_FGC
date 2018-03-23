@@ -90,21 +90,21 @@ public class Turning_moving extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if (gamepad1.left_bumper == true){
+            if (gamepad1.left_bumper == true){//左转向
                 motor_zuoqian.setPower(0.6);
                 motor_youqian.setPower(0.6);
                 motor_zuohou.setPower(-0.6);
                 motor_youhou.setPower(0.6);
             }
 
-            else if (gamepad1.right_bumper == true){
+            else if (gamepad1.right_bumper == true){//右转向
                 motor_zuoqian.setPower(-0.6);
                 motor_youqian.setPower(-0.6);
                 motor_zuohou.setPower(0.6);
                 motor_youhou.setPower(-0.6);
             }
 
-            else {
+            else {//否则则停止
                 motor_zuoqian.setPower(0);
                 motor_youqian.setPower(0);
                 motor_zuohou.setPower(0);

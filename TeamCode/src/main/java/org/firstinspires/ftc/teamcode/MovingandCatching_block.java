@@ -55,17 +55,17 @@ public class MovingandCatching_block extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    DcMotor motor_zuoqian;
+    DcMotor motor_zuoqian;//定义底盘电机
     DcMotor motor_youqian;
     DcMotor motor_zuohou;
     DcMotor motor_youhou;
 
-    Servo servo_catching_block_1;
+    Servo servo_catching_block_1;//定义夹持方块的舵机
     Servo servo_catching_block_2;
 
-    DcMotor motor_raising;
+    DcMotor motor_raising;//定义滑轨电机
 
-    double servo_position_1 = 0.35;
+    double servo_position_1 = 0.35;//定义夹持方块的舵机和滑轨position和功率
     double servo_position_2 = 0.15;
     double power = 0.50;
 

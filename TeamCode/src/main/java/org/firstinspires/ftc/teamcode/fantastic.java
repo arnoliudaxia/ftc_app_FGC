@@ -88,7 +88,7 @@ public class fantastic extends LinearOpMode {
 
     double PowerMode = 1;//切换快/慢速模式
 
-    public void qianjin(double power,double power_mode){
+    public void qianjin(double power,double power_mode){//前进函数
         double FinalPower = Range.clip(power/power_mode, 0, 1);
         motor_zuoqian.setPower(-FinalPower);
         motor_youqian.setPower(FinalPower);
@@ -96,7 +96,7 @@ public class fantastic extends LinearOpMode {
         motor_youhou.setPower(FinalPower);
     }
 
-    public void houtui(double power,double power_mode){
+    public void houtui(double power,double power_mode){//后退函数
         double FinalPower = Range.clip(power/power_mode, 0, 1);
         motor_zuoqian.setPower(FinalPower);
         motor_youqian.setPower(-FinalPower);
@@ -104,7 +104,7 @@ public class fantastic extends LinearOpMode {
         motor_youhou.setPower(-FinalPower);
     }
 
-    public void zuopingyi(double power,double power_mode){
+    public void zuopingyi(double power,double power_mode){//左平移函数
         double FinalPower = Range.clip(power/power_mode, 0, 1);
         motor_zuoqian.setPower(FinalPower);
         motor_youqian.setPower(FinalPower);
@@ -112,7 +112,7 @@ public class fantastic extends LinearOpMode {
         motor_youhou.setPower(-FinalPower);
     }
 
-    public void youpingyi(double power,double power_mode){
+    public void youpingyi(double power,double power_mode){//右平移函数
         double FinalPower = Range.clip(power/power_mode, 0, 1);
         motor_zuoqian.setPower(-FinalPower);
         motor_youqian.setPower(-FinalPower);
@@ -120,7 +120,7 @@ public class fantastic extends LinearOpMode {
         motor_youhou.setPower(FinalPower);
     }
 
-    public void zuozhuan(double power,double power_mode){
+    public void zuozhuan(double power,double power_mode){//左转函数
         double FinalPower = Range.clip(power/power_mode, -1, 1);
         motor_zuoqian.setPower(FinalPower);
         motor_youqian.setPower(FinalPower);
@@ -128,7 +128,7 @@ public class fantastic extends LinearOpMode {
         motor_youhou.setPower(FinalPower);
     }
 
-    public void youzhuan(double power,double power_mode){
+    public void youzhuan(double power,double power_mode){//右转函数
         double FinalPower = Range.clip(power/power_mode, -1, 1);
         motor_zuoqian.setPower(-FinalPower);
         motor_youqian.setPower(-FinalPower);
@@ -136,29 +136,29 @@ public class fantastic extends LinearOpMode {
         motor_youhou.setPower(-FinalPower);
     }
 
-    public void catching_block(double servo_block_position_1,double servo_block_position_2){
+    public void catching_block(double servo_block_position_1,double servo_block_position_2){//夹持方块函数
         servo_catching_block_1.setPosition(servo_block_position_1);
         servo_catching_block_2.setPosition(servo_block_position_2);
     }
 
-    public void motor_catching_baby(double power_baby_1,double power_baby_2){
+    public void motor_catching_baby(double power_baby_1,double power_baby_2){//机械臂电机函数
         motor_catching_baby_1.setPower(power_baby_1);
         motor_catching_baby_2.setPower(power_baby_2);
     }
 
-    public void servo_catching_baby_1(double servo_baby_position_1){
+    public void servo_catching_baby_1(double servo_baby_position_1){//夹小人第三节舵机函数
         servo_catching_baby_1.setPosition(servo_baby_position_1);
     }
 
-    public void servo_catching_baby_2(double servo_baby_position_2){
+    public void servo_catching_baby_2(double servo_baby_position_2){//夹小人末节舵机函数
         servo_catching_baby_2.setPosition(servo_baby_position_2);
     }
 
-    public void raising(double power_raising){
+    public void raising(double power_raising){//滑轨抬升函数
         motor_raising.setPower(power_raising);
     }
 
-    public double switch_PowerMode(){
+    public double switch_PowerMode(){//切换低/高速模式函数
         if(gamepad1.x){
             return (2.5);
         }
@@ -219,7 +219,7 @@ public class fantastic extends LinearOpMode {
         while (opModeIsActive()) {
                 PowerMode = switch_PowerMode();
 
-                if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0) {
+                if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0) {//底盘平移
                     power_zuoqian = gamepad1.left_stick_y - gamepad1.left_stick_x;
                     power_youqian = gamepad1.left_stick_y + gamepad1.left_stick_x;
                     power_zuohou = gamepad1.left_stick_y + gamepad1.left_stick_x;
@@ -231,7 +231,7 @@ public class fantastic extends LinearOpMode {
                     motor_youhou.setPower(-power_youhou / PowerMode);
                 }
 
-                if (gamepad1.dpad_up || gamepad1.dpad_left || gamepad1.dpad_right || gamepad1.dpad_down) {
+                if (gamepad1.dpad_up || gamepad1.dpad_left || gamepad1.dpad_right || gamepad1.dpad_down) {//dpad的底盘中速运行模式
                     if (gamepad1.dpad_up) {
                         qianjin(0.7, PowerMode);
                     } else if (gamepad1.dpad_down) {
@@ -244,7 +244,7 @@ public class fantastic extends LinearOpMode {
                 }
 
 
-                if (gamepad1.left_bumper || gamepad1.right_bumper) {
+                if (gamepad1.left_bumper || gamepad1.right_bumper) {//左、右平移
                     if (gamepad1.left_bumper) {
                         zuopingyi(1, 1);
                     } else if (gamepad1.right_bumper) {
@@ -252,7 +252,7 @@ public class fantastic extends LinearOpMode {
                     }
                 }
 
-                if (gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {
+                if (gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {//左、右转向
                     zuozhuan(gamepad1.left_trigger - gamepad1.right_trigger, PowerMode+0.5);
                 } else {
                     qianjin(0, PowerMode);
@@ -260,41 +260,41 @@ public class fantastic extends LinearOpMode {
 
 
 
-                if (gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1) {
+                if (gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1) {//机械臂安全锁
                     arm_safe_case = false;
 
                     servo_baby_position_2 = 0.8;
                     servo_catching_baby_2.setPosition(servo_baby_position_2);
                 }
 
-                if (gamepad2.right_stick_button) {
+                if (gamepad2.right_stick_button) {//初始化机械臂
                     arm_safe_case = true;
                     motor_catching_baby(0, 0);
                 }
 
-                if (gamepad2.x) {
+                if (gamepad2.x) {//夹持方块
                     catching_block(0.70, 0.0);
-                } else if (gamepad2.b) {
+                } else if (gamepad2.b) {//松开方块
                     catching_block(0.35, 0.3);
                 }
 
-                if (gamepad2.y) {
+                if (gamepad2.y) {//抬升滑轨
                     raising(1);
-                } else if (gamepad2.a) {
+                } else if (gamepad2.a) {//下降滑轨
                     raising(-1);
-                } else {
+                } else {//卡住滑轨
                     raising(0.08);
                 }
 
                 //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
                 if (gamepad2.right_trigger != 0) {
                     if (servo_baby_position_1 < 1) {
-                        if (gamepad2.right_trigger >= 0.9){
+                        if (gamepad2.right_trigger >= 0.9){//快速降机械臂第三节
                             servo_baby_position_1 = servo_baby_position_1 + 0.02;
                         }
 
                         else {
-                            servo_baby_position_1 = servo_baby_position_1 + 0.01;
+                            servo_baby_position_1 = servo_baby_position_1 + 0.01;//慢速降机械臂第三节
                         }
                     }
                     sleep(25);
@@ -316,7 +316,7 @@ public class fantastic extends LinearOpMode {
 
                 servo_catching_baby_1(servo_baby_position_1);
 
-                if (gamepad2.right_bumper && !catching_baby_case) {
+                if (gamepad2.right_bumper && !catching_baby_case) {//机械臂末节夹持小人
                     servo_catching_baby_2(0.13);
 
                     servo_baby_position_2 = 0.13;
@@ -326,7 +326,7 @@ public class fantastic extends LinearOpMode {
                     }
                 }
 
-                if (gamepad2.right_bumper && catching_baby_case) {
+                if (gamepad2.right_bumper && catching_baby_case) {//机械臂末节松开小人
                     servo_catching_baby_2(0.8);
                     servo_baby_position_2 = 0.8;
 
@@ -337,7 +337,7 @@ public class fantastic extends LinearOpMode {
 
                 if (gamepad2.left_bumper){
                     if (servo_baby_position_2 < 1){
-                        servo_baby_position_2 = servo_baby_position_2 + 0.03;
+                        servo_baby_position_2 = servo_baby_position_2 + 0.03;//慢速松末节机械臂夹子
 
                         servo_catching_baby_2(servo_baby_position_2);
                     }

@@ -56,15 +56,15 @@ public class Catching_block extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     Servo servo_catching_block_1;
-    Servo servo_catching_block_2;
+    Servo servo_catching_block_2;//定义夹持方块的舵机
 
     Servo servo_kicking_ball;
 
     DcMotor motor_raising;
 
-    double servo_position_1 = 0.40;
+    double servo_position_1 = 0.40;//定义夹持方块的舵机的position
     double servo_position_2 = 0.00;
-    double power_raising = 0.50;
+    double power_raising = 0.50;//定义滑轨功率
 
     double servo_position_ball = 1;
 
@@ -113,31 +113,31 @@ public class Catching_block extends LinearOpMode {
 
             servo_kicking_ball.setPosition(servo_position_ball);
 
-            if(gamepad2.x) {
+            if(gamepad2.x) {//夹持方块
                 servo_position_1 = 0.00;
                 servo_position_2 = 0.40;
                 servo_catching_block_1.setPosition(servo_position_1);
                 servo_catching_block_2.setPosition(servo_position_2);
             }
 
-            else if(gamepad2.b){
+            else if(gamepad2.b){//松开方块
                 servo_position_1 = 0.40;
                 servo_position_2 = 0.00;
                 servo_catching_block_1.setPosition(servo_position_1);
                 servo_catching_block_2.setPosition(servo_position_2);
             }
 
-            if(gamepad2.y){
+            if(gamepad2.y){//抬升滑轨
                 power_raising = 1.0;
                 motor_raising.setPower(power_raising);
             }
 
-            else if(gamepad2.a){
+            else if(gamepad2.a){//降下滑轨
                 power_raising = -1.0;
                 motor_raising.setPower(power_raising);
             }
 
-            else {
+            else {//锁死滑轨
                 power_raising = 0.08;
                 motor_raising.setPower(power_raising);
             }

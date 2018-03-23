@@ -89,6 +89,7 @@ public class ConceptVuMarkIdentification_DN extends LinearOpMode {
          */
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        //定义新相机监视器方法并将相机拍摄内容显示在RC手机上
 
         // OR...  Do Not Activate the Camera Monitor View, to save power
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -106,13 +107,13 @@ public class ConceptVuMarkIdentification_DN extends LinearOpMode {
          * and paste it in to your code onthe next line, between the double quotes.
          */
         parameters.vuforiaLicenseKey = "AVBZ8J//////AAAAmUh1NI3160yckxL9jxR0wQcUr8yieqkZdNjB+5YalDuty4KXzCOkSolr6sHq3/fpV/RIj6mOgl8bULILxJBdKOoGjAMVic54WUzwQk0Le88nb3sV20pEMonnqTnWvKp/pmpe5PPJJQE2gjs58sJSX7ROIBRMsDjVhu09ep3cmmyVhdIBLjkgvKafXDVtjpzAJJ/3HDenn2ocZ10F66ZHgSg7muIuMsobb30shiby9l9E30KN8Hy6GXu8BQlaBMzy4sRclYcCApVw/hFUUNN25tCFc0ex2Zn71AWr/1DyPwEWiva0M+75k8L3Nz2NTqv2bEruKLahBbjmT2haZ0cfOhiUuDwA4bfpfTyg0iRv0hHV";
-
+//Key
         /*
          * We also indicate which camera on the RC that we wish to use.
          * Here we chose the back (HiRes) camera (for greater range), but
          * for a competition robot, the front camera might be more convenient.
          */
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;//设置使用后摄像头
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
         /**
@@ -156,16 +157,16 @@ public class ConceptVuMarkIdentification_DN extends LinearOpMode {
                 /* We further illustrate how to decompose the pose into useful rotational and
                  * translational components */
                 if (pose != null) {
-                    VectorF trans = pose.getTranslation();
-                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+                    VectorF trans = pose.getTranslation();//获得pose姿态的三轴偏移量
+                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);//Robot姿态
 
                     // Extract the X, Y, and Z components of the offset of the target relative to the robot
-                    double tX = trans.get(0);
+                    double tX = trans.get(0);//定义XYZ轴偏移量
                     double tY = trans.get(1);
                     double tZ = trans.get(2);
 
                     // Extract the rotational components of the target relative to the robot
-                    double rX = rot.firstAngle;
+                    double rX = rot.firstAngle;//定义XYZ轴角动量
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
 
