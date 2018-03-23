@@ -217,7 +217,7 @@ public class fantastic extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-                PowerMode = switch_PowerMode();
+                PowerMode = switch_PowerMode();//PowerMode变量——switch_PowerMode方法，PowerMode变量将有1（正常速度）、2.5（慢速）的返回值
 
                 if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0) {//底盘平移
                     power_zuoqian = gamepad1.left_stick_y - gamepad1.left_stick_x;
@@ -302,12 +302,12 @@ public class fantastic extends LinearOpMode {
 
                 if (gamepad2.left_trigger != 0) {
                     if (servo_baby_position_1 > 0) {
-                        if (gamepad2.left_trigger >= 0.9){
+                        if (gamepad2.left_trigger >= 0.9){//快速升机械臂第三节
                             servo_baby_position_1 = servo_baby_position_1 - 0.02;
                         }
 
                         else {
-                            servo_baby_position_1 = servo_baby_position_1 - 0.01;
+                            servo_baby_position_1 = servo_baby_position_1 - 0.01;//慢速升机械臂第三节
                         }
                     }
 
