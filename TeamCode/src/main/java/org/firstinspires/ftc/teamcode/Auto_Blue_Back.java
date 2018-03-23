@@ -167,46 +167,34 @@ public class Auto_Blue_Back extends LinearOpMode {
 
     public void cube(RelicRecoveryVuMark vuMark){
         if (vuMark == RIGHT){
-            zuopingyi(1);//左平移
+            youpingyi(1);//左平移
 
-            sleep(1000);
+            sleep(930);
         }
 
         else if (vuMark == CENTER){//done
-            zuopingyi(1);//左平移
+            youpingyi(1);//左平移
 
-            sleep(530);
+            sleep(540);
         }
 
         else if (vuMark == LEFT){
-            zuopingyi(1);//左平移
+            youpingyi(1);//左平移
 
-            sleep(315);
+            sleep(260);
         }
 
         qianjin(0);
 
         sleep(500);
 
-        youzhuan(0.3);
+        /*youzhuan(0.3);
 
         sleep(200);
 
         qianjin(0);
 
-        sleep(250);
-
-        youzhuan(0.6);
-
-        sleep(1400);
-
-        qianjin(0);
-
-        sleep(400);
-
-        qianjin(0.4);//前进一点点
-
-        sleep(200);
+        sleep(250);*/
 
         qianjin(0);
 
@@ -222,7 +210,7 @@ public class Auto_Blue_Back extends LinearOpMode {
 
         qianjin(0.4);//往前怼
 
-        sleep(900);
+        sleep(750);
 
         //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
         houtui(0.3);//后退一点点
@@ -405,11 +393,23 @@ public class Auto_Blue_Back extends LinearOpMode {
 
                 houtui(0.5);
 
-                sleep(200);
+                sleep(300);
 
                 qianjin(0);
 
                 sleep(400);
+
+                youzhuan(0.6);
+
+                sleep(1430);
+
+                qianjin(0);
+
+                sleep(400);
+
+                /*houtui(0.3);
+
+                sleep(60);*/
 
                 cube(vuMark);
 

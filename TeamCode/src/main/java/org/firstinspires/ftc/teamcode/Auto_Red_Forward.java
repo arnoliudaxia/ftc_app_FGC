@@ -268,7 +268,7 @@ public class Auto_Red_Forward extends LinearOpMode {
                 if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
                     zuozhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
 
                     qianjin(0);
 
@@ -276,13 +276,13 @@ public class Auto_Red_Forward extends LinearOpMode {
 
                     youzhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
                 }
 
                 else {//判断为 红色宝石
                     youzhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
 
                     qianjin(0);
 
@@ -290,7 +290,7 @@ public class Auto_Red_Forward extends LinearOpMode {
 
                     zuozhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
                 }
 
                 qianjin(0);
@@ -307,11 +307,11 @@ public class Auto_Red_Forward extends LinearOpMode {
 
                 qianjin(0.2);//缓停
 
-                sleep(400);
+                sleep(300);
 
                 houtui(0.35);//轻怼平衡板定位
 
-                sleep(750);
+                sleep(780);
 
                 qianjin(0);
 
@@ -340,13 +340,15 @@ public class Auto_Red_Forward extends LinearOpMode {
                 }
 
                 else if (vuMark == CENTER){//done
+                    youpingyi(0.6);
 
+                    sleep(70);
                 }
 
                 else if (vuMark == RIGHT){
                     youpingyi(0.6);
 
-                    sleep(420);
+                    sleep(530);
                 }
 
                 qianjin(0);
@@ -408,29 +410,17 @@ public class Auto_Red_Forward extends LinearOpMode {
                 }
 
                 if (vuMark == CENTER){
-                    zuozhuan(0.4);
+                    houtui(0.6);
 
-                    sleep(100);
-
-                    youzhuan(0.4);
-
-                    sleep(100);
-
-                    zuozhuan(0.4);
-
-                    sleep(250);
-
-                    youzhuan(0.4);
-
-                    sleep(250);
+                    sleep(200);
 
                     qianjin(0);
 
                     sleep(400);
 
-                    qianjin(0.3);
+                    qianjin(0.6);
 
-                    sleep(200);
+                    sleep(300);
                 }
 
                 qianjin(0);

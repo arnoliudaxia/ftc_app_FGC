@@ -178,7 +178,7 @@ public class Auto_Red_Back extends LinearOpMode {
         if (vuMark == LEFT){
             zuopingyi(1);//左平移
 
-            sleep(990);
+            sleep(950);
         }
 
         else if (vuMark == CENTER){//done
@@ -310,7 +310,7 @@ public class Auto_Red_Back extends LinearOpMode {
         sleep(300);
 
 
-        kicking_ball(0.2);
+        kicking_ball(0.15);
 
         sleep(300);//以上三步为 缓降 击宝石的杆子
 
@@ -319,6 +319,8 @@ public class Auto_Red_Back extends LinearOpMode {
         sleep(1200);
 
         raising(0.08);//卡住滑轨
+
+        sleep(1000);
 
 
         relicTrackables.activate();
@@ -346,7 +348,7 @@ public class Auto_Red_Back extends LinearOpMode {
                 if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
                     qianjin(0.4);//前进
 
-                    sleep(1050);
+                    sleep(750);
 
                     qianjin(0.2);//缓停
 
@@ -361,7 +363,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     houtui(0.35);//轻怼平衡板定位
 
-                    sleep(650);
+                    sleep(600);
 
                     qianjin(0);
 
@@ -381,7 +383,7 @@ public class Auto_Red_Back extends LinearOpMode {
                 else {//判断为 红色宝石
                     youzhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
 
                     qianjin(0);
 
@@ -389,7 +391,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     zuozhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
 
                     qianjin(0);
 
@@ -403,7 +405,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     qianjin(0.4);
 
-                    sleep(1250);
+                    sleep(1000);
 
                     qianjin(0);
 
@@ -411,7 +413,7 @@ public class Auto_Red_Back extends LinearOpMode {
 
                     houtui(0.35);//轻怼平衡板定位
 
-                    sleep(650);
+                    sleep(600);
 
                     qianjin(0);
 
