@@ -268,7 +268,7 @@ public class Auto_Blue_Forward extends LinearOpMode {
                 if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
                     youzhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
 
                     qianjin(0);
 
@@ -276,14 +276,14 @@ public class Auto_Blue_Forward extends LinearOpMode {
 
                     zuozhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
                 }
 
                 else {//判断为 红色宝石
 
                     zuozhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
 
                     qianjin(0);
 
@@ -291,7 +291,7 @@ public class Auto_Blue_Forward extends LinearOpMode {
 
                     youzhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
 
                 }
 
@@ -306,6 +306,14 @@ public class Auto_Blue_Forward extends LinearOpMode {
                 houtui(0.3);//轻怼平衡板定位
 
                 sleep(1080);
+
+                qianjin(0);
+
+                sleep(300);
+
+                zuozhuan(0.3);
+
+                sleep(100);
 
                 qianjin(0);
 

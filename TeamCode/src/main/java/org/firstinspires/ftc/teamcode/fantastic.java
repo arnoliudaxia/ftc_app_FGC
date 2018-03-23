@@ -57,36 +57,36 @@ public class fantastic extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();//计时
 
-    DcMotor motor_zuoqian;//定义变量
+    DcMotor motor_zuoqian;
     DcMotor motor_youqian;
     DcMotor motor_zuohou;
-    DcMotor motor_youhou;
+    DcMotor motor_youhou;//定义麦轮电机
 
     DcMotor motor_catching_baby_1;
-    DcMotor motor_catching_baby_2;
+    DcMotor motor_catching_baby_2;//定义机械臂电机
 
     Servo servo_catching_baby_1;
-    Servo servo_catching_baby_2;
+    Servo servo_catching_baby_2;//定义机械臂舵机
 
     Servo servo_catching_block_1;
-    Servo servo_catching_block_2;
+    Servo servo_catching_block_2;//定义夹持方块的舵机
 
-    DcMotor motor_raising;
+    DcMotor motor_raising;//定义抬升滑轨的电机
 
     double power_zuoqian;
     double power_youqian;
     double power_zuohou;
-    double power_youhou;
+    double power_youhou;//定义麦轮电机功率
 
     double servo_baby_position_1 = 0;
-    double servo_baby_position_2 = 0.8;
+    double servo_baby_position_2 = 0.8;//定义机械臂舵机position
 
     boolean arm_safe_case = true;
-    boolean catching_baby_case = false;
+    boolean catching_baby_case = false;//机械臂安全锁
     boolean robot_case_1 = false;
     boolean robot_case_2 = false;
 
-    double PowerMode = 1;
+    double PowerMode = 1;//切换快/慢速模式
 
     public void qianjin(double power,double power_mode){
         double FinalPower = Range.clip(power/power_mode, 0, 1);

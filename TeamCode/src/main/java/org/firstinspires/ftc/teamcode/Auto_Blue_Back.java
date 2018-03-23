@@ -169,19 +169,19 @@ public class Auto_Blue_Back extends LinearOpMode {
         if (vuMark == RIGHT){
             zuopingyi(1);//左平移
 
-            sleep(990);
+            sleep(1000);
         }
 
         else if (vuMark == CENTER){//done
             zuopingyi(1);//左平移
 
-            sleep(525);
+            sleep(530);
         }
 
         else if (vuMark == LEFT){
             zuopingyi(1);//左平移
 
-            sleep(320);
+            sleep(315);
         }
 
         qianjin(0);
@@ -190,7 +190,7 @@ public class Auto_Blue_Back extends LinearOpMode {
 
         youzhuan(0.3);
 
-        sleep(100);
+        sleep(200);
 
         qianjin(0);
 
@@ -229,11 +229,11 @@ public class Auto_Blue_Back extends LinearOpMode {
 
         sleep(120);
 
-        youzhuan(0.4);//右转
+        zuozhuan(0.4);//左转
 
         sleep(600);
 
-        zuozhuan(0.4);//左转
+        youzhuan(0.4);//右转
 
         sleep(600);
 
@@ -344,7 +344,7 @@ public class Auto_Blue_Back extends LinearOpMode {
                 if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
                     youzhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
 
                     qianjin(0);
 
@@ -352,12 +352,12 @@ public class Auto_Blue_Back extends LinearOpMode {
 
                     zuozhuan(0.2);
 
-                    sleep(350);
-                } else if (sensorColor.blue() > sensorColor.red()){//判断为 红色宝石
+                    sleep(320);
+                } else if (sensorColor.blue() > sensorColor.red()) {//判断为 红色宝石
 
                     zuozhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
 
                     qianjin(0);
 
@@ -365,7 +365,7 @@ public class Auto_Blue_Back extends LinearOpMode {
 
                     youzhuan(0.2);
 
-                    sleep(350);
+                    sleep(320);
 
                 }
 
@@ -379,47 +379,53 @@ public class Auto_Blue_Back extends LinearOpMode {
 
                 sleep(200);//缓升击宝石杆子
 
-                houtui(0.3);
+                houtui(0.3);//轻怼平衡板定位
 
-                sleep(1130);
+                sleep(1080);
+
+                qianjin(0);
+
+                sleep(300);
+
+                zuozhuan(0.3);
+
+                sleep(100);
 
                 qianjin(0);
 
                 sleep(400);
 
-                qianjin(0.3);//轻怼平衡板定位
+                qianjin(0.3);
 
                 sleep(470);
 
                 qianjin(0);
 
-                sleep(500);
+                sleep(400);
 
                 houtui(0.5);
 
-                sleep(300);
+                sleep(200);
 
                 qianjin(0);
 
                 sleep(400);
-            }
 
-            else{
+                cube(vuMark);
+
+                qianjin(0);
+
+                sleep(100);
+
+                break;
+            } else {
                 telemetry.addData("VuMark", "not visible");
             }
-
-            cube(vuMark);
-
-            qianjin(0);
-
-            sleep(100);
-
-            break;
-        }
 
 
             telemetry.update();
         }
+    }
 
         String format(OpenGLMatrix transformationMatrix) {
             return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
