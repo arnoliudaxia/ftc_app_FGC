@@ -273,9 +273,9 @@ public class fantastic extends LinearOpMode {
                 }
 
                 if (gamepad2.x) {//夹持方块
-                    catching_block(0.70, 0.0);
+                    catching_block(0.78, 0.0);
                 } else if (gamepad2.b) {//松开方块
-                    catching_block(0.35, 0.3);
+                    catching_block(0.35, 0.38);
                 }
 
                 if (gamepad2.y) {//抬升滑轨
@@ -344,6 +344,8 @@ public class fantastic extends LinearOpMode {
 
                     while (gamepad2.left_bumper){
                         sleep(1);
+
+                        catching_baby_case =false;
                     }
                 }
 
