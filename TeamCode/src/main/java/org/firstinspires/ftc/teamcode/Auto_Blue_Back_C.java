@@ -38,24 +38,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-
-import java.security.PrivateKey;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.CENTER;
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.LEFT;
@@ -80,24 +71,24 @@ import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryV
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@Autonomous(name="Auto_Red_back", group ="Concept")
+@Autonomous(name="Auto_Blue_Back_C", group ="Concept")
 //@Disabled
-public class Auto_Red_Back extends LinearOpMode {
+public class Auto_Blue_Back_C extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor motor_zuoqian;
-    private DcMotor motor_youqian;
-    private DcMotor motor_zuohou;
-    private DcMotor motor_youhou;
+    DcMotor motor_zuoqian;
+    DcMotor motor_youqian;
+    DcMotor motor_zuohou;
+    DcMotor motor_youhou;
 
-    private Servo servo_catching_block_1;
-    private Servo servo_catching_block_2;
+    Servo servo_catching_block_1;
+    Servo servo_catching_block_2;
 
-    private Servo servo_kicking_ball;
+    Servo servo_kicking_ball;
 
-    private DcMotor motor_raising;
+    DcMotor motor_raising;
 
     double servo_position_block_1 = 0.78;
     double servo_position_block_2 = 0.00;
@@ -110,13 +101,14 @@ public class Auto_Red_Back extends LinearOpMode {
     double power_zuohou;
     double power_youhou;
 
+    int count = 0;
+
     OpenGLMatrix lastLocation = null;
 
     VuforiaLocalizer vuforia;
 
     ColorSensor sensorColor;
     DistanceSensor sensorDistance;
-
 
 
     public void qianjin(double power){
@@ -175,39 +167,35 @@ public class Auto_Red_Back extends LinearOpMode {
     }
 
     public void cube(RelicRecoveryVuMark vuMark){
-        if (vuMark == LEFT){
-            zuopingyi(1);//左平移
+        if (vuMark == RIGHT){
+            youpingyi(1);//左平移
 
-            sleep(920);
+            sleep(930);
         }
 
         else if (vuMark == CENTER){//done
-            zuopingyi(1);//左平移
+            youpingyi(1);//左平移
 
-            sleep(525);
+            sleep(540);
         }
 
-        else if (vuMark == RIGHT){
-            zuopingyi(1);//左平移
+        else if (vuMark == LEFT){
+            youpingyi(1);//左平移
 
-            sleep(320);
+            sleep(260);
         }
 
         qianjin(0);
 
         sleep(500);
 
-        youzhuan(0.3);
+        /*youzhuan(0.3);
 
-        sleep(170);
+        sleep(200);
 
         qianjin(0);
 
-        sleep(250);
-
-        qianjin(0.4);//前进一点点
-
-        sleep(200);
+        sleep(250);*/
 
         qianjin(0);
 
@@ -223,18 +211,18 @@ public class Auto_Red_Back extends LinearOpMode {
 
         qianjin(0.4);//往前怼
 
-        sleep(900);
+        sleep(750);
 
         //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
         houtui(0.3);//后退一点点
 
         sleep(120);
 
-        youzhuan(0.4);//右转
+        zuozhuan(0.4);//左转
 
         sleep(600);
 
-        zuozhuan(0.4);//左转
+        youzhuan(0.4);//右转
 
         sleep(600);
 
@@ -266,12 +254,12 @@ public class Auto_Red_Back extends LinearOpMode {
 
         motor_raising = hardwareMap.dcMotor.get("motor_raising");
 
-        motor_zuoqian  = hardwareMap.get(DcMotor.class, "motor_zuoqian");
+        motor_zuoqian = hardwareMap.get(DcMotor.class, "motor_zuoqian");
         motor_youqian = hardwareMap.get(DcMotor.class, "motor_youqian");
         motor_zuohou = hardwareMap.get(DcMotor.class, "motor_zuohou");
         motor_youhou = hardwareMap.get(DcMotor.class, "motor_youhou");
 
-        servo_kicking_ball = hardwareMap.get(Servo.class,"servo_kicking_ball");
+        servo_kicking_ball = hardwareMap.get(Servo.class, "servo_kicking_ball");
 
         motor_zuoqian.setDirection(DcMotor.Direction.FORWARD);
         motor_zuohou.setDirection(DcMotor.Direction.FORWARD);
@@ -295,7 +283,6 @@ public class Auto_Red_Back extends LinearOpMode {
         final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
 
-
         telemetry.addData(">", "Press Play to start");
         telemetry.update();
 
@@ -309,11 +296,11 @@ public class Auto_Red_Back extends LinearOpMode {
 
         sleep(350);
 
-        kicking_ball(0.19);
+        kicking_ball(0.2);
 
         sleep(350);
 
-        kicking_ball(0.15);
+        kicking_ball(0.17);
 
         sleep(300);//以上三步为 缓降 击宝石的杆子
 
@@ -329,193 +316,110 @@ public class Auto_Red_Back extends LinearOpMode {
         relicTrackables.activate();
 
         while (opModeIsActive()) {
-
-            /**
-             * See if any of the instances of {@link relicTemplate} are currently visible.
-             * {@link RelicRecoveryVuMark} is an enum which can have the following values:
-             * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
-             * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
-             */
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {//如果壁画密码被破译
-
-                /* Found an instance of the template. In the actual game, you will probably
-                 * loop until this condition occurs, then move on to act accordingly depending
-                 * on which VuMark was visible. */
-                telemetry.addData("VuMark", "%s visible", vuMark);
-
-                /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
-                 * it is perhaps unlikely that you will actually need to act on this pose information, but
-                 * we illustrate it nevertheless, for completeness. */
-
                 if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
-                    qianjin(0.4);//前进
+                    youzhuan(0.2);
 
-                    sleep(750);
+                    sleep(320);
 
-                    qianjin(0.2);//缓停
+                    qianjin(0);
+
+                    sleep(400);
 
                     kicking_ball(0.6);
 
                     sleep(200);
-
-                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
-
-                    sleep(200);
-
-                    houtui(0.35);//轻怼平衡板定位
-
-                    sleep(600);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    qianjin(0.5);
-
-                    sleep(300);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    //这里未完（这里if是在前方宝石是蓝色的前提下的，比较简单。下面else 为后方是蓝色宝石的前提下的程序，较为麻烦，所以先写了下面的。）
-                }
-
-                else {//判断为 红色宝石
-                    youzhuan(0.2);
-
-                    sleep(280);
-
-                    qianjin(0);
 
                     kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
 
                     zuozhuan(0.2);
 
-                    sleep(280);
+                    sleep(320);
+                } else if (sensorColor.blue() > sensorColor.red()) {//判断为 红色宝石
 
-                    qianjin(0);
+                    zuozhuan(0.2);
 
-                    sleep(150);
-
-                    qianjin(0.4);
-
-                    sleep(1000);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    houtui(0.35);//轻怼平衡板定位
-
-                    sleep(600);
+                    sleep(320);
 
                     qianjin(0);
 
                     sleep(400);
-
-                    qianjin(0.5);
-
-                    sleep(300);
-
-                    qianjin(0);
-
-                    sleep(400);
-                }
-
-                cube(vuMark);
-
-                houtui(1);
-
-                sleep(80);
-
-                qianjin(0);
-
-                break;
-            }
-
-            else {
-                telemetry.addData("VuMark", "not visible");
-            }
-
-
-            telemetry.update();
-        }
-    }
-        String format(OpenGLMatrix transformationMatrix) {
-            return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-        }
-}
-
-//////////////////////
-
-                    /*houtui(0.3);//后退
-
-                    sleep(680);
 
                     kicking_ball(0.6);
 
                     sleep(200);
 
-                    kicking_ball(0.8);
+                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
 
-                    sleep(200);//缓升击宝石杆子
+                    youzhuan(0.2);
 
-                    qianjin(0);
+                    sleep(320);
 
-                    sleep(500);
+                }
 
-                    qianjin(0.3);//轻怼平衡板定位
+                qianjin(0);
 
-                    sleep(470);
+                sleep(200);
 
-                    qianjin(0);
+                houtui(0.3);//轻怼平衡板定位
 
-                    sleep(500);
+                sleep(1080);
 
-                    qianjin(0);
+                qianjin(0);
 
-                    sleep(100);
+                sleep(300);
 
-                    houtui(0.3);//后退一点点
+                zuozhuan(0.3);
 
-                    sleep(300);
+                sleep(100);
 
-                    qianjin(0);
+                qianjin(0);
 
-                    sleep(500);
+                sleep(400);
 
-                    zuopingyi(1);//左平移
+                qianjin(0.3);
 
-                    sleep(905);
+                sleep(470);
 
-                    qianjin(0);
+                qianjin(0);
 
-                    sleep(400);
+                sleep(400);
 
-                    youzhuan(0.3);//右转微调（左平移会歪）
+                houtui(0.5);
 
-                    sleep(155);
+                sleep(300);
 
-                    qianjin(0);
+                qianjin(0);
 
-                    sleep(500);
+                sleep(400);
 
-                    qianjin(1);//前进
+                youzhuan(0.6);
 
-                    sleep(600);
+                sleep(1230);
 
-                    qianjin(0);
+                qianjin(0);
 
-                    sleep(400);
+                sleep(400);
 
-                    youpingyi(0.35);//右平移，轻怼平衡板定位
+                /*houtui(0.3);
 
-                    sleep(570);
+                sleep(60);*/
 
-                    qianjin(0);
+                cube(CENTER);
 
-                    sleep(500);*/
+                qianjin(0);
+
+                sleep(100);
+
+                break;
+            }
+
+            telemetry.update();
+        }
+
+        String format(OpenGLMatrix transformationMatrix) {
+            return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+        }
+}
+
 
 

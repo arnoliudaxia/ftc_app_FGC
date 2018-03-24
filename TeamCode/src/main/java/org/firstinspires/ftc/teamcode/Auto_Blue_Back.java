@@ -48,6 +48,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+import java.util.Random;
+
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.CENTER;
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.LEFT;
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.RIGHT;
@@ -90,7 +92,7 @@ public class Auto_Blue_Back extends LinearOpMode {
 
     DcMotor motor_raising;
 
-    double servo_position_block_1 = 0.70;
+    double servo_position_block_1 = 0.78;
     double servo_position_block_2 = 0.00;
     double power_raising = 0.50;
 
@@ -101,13 +103,14 @@ public class Auto_Blue_Back extends LinearOpMode {
     double power_zuohou;
     double power_youhou;
 
+    int count = 0;
+
     OpenGLMatrix lastLocation = null;
 
     VuforiaLocalizer vuforia;
 
     ColorSensor sensorColor;
     DistanceSensor sensorDistance;
-
 
 
     public void qianjin(double power){
@@ -412,7 +415,7 @@ public class Auto_Blue_Back extends LinearOpMode {
 
                 youzhuan(0.6);
 
-                sleep(1430);
+                sleep(1230);
 
                 qianjin(0);
 
@@ -431,6 +434,108 @@ public class Auto_Blue_Back extends LinearOpMode {
                 break;
             } else {
                 telemetry.addData("VuMark", "not visible");
+
+                sleep(20);
+
+                count++;
+            }
+
+            if (count >= 400){
+                if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
+                    youzhuan(0.2);
+
+                    sleep(320);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    kicking_ball(0.6);
+
+                    sleep(200);
+
+                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
+
+                    zuozhuan(0.2);
+
+                    sleep(320);
+                } else if (sensorColor.blue() > sensorColor.red()) {//判断为 红色宝石
+
+                    zuozhuan(0.2);
+
+                    sleep(320);
+
+                    qianjin(0);
+
+                    sleep(400);
+
+                    kicking_ball(0.6);
+
+                    sleep(200);
+
+                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
+
+                    youzhuan(0.2);
+
+                    sleep(320);
+
+                }
+
+                qianjin(0);
+
+                sleep(200);
+
+                houtui(0.3);//轻怼平衡板定位
+
+                sleep(1080);
+
+                qianjin(0);
+
+                sleep(300);
+
+                zuozhuan(0.3);
+
+                sleep(100);
+
+                qianjin(0);
+
+                sleep(400);
+
+                qianjin(0.3);
+
+                sleep(470);
+
+                qianjin(0);
+
+                sleep(400);
+
+                houtui(0.5);
+
+                sleep(300);
+
+                qianjin(0);
+
+                sleep(400);
+
+                youzhuan(0.6);
+
+                sleep(1230);
+
+                qianjin(0);
+
+                sleep(400);
+
+                /*houtui(0.3);
+
+                sleep(60);*/
+
+                cube(RIGHT);
+
+                qianjin(0);
+
+                sleep(100);
+
+                break;
             }
 
 

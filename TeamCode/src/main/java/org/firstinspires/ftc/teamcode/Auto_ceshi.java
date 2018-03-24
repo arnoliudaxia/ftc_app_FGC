@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @Autonomous(name="Auto_ceshi", group="Linear Opmode")
-//@Disabled
+@Disabled
 public class Auto_ceshi extends LinearOpMode {
 
     // Declare OpMode members.

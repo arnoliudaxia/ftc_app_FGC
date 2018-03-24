@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Translation_moving", group="Linear Opmode")
-//@Disabled
+@Disabled
 public class Translation_moving extends LinearOpMode {
 
     // Declare OpMode members.

@@ -65,6 +65,8 @@ public class fantastic extends LinearOpMode {
     DcMotor motor_catching_baby_1;
     DcMotor motor_catching_baby_2;//定义机械臂电机
 
+    Servo servo_kicking_ball;
+
     Servo servo_catching_baby_1;
     Servo servo_catching_baby_2;//定义机械臂舵机
 
@@ -204,7 +206,9 @@ public class fantastic extends LinearOpMode {
         servo_catching_baby_1 = hardwareMap.get(Servo.class,"servo_catching_baby_1");
         servo_catching_baby_2 = hardwareMap.get(Servo.class,"servo_catching_baby_2");
 
-        catching_block(0.35,0.3);
+        servo_kicking_ball = hardwareMap.get(Servo.class,"servo_kicking_ball");
+
+        catching_block(0.35, 0.38);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -275,7 +279,7 @@ public class fantastic extends LinearOpMode {
                 if (gamepad2.x) {//夹持方块
                     catching_block(0.78, 0.0);
                 } else if (gamepad2.b) {//松开方块
-                    catching_block(0.35, 0.38);
+                    catching_block(0.37, 0.36);
                 }
 
                 if (gamepad2.y) {//抬升滑轨
@@ -350,13 +354,17 @@ public class fantastic extends LinearOpMode {
                 }
 
                 if (gamepad2.dpad_up && !arm_safe_case) {
-                    motor_catching_baby(0.8, -0.5);
+                    motor_catching_baby(0.8, -0.56);
                 } else {
                     motor_catching_baby_1.setPower(0);
                 }
 
                 if (gamepad2.dpad_down && !arm_safe_case) {
                     motor_catching_baby(-0.8, 0.2);
+                }
+
+                if (gamepad1.y){
+                    servo_kicking_ball.setPosition(0.8);
                 }
 
                 if(gamepad1.x && gamepad1.y && gamepad1.a && gamepad1.b){

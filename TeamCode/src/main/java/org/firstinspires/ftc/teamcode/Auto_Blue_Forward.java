@@ -90,7 +90,7 @@ public class Auto_Blue_Forward extends LinearOpMode {
 
     DcMotor motor_raising;
 
-    double servo_position_block_1 = 0.70;
+    double servo_position_block_1 = 0.78;
     double servo_position_block_2 = 0.00;
     double power_raising = 0.50;
 
