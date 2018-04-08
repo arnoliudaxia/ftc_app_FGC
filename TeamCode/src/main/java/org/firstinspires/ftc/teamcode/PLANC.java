@@ -69,15 +69,7 @@ public class PLANC extends LinearOpMode {
 
     public static final String TAG = "Vuforia Navigation Sample";
 
-    OpenGLMatrix lastLocation = null;
 
-
-    VuforiaLocalizer vuforia;
-
-
-    TouchSensor touchSensor;
-    ColorSensor sensorColor;
-    DistanceSensor sensorDistance;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     Servo servo_catching_block_1;
@@ -204,19 +196,19 @@ public class PLANC extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-        if (gamepad2.dpad_up) {
-            if (servo_position_ball <= 1) {
-                servo_position_ball = servo_position_ball + 0.02;
-            }
-            sleep(50);
-        }
+        //if (gamepad2.dpad_up) {
+            //if (servo_position_ball <= 1) {
+                //servo_position_ball = servo_position_ball + 0.02;
+            //}
+            //sleep(50);
+       // }
 
-        if (gamepad2.dpad_down) {
-            if (servo_position_ball >= 0) {
-                servo_position_ball = servo_position_ball - 0.02;
-            }
-            sleep(50);
-        }
+        //if (gamepad2.dpad_down) {
+            //if (servo_position_ball >= 0) {
+                //servo_position_ball = servo_position_ball - 0.02;
+            //}
+            //sleep(50);
+        //}
 
         servo_kicking_ball.setPosition(servo_position_ball);
 
@@ -279,41 +271,7 @@ public class PLANC extends LinearOpMode {
             Rightfront.setPower(power1);
             Rightrear.setPower(-power1);
         }
-               /* if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y < 0) {
-                    power1 = 0.5;
-                    Leftfront.setPower(power1);
-                    Leftrear.setPower(power1);
-                    Rightfront.setPower(power1);
-                    Rightrear.setPower(-power1);
-                }//向左上
-                if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y > 0) {
-                    power1 = 0.5;
-                    Leftfront.setPower(-power1);
-                    Leftrear.setPower(-power1);
-                    Rightfront.setPower(power1);
-                    Rightrear.setPower(-power1);
-                }//向左下
-                if (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y > 0) {
-                    power1 = 0.5;
-                    Leftfront.setPower(power1);
-                    Leftrear.setPower(-power1);
-                    Rightfront.setPower(-power1);
-                    Rightrear.setPower(-power1);
-                }//向右下
-                if (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y < 0) {
-                    power1 = 0.5;
-                    Leftfront.setPower(power1);
-                    Leftrear.setPower(-power1);
-                    Rightfront.setPower(power1);
-                    Rightrear.setPower(power1);
-                }//向右上
-                if (gamepad1.left_stick_x == 0 && gamepad1.left_stick_y == 0) {
-                    power1 = 0;
-                    Leftfront.setPower(power1);
-                    Leftrear.setPower(power1);
-                    Rightfront.setPower(power1);
-                    Rightrear.setPower(power1);
-                }//stop*/
+
         if (gamepad1.a) {
             power1 = 0.5;
             Leftfront.setPower(power1);
