@@ -43,7 +43,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
-@Autonomous(name="Concept: VuMark Id", group ="Concept")
+@Autonomous(name="TeamRightRed", group ="Concept")
 //@Disabled
 public class TeamRightRed extends LinearOpMode {
 
