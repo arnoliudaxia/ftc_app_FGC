@@ -244,7 +244,7 @@ public class PLANC extends LinearOpMode {
             motor_raising.setPower(power_raising);
         }
 
-            if (!gamepad1.x) {
+            if (!gamepad1.x ) {
                 if (gamepad1.left_stick_y < 0 && gamepad1.left_stick_x == 0) {
                     power1 = 0.8;
 
@@ -327,15 +327,14 @@ public class PLANC extends LinearOpMode {
                     Rightfront.setPower(power1);
                     Rightrear.setPower(power1);
                 } }else {
-                if (gamepad1.left_stick_y == -1 && gamepad1.left_stick_x == 0) {
+                if (gamepad1.left_stick_y == -1) {
                     power1 = 0.8;
-
                     Leftfront.setPower(power1);
                     Rightfront.setPower(power1);
                     Leftrear.setPower(power1);
                     Rightrear.setPower(power1);
                 }
-                if (gamepad1.left_stick_y == 1 && gamepad1.left_stick_x == 0) {
+                if (gamepad1.left_stick_y == 1 ) {
                     power1 = 0.8;
                     Leftfront.setPower(power1);
                     Leftrear.setPower(-power1);
@@ -343,15 +342,14 @@ public class PLANC extends LinearOpMode {
                     Rightrear.setPower(power1);
                 }
                 //hou tui
-                if (gamepad1.left_stick_x == 1 && gamepad1.left_stick_y == 0) {
+                if (gamepad1.left_stick_x == 1 ) {
                     power1 = 0.8;
                     Leftfront.setPower(power1);
-                    Leftrear.setPower(power1);
-                    Rightfront.setPower(power1);
+                    Leftrear.setPower(-power1);
+                    Rightfront.setPower(-power1);
                     Rightrear.setPower(power1);
                 }
-
-                if (gamepad1.left_stick_x == -1 && gamepad1.left_stick_y == 0) {
+                if (gamepad1.left_stick_x == -1 ) {
                     power1 = 0.8;
                     Leftfront.setPower(-power1);
                     Leftrear.setPower(power1);
@@ -359,8 +357,6 @@ public class PLANC extends LinearOpMode {
                     Rightrear.setPower(-power1);
                 }
             }
-
-
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         // telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
