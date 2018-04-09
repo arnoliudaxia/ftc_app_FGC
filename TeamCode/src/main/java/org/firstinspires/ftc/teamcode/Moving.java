@@ -79,10 +79,10 @@ public class Moving extends LinearOpMode {
         Rightrear = hardwareMap.get(DcMotor.class, "Rightrear");
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        Leftfront.setDirection(DcMotor.Direction.REVERSE);
+        Leftfront.setDirection(DcMotor.Direction.FORWARD);
         Leftrear.setDirection(DcMotor.Direction.FORWARD);
         Rightfront.setDirection(DcMotor.Direction.REVERSE);
-        Rightrear.setDirection(DcMotor.Direction.FORWARD);
+        Rightrear.setDirection(DcMotor.Direction.REVERSE);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -106,100 +106,132 @@ public class Moving extends LinearOpMode {
         RightrearPower = gamepad1.left_stick_y - gamepad1.left_stick_x;
 LeftfrontPower,LeftrearPower,RightfrontPower,RightrearPower
  */
-        while (opModeIsActive())
-        {
-            if(gamepad2.x){power1 = 0.3;}
-            if (gamepad1.left_stick_y < 0 ) {
-                power1 = 0.8;
+        while (opModeIsActive()) {
+            if (!gamepad1.x) {
+                if (gamepad1.left_stick_y < 0 && gamepad1.left_stick_x == 0) {
+                    power1 = 0.8;
 
-                Leftfront.setPower(power1);
-                Rightfront.setPower(power1);
-                Leftrear.setPower(power1);
-                Rightrear.setPower(power1);
-            }
+                    Leftfront.setPower(power1);
+                    Rightfront.setPower(power1);
+                    Leftrear.setPower(power1);
+                    Rightrear.setPower(power1);
+                }
 
 
-            if (gamepad1.left_stick_y > 0) {
-                power1 = 0.8;
-                Leftfront.setPower(power1);
-                Leftrear.setPower(-power1);
-                Rightfront.setPower(-power1);
-                Rightrear.setPower(power1);
-            }
-            //hou tui
-            if (gamepad1.left_stick_x > 0) {
-                power1 = 0.8;
-                Leftfront.setPower(power1);
-                Leftrear.setPower(power1);
-                Rightfront.setPower(power1);
-                Rightrear.setPower(power1);
-            }
+                if (gamepad1.left_stick_y > 0 && gamepad1.left_stick_x == 0) {
+                    power1 = 0.8;
+                    Leftfront.setPower(-power1);
+                    Leftrear.setPower(-power1);
+                    Rightfront.setPower(-power1);
+                    Rightrear.setPower(-power1);
+                }
+                //hou tui
+                if (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y == 0) {
+                    power1 = 0.8;
+                    Leftfront.setPower(power1);
+                    Leftrear.setPower(-power1);
+                    Rightfront.setPower(-power1);
+                    Rightrear.setPower(power1);
+                }
 
-            if (gamepad1.left_stick_x < 0) {
-                power1 = 0.8;
-                Leftfront.setPower(-power1);
-                Leftrear.setPower(power1);
-                Rightfront.setPower(power1);
-                Rightrear.setPower(-power1);
-            }
-            if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y < 0) {
-                power1 = 0.5;
-                Leftfront.setPower(power1);
-                Leftrear.setPower(power1);
-                Rightfront.setPower(power1);
-                Rightrear.setPower(-power1);
-            }//向左上
-            if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y > 0) {
-                power1 = 0.5;
-                Leftfront.setPower(-power1);
-                Leftrear.setPower(-power1);
-                Rightfront.setPower(power1);
-                Rightrear.setPower(-power1);
-            }//向左下
-            if (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y > 0) {
-                power1 = 0.5;
-                Leftfront.setPower(power1);
-                Leftrear.setPower(-power1);
-                Rightfront.setPower(-power1);
-                Rightrear.setPower(-power1);
-            }//向右下
-            if (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y < 0) {
-                power1 = 0.5;
-                Leftfront.setPower(power1);
-                Leftrear.setPower(-power1);
-                Rightfront.setPower(power1);
-                Rightrear.setPower(power1);
-            }//向右上
-            if (gamepad1.left_stick_x == 0 && gamepad1.left_stick_y == 0) {
-                power1 = 0;
-                Leftfront.setPower(power1);
-                Leftrear.setPower(power1);
-                Rightfront.setPower(power1);
-                Rightrear.setPower(power1);
-            }//stop
-            if (gamepad1.a){
-                power1 = 0.5;
-                Leftfront.setPower(power1);
-                Leftrear.setPower(power1);
-                Rightfront.setPower(-power1);
-                Rightrear.setPower(-power1);
-            }
-            if (gamepad1.b){
-                power1 = 0.5;
-                Leftfront.setPower(-power1);
-                Leftrear.setPower(-power1);
-                Rightfront.setPower(power1);
-                Rightrear.setPower(power1);
-            }
+                if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y == 0) {
+                    power1 = 0.8;
+                    Leftfront.setPower(-power1);
+                    Leftrear.setPower(power1);
+                    Rightfront.setPower(power1);
+                    Rightrear.setPower(-power1);
+                }
+                /*if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y < 0) {
+                    power1 = 0.5;
+                    Leftfront.setPower(power1);
+                    Leftrear.setPower(power1);
+                    Rightfront.setPower(power1);
+                    Rightrear.setPower(-power1);
+                }//向左上
+                if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y > 0) {
+                    power1 = 0.5;
+                    Leftfront.setPower(-power1);
+                    Leftrear.setPower(-power1);
+                    Rightfront.setPower(power1);
+                    Rightrear.setPower(-power1);
+                }//向左下
+                if (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y > 0) {
+                    power1 = 0.5;
+                    Leftfront.setPower(power1);
+                    Leftrear.setPower(-power1);
+                    Rightfront.setPower(-power1);
+                    Rightrear.setPower(-power1);
+                }//向右下
+                if (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y < 0) {
+                    power1 = 0.5;
+                    Leftfront.setPower(power1);
+                    Leftrear.setPower(-power1);
+                    Rightfront.setPower(power1);
+                    Rightrear.setPower(power1);
+                }//向右上*/
+                if (gamepad1.left_stick_x == 0 && gamepad1.left_stick_y == 0) {
+                    power1 = 0;
+                    Leftfront.setPower(power1);
+                    Leftrear.setPower(power1);
+                    Rightfront.setPower(power1);
+                    Rightrear.setPower(power1);
+                }//stop}
+                if (gamepad1.a) {
+                    power1 = 0.5;
+                    Leftfront.setPower(power1);
+                    Leftrear.setPower(power1);
+                    Rightfront.setPower(-power1);
+                    Rightrear.setPower(-power1);
+                }
+                if (gamepad1.b) {
+                    power1 = 0.5;
+                    Leftfront.setPower(-power1);
+                    Leftrear.setPower(-power1);
+                    Rightfront.setPower(power1);
+                    Rightrear.setPower(power1);
+                } }else {
+                    if (gamepad1.left_stick_y == -1 && gamepad1.left_stick_x == 0) {
+                        power1 = 0.8;
 
+                        Leftfront.setPower(power1);
+                        Rightfront.setPower(power1);
+                        Leftrear.setPower(power1);
+                        Rightrear.setPower(power1);
+                    }
+                    if (gamepad1.left_stick_y == 1 && gamepad1.left_stick_x == 0) {
+                        power1 = 0.8;
+                        Leftfront.setPower(power1);
+                        Leftrear.setPower(-power1);
+                        Rightfront.setPower(-power1);
+                        Rightrear.setPower(power1);
+                    }
+                    //hou tui
+                    if (gamepad1.left_stick_x == 1 && gamepad1.left_stick_y == 0) {
+                        power1 = 0.8;
+                        Leftfront.setPower(power1);
+                        Leftrear.setPower(power1);
+                        Rightfront.setPower(power1);
+                        Rightrear.setPower(power1);
+                    }
+
+                    if (gamepad1.left_stick_x == -1 && gamepad1.left_stick_y == 0) {
+                        power1 = 0.8;
+                        Leftfront.setPower(-power1);
+                        Leftrear.setPower(power1);
+                        Rightfront.setPower(power1);
+                        Rightrear.setPower(-power1);
+                    }
+                }
+
+
+            }
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            //telemetry.addData("Motors", "left (%.2f), right (%.2f)", power1);
+            telemetry.update();
 
         }
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)",power1);
-        telemetry.update();
-
     }
-}
+
 
 
 
