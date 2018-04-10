@@ -364,67 +364,76 @@ public class TeamLeftBlue extends LinearOpMode {
                 }
             });
 /////////////////////////////////////////////////////////////////////////////////////////////// Automatic /////////////////////////////////////////////////////////////////
+            Ball1();
             if (runtime.equals(30)) {
                 if (sensorColor.red() > sensorColor.blue()) {
                     Right(0.6);
                     sleep(40);
-                    Shunshi(0.6);
-                    sleep(150);
-                    Nishi(0.6);
-                    sleep(150);
+                    Shunshi(0.8);
+                    sleep(90);
+                    Ball2();
+                    Nishi(0.8);
+                    sleep(90);
                 }
-                if (sensorColor.red() > sensorColor.blue()) {
+                if (sensorColor.red() < sensorColor.blue()) {
                     Right(0.6);
                     sleep(40);
-                    Nishi(0.6);
-                    sleep(150);
-                    Shunshi(0.6);
-                    sleep(150);
+                    Nishi(0.8);
+                    sleep(90);
+                    Ball2();
+                    Shunshi(0.8);
+                    sleep(90);
                 }
 
                 if (vuMark == RelicRecoveryVuMark.LEFT) {
                     Rear(0.8);
-                    sleep(200);
-                    Nishi(0.8);
-                    sleep(100);
-                    Forward(0.8);
+                    sleep(180);
+                    Left(0.8);
                     sleep(50);
                     Nishi(0.8);
                     sleep(100);
                     Forward(0.8);
-                    sleep(50);
+                    sleep(60);
+                    Right(0.8);
+                    sleep(30);
+                    Left(0.8);
+                    sleep(30);
                     Release(0.40, 0.00);
                 }
                 if (vuMark == RelicRecoveryVuMark.CENTER) {
                     Rear(0.8);
-                    sleep(200);
-                    Nishi(0.8);
-                    sleep(100);
-                    Forward(0.8);
+                    sleep(180);
+                    Left(0.8);
                     sleep(100);
                     Nishi(0.8);
                     sleep(100);
                     Forward(0.8);
-                    sleep(50);
+                    sleep(60);
+                    Right(0.8);
+                    sleep(30);
+                    Left(0.8);
+                    sleep(30);
                     Release(0.40, 0.00);
                 }
 
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     Rear(0.8);
-                    sleep(200);
-                    Nishi(0.8);
-                    sleep(100);
-                    Forward(0.8);
+                    sleep(180);
+                    Left(0.8);
                     sleep(150);
                     Nishi(0.8);
                     sleep(100);
                     Forward(0.8);
-                    sleep(50);
+                    sleep(60);
+                    Right(0.8);
+                    sleep(30);
+                    Left(0.8);
+                    sleep(30);
                     Release(0.40, 0.00);
                 }
                 Rear(0.8);
                 sleep(300);
-                Shunshi(0.6);
+                Nishi(0.6);
                 sleep(100);
                 switch ("Touch") {
                     case "Is Pressed":
@@ -436,11 +445,13 @@ public class TeamLeftBlue extends LinearOpMode {
                             sleep(50);
                             Nishi(0.8);
                             sleep(80);
+                            Left(0.8);
+                            sleep(20*counter);
                             Forward(0.8);
                             sleep(350);
-                            Left(0.4);
+                            Left(0.6);
                             sleep(20);
-                            Right(0.4);
+                            Right(0.69);
                             sleep(30);
                             Release(0.40, 0.00);
                             Rear(0.8);
@@ -455,14 +466,16 @@ public class TeamLeftBlue extends LinearOpMode {
                             sleep(50);
                             Nishi(0.8);
                             sleep(80);
+                            Left(0.8);
+                            sleep(20*counter);
                             Forward(0.8);
                             sleep(300);
                             Raisng();//////////////////////////////////////////////////
                             sleep(50);
                             Stable();//////////////////////////////////////////////////
-                            Left(0.4);
+                            Left(0.6);
                             sleep(20);
-                            Right(0.4);
+                            Right(0.6);
                             sleep(30);
                             Release(0.40, 0.00);
                             Down();
