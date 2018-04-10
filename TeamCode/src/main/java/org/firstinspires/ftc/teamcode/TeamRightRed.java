@@ -412,7 +412,7 @@ public class TeamRightRed extends LinearOpMode {
                     Rear(0.8);
                     sleep(50);
                     Right(0.8);
-                    sleep(100);
+                    sleep(50);
                 }
 
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
@@ -442,6 +442,8 @@ public class TeamRightRed extends LinearOpMode {
                             sleep(50);
                             Nishi(0.8);
                             sleep(80);
+                            Left(0.8);
+                            sleep(20*counter);
                             Forward(0.8);
                             sleep(350);
                             Left(0.4);
@@ -461,6 +463,8 @@ public class TeamRightRed extends LinearOpMode {
                             sleep(50);
                             Nishi(0.8);
                             sleep(80);
+                            Left(0.8);
+                            sleep(20*counter);
                             Forward(0.8);
                             sleep(300);
                             Raisng();//////////////////////////////////////////////////
