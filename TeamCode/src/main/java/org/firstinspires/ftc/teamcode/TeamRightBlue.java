@@ -362,12 +362,14 @@ public class TeamRightBlue extends LinearOpMode {
                 }
             });
 /////////////////////////////////////////////////////////////////////////////////////////////// Automatic /////////////////////////////////////////////////////////////////
+            Ball1();
             if (runtime.equals(30)) {
                 if (sensorColor.red() > sensorColor.blue()) {
                     Right(0.6);
                     sleep(40);
                     Shunshi(0.6);
                     sleep(150);
+                    Ball2();
                     Nishi(0.6);
                     sleep(150);
                 }
@@ -376,13 +378,14 @@ public class TeamRightBlue extends LinearOpMode {
                     sleep(40);
                     Nishi(0.6);
                     sleep(150);
+                    Ball2();
                     Shunshi(0.6);
                     sleep(150);
                 }
 
                 if (vuMark == RelicRecoveryVuMark.LEFT) {
                     Rear(0.8);
-                    sleep(200);
+                    sleep(100);
                     Shunshi(0.8);
                     sleep(100);
                     Forward(0.8);
@@ -401,7 +404,7 @@ public class TeamRightBlue extends LinearOpMode {
 
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     Rear(0.8);
-                    sleep(100);
+                    sleep(200);
                     Shunshi(0.8);
                     sleep(200);
                     Forward(0.8);
@@ -411,8 +414,8 @@ public class TeamRightBlue extends LinearOpMode {
 
 
             Rear(0.8);
-            sleep(300);
-            Shunshi(0.6);
+            sleep(150);
+            Nishi(0.6);
             sleep(100);
             switch ("Touch") {
                 case "Is Pressed":
@@ -423,7 +426,9 @@ public class TeamRightBlue extends LinearOpMode {
                         Catch(0.00, 0.40);
                         sleep(50);
                         Nishi(0.8);
-                        sleep(80);
+                        sleep(100);
+                        Right(0.8);
+                        sleep(50*counter);
                         Forward(0.8);
                         sleep(350);
                         Left(0.4);
@@ -434,7 +439,7 @@ public class TeamRightBlue extends LinearOpMode {
                         Rear(0.8);
                         sleep(200);
                         Shunshi(0.8);
-                        sleep(80);
+                        sleep(100);
                     }
                     while (counter < 4 && counter > 2) {
                         Stop();
@@ -443,6 +448,8 @@ public class TeamRightBlue extends LinearOpMode {
                         sleep(50);
                         Nishi(0.8);
                         sleep(80);
+                        Left(0.8);
+                        sleep(50*counter);
                         Forward(0.8);
                         sleep(300);
                         Raisng();//////////////////////////////////////////////////
