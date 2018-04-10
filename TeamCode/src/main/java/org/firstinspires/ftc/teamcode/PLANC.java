@@ -240,9 +240,12 @@ public class PLANC extends LinearOpMode {
             power_raising = -1.0;
             motor_raising.setPower(power_raising);
 
+        }else {
+            power_raising = 0.08;
+            motor_raising.setPower(power_raising);
         }
 
-            if (!gamepad1.x ) {
+            if (gamepad1.left_trigger == 0) {
                 if (gamepad1.left_stick_y < 0 && gamepad1.left_stick_x == 0) {
                     power1 = 0.8;
 
