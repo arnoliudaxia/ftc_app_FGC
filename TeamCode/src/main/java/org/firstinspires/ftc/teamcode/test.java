@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -51,8 +52,8 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="fantastic", group="Linear Opmode")
-//@Disabled
-public class fantastic extends LinearOpMode {
+@Disabled
+public class test extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();//计时
@@ -62,20 +63,18 @@ public class fantastic extends LinearOpMode {
     DcMotor motor_zuohou;
     DcMotor motor_youhou;//定义麦轮电机
 
-    DcMotor motor_catching_baby_1;
-    DcMotor motor_catching_baby_2;//定义机械臂电机
+    Servo servo_catching_block_up_1;
+    Servo servo_catching_block_up_2;//定义机械臂舵机
+    Servo servo_catching_block_down_1;
+    Servo servo_catching_block_down_2;
 
     Servo servo_kicking_ball;
 
     Servo servo_catching_baby_1;
-    Servo servo_catching_baby_2;//定义机械臂舵机
-    //Servo servo_catching_baby_up_1;
-    //Servo servo_catching_baby_up_2;//定义机械臂舵机
-    //Servo servo_catching_baby_down_1;
-    //Servo servo_catching_baby_down_2;
+    Servo servo_catching_baby_2;
 
-    Servo servo_catching_block_1;
-    Servo servo_catching_block_2;//定义夹持方块的舵机
+    DcMotor motor_catching_baby_1;
+    DcMotor motor_catching_baby_2;
 
     DcMotor motor_raising;//定义抬升滑轨的电机
 
@@ -91,6 +90,9 @@ public class fantastic extends LinearOpMode {
     boolean catching_baby_case = false;//机械臂安全锁
     boolean robot_case_1 = false;
     boolean robot_case_2 = false;
+
+    boolean block_up=false;
+    boolean block_down=false;
 
     double PowerMode = 1;//切换快/慢速模式
 
@@ -142,9 +144,9 @@ public class fantastic extends LinearOpMode {
         motor_youhou.setPower(-FinalPower);
     }
 
-    public void catching_block(double servo_block_position_1,double servo_block_position_2){//夹持方块函数
-        servo_catching_block_1.setPosition(servo_block_position_1);
-        servo_catching_block_2.setPosition(servo_block_position_2);
+    public void servo_catching_baby(double servo_block_position_1,double servo_block_position_2){//夹持方块函数
+        servo_catching_baby_1.setPosition(servo_block_position_1);
+        servo_catching_baby_2.setPosition(servo_block_position_2);
     }
 
     public void motor_catching_baby(double power_baby_1,double power_baby_2){//机械臂电机函数
@@ -152,12 +154,14 @@ public class fantastic extends LinearOpMode {
         motor_catching_baby_2.setPower(power_baby_2);
     }
 
-    public void servo_catching_baby_1(double servo_baby_position_1){//夹小人第三节舵机函数
-        servo_catching_baby_1.setPosition(servo_baby_position_1);
+    public void servo_catching_baby_up(double servo_block_position_up_1,double servo_block_position_up_2){//夹小人第三节舵机函数
+        servo_catching_block_up_1.setPosition(servo_block_position_up_1);
+        servo_catching_block_up_2.setPosition(servo_block_position_up_2);
     }
 
-    public void servo_catching_baby_2(double servo_baby_position_2){//夹小人末节舵机函数
-        servo_catching_baby_2.setPosition(servo_baby_position_2);
+    public void servo_catching_baby_down(double servo_block_position_down_1,double servo_block_position_down_2){//夹小人末节舵机函数
+        servo_catching_block_down_1.setPosition(servo_block_position_down_1);
+        servo_catching_block_down_2.setPosition(servo_block_position_down_2);
     }
 
     public void raising(double power_raising){//滑轨抬升函数
@@ -199,8 +203,10 @@ public class fantastic extends LinearOpMode {
         motor_youqian.setDirection(DcMotor.Direction.REVERSE);
         motor_youhou.setDirection(DcMotor.Direction.REVERSE);
 
-        servo_catching_block_1 = hardwareMap.servo.get("servo_catching_block_1");
-        servo_catching_block_2 = hardwareMap.servo.get("servo_catching_block_2");
+        servo_catching_block_up_1 = hardwareMap.servo.get("servo_catching_block_up_1");
+        servo_catching_block_up_2 = hardwareMap.servo.get("servo_catching_block_up_2");
+        servo_catching_block_down_1 = hardwareMap.servo.get("servo_catching_block_down_1");
+        servo_catching_block_down_2 = hardwareMap.servo.get("servo_catching_block_down_2");
 
         motor_raising = hardwareMap.dcMotor.get("motor_raising");
 
@@ -212,7 +218,8 @@ public class fantastic extends LinearOpMode {
 
         servo_kicking_ball = hardwareMap.get(Servo.class,"servo_kicking_ball");
 
-        catching_block(0.35, 0.38);
+        servo_catching_baby_up(0.25,0.6);
+        servo_catching_baby_down(0.65,0.3);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -280,16 +287,36 @@ public class fantastic extends LinearOpMode {
                     motor_catching_baby(0, 0);
                 }
 
-                if (gamepad2.x) {//夹持方块
-                    catching_block(0.78, 0.0);
-                } else if (gamepad2.b) {//松开方块
-                    catching_block(0.37, 0.36);
+                if (gamepad2.y && block_up) {//songkai
+                    servo_catching_baby_up(0.25,0.6);
+                    block_up = false;
+                    while (gamepad2.y){
+                        sleep(10);
+                    }
+                } else if (gamepad2.y && !block_up) {//jiachi
+                    servo_catching_baby_up(0.7,0.15);
+                    block_up = true;
+                    while (gamepad2.y){
+                        sleep(10);
+                    }
                 }
 
-                if (gamepad2.y) {//抬升滑轨
-                    raising(1);
-                } else if (gamepad2.a) {//下降滑轨
-                    raising(-1);
+                if (gamepad2.a && block_down) {
+                    servo_catching_baby_down(0.65,0.3);
+                    block_up = false;
+                    while (gamepad2.a){
+                    sleep(10);
+                    }
+                } else if (gamepad2.a && !block_down) {
+                    servo_catching_baby_down(0.4,0.63);
+                    block_up = true;
+                    while (gamepad2.a){
+                        sleep(10);
+                    }
+                }
+
+                if (gamepad2.right_stick_y != 0) {//抬升滑轨
+                   motor_raising.setPower(-gamepad2.right_stick_y);
                 } else {//卡住滑轨
                     raising(0.08);
                 }
@@ -322,10 +349,10 @@ public class fantastic extends LinearOpMode {
                     sleep(25);
                 }
 
-                servo_catching_baby_1(servo_baby_position_1);
+                servo_catching_baby_1.setPosition(servo_baby_position_1);
 
                 if (gamepad2.right_bumper && !catching_baby_case) {//机械臂末节夹持小人
-                    servo_catching_baby_2(0.13);
+                    servo_catching_baby_2.setPosition(0.13);
 
                     servo_baby_position_2 = 0.13;
 
@@ -335,7 +362,7 @@ public class fantastic extends LinearOpMode {
                 }
 
                 if (gamepad2.right_bumper && catching_baby_case) {//机械臂末节松开小人
-                    servo_catching_baby_2(0.8);
+                    servo_catching_baby_2.setPosition(0.8);
                     servo_baby_position_2 = 0.8;
 
                     while (gamepad2.right_bumper){
@@ -347,7 +374,7 @@ public class fantastic extends LinearOpMode {
                     if (servo_baby_position_2 < 1){
                         servo_baby_position_2 = servo_baby_position_2 + 0.03;//慢速松末节机械臂夹子
 
-                        servo_catching_baby_2(servo_baby_position_2);
+                        servo_catching_baby_2.setPosition(servo_baby_position_2);
                     }
 
                     while (gamepad2.left_bumper){

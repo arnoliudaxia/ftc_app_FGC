@@ -51,28 +51,21 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Catching_block", group="Linear Opmode")
-@Disabled
+//@Disabled
 public class Catching_block extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    Servo servo_catching_block_1;
-    Servo servo_catching_block_2;//定义夹持方块的舵机
+    Servo servo_test;
 
-    Servo servo_kicking_ball;
-
-    DcMotor motor_raising;
-
-    double servo_position_1 = 0.40;//定义夹持方块的舵机的position
-    double servo_position_2 = 0.00;
-    double power_raising = 0.50;//定义滑轨功率
-
-    double servo_position_ball = 1;
+    double servo_test_position;
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+
+        servo_test = hardwareMap.get(Servo.class,"servo_test");
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
@@ -80,67 +73,34 @@ public class Catching_block extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        servo_catching_block_1 = hardwareMap.servo.get("servo_catching_block_1");
-        servo_catching_block_2 = hardwareMap.servo.get("servo_catching_block_2");
-
-        motor_raising = hardwareMap.dcMotor.get("motor_raising");
-
-        servo_kicking_ball = hardwareMap.get(Servo.class,"servo_kicking_ball");
-
-        servo_catching_block_1.setPosition(servo_position_1);
-        servo_catching_block_2.setPosition(servo_position_2);//init
-
-        servo_kicking_ball.setPosition(servo_position_ball);
 
         // Wait for the game to start (driver presses PLAY)
+
+        servo_test_position = 0.5;
+        servo_test.setPosition(servo_test_position);
+
+
         waitForStart();
         runtime.reset();
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            if(gamepad2.dpad_up == true){
-                if(servo_position_ball <= 1){
-                    servo_position_ball = servo_position_ball + 0.02;
+            if (gamepad1.y){
+                servo_test_position = servo_test_position +0.05;
+
+                servo_test.setPosition(servo_test_position);
+                while (gamepad1.y){
+                    sleep(50);
                 }
-                sleep(50);
             }
 
-            if(gamepad2.dpad_down == true){
-                if(servo_position_ball >= 0){
-                    servo_position_ball = servo_position_ball - 0.02;
+            if (gamepad1.a){
+                servo_test_position = servo_test_position -0.05;
+
+                servo_test.setPosition(servo_test_position);
+                while (gamepad1.a){
+                    sleep(50);
                 }
-                sleep(50);
-            }
-
-            servo_kicking_ball.setPosition(servo_position_ball);
-
-            if(gamepad2.x) {//夹持方块
-                servo_position_1 = 0.00;
-                servo_position_2 = 0.40;
-                servo_catching_block_1.setPosition(servo_position_1);
-                servo_catching_block_2.setPosition(servo_position_2);
-            }
-
-            else if(gamepad2.b){//松开方块
-                servo_position_1 = 0.40;
-                servo_position_2 = 0.00;
-                servo_catching_block_1.setPosition(servo_position_1);
-                servo_catching_block_2.setPosition(servo_position_2);
-            }
-
-            if(gamepad2.y){//抬升滑轨
-                power_raising = 1.0;
-                motor_raising.setPower(power_raising);
-            }
-
-            else if(gamepad2.a){//降下滑轨
-                power_raising = -1.0;
-                motor_raising.setPower(power_raising);
-            }
-
-            else {//锁死滑轨
-                power_raising = 0.08;
-                motor_raising.setPower(power_raising);
             }
 
             // Tank Mode uses one stick to control each wheel.
@@ -152,7 +112,7 @@ public class Catching_block extends LinearOpMode {
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",power_raising);
+            //telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",power_raising);
             telemetry.update();
         }
     }
