@@ -424,13 +424,15 @@ public class TeamLeftRed extends LinearOpMode {
                             sleep(10);
                             Catch(0.00, 0.40);
                             sleep(50);
-                            Nishi(0.8);
+                            Shunshi(0.8);
                             sleep(80);
+                            Right(0.8);
+                            sleep(20*counter);
                             Forward(0.8);
                             sleep(350);
-                            Left(0.4);
+                            Left(0.6);
                             sleep(20);
-                            Right(0.4);
+                            Right(0.6);
                             sleep(30);
                             Release(0.40, 0.00);
                             Rear(0.8);
@@ -443,8 +445,10 @@ public class TeamLeftRed extends LinearOpMode {
                             sleep(10);
                             Catch(0.00, 0.40);
                             sleep(50);
-                            Nishi(0.8);
+                            Shunshi(0.8);
                             sleep(80);
+                            Right(0.8);
+                            sleep(20*counter);
                             Forward(0.8);
                             sleep(300);
                             Raisng();//////////////////////////////////////////////////
