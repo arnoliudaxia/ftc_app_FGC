@@ -235,8 +235,7 @@ public class TeamLeftRed extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-        parameters.vuforiaLicenseKey = "JAX5jFWu6OruN0EVesmSeo+m8FKtw9HexPxtE4G2EWjPx/kFe5dcd7oTi0ZYOUENJIr/bP+de6Iz3X12Nv46jRn07ywhorHvSA+FJbqZxLOxsr1ZxlEuBfH45s7K0woMUQjTGzQTcEozTRld/zAxWf9vyShez7WrjkHqJQmsYeuWLeheKvWi/Ncm60lyYHYFTzctYYf2vx4pYWR6z+N/ra26Jj0bNXGLYqKUzmjiatOmwVzXW04n/jp8p/JKljzT5N4SDgYrT7wEJGpmCX6YvWbh/1MLR2fGZ4lUHyYVE7v7BW/ZvOJNf8DpEWVQFVuvcyKD61Q5ft2557nuJMahsI";
+        parameters.vuforiaLicenseKey = "AXQcjoz/////AAABmZHq2ALQ5EDvr0pzYI/5xQECaIBP91rdgvvcHBhGafOACEo+OAVegw1I17Nerx7pn1DrJUPHJpMfw3bQDeC7m6G/IqWOb1348XHM1HjY1tspPk7koyhWM4DKCQKfvWZZfvZ0EcZeXY4eJ5I/Ytm7o+yZTGQ50FcAbqYac0yL7M/iifDK8NYnDOaEs0bKm9gYp6TJvLblJBPqjRoGfZU288tqMT2ZxiIaqY8n4EsM0t3OuJh8aKWZF9qGJ1I879nu2MCbERZr1akfHR1uimsrgKHl05BbZmcXrIYjGgWD3BirUAU26fqyUraTtD2ms1EV1XwVTwnrhQdzxbOaO056NFgNv1HmTxQSoJ28qIuTD+f3";
 
 
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;//表示调用后置摄像头；
@@ -309,8 +308,6 @@ public class TeamLeftRed extends LinearOpMode {
                 telemetry.addData("Digital Touch", "Is Pressed");
             }*/
 ///////////////////////////////////////////////////////////////////////////////////////////////////Vuforia/////////////////////////////////////////////////////////////
-
-
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
@@ -364,8 +361,10 @@ public class TeamLeftRed extends LinearOpMode {
                 }
             });
 /////////////////////////////////////////////////////////////////////////////////////////////// Automatic /////////////////////////////////////////////////////////////////
-          Ball1();
-            if (runtime.equals(30)) {
+
+            Right(0.8);
+            sleep(40);
+            Ball1();
                 if (sensorColor.red() > sensorColor.blue()) {
                     Right(0.6);
                     sleep(40);
@@ -470,7 +469,10 @@ public class TeamLeftRed extends LinearOpMode {
                         Forward(0.8);
 
                 }
+            if (runtime.equals(30)) {
+                stop();
             }
+
         /*  if (gamepad2.dpad_up) {
             if (servo_position_ball <= 1) {
                 servo_position_ball = servo_position_ball + 0.02;
