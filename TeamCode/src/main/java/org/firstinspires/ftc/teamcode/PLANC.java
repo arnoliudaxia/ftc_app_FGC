@@ -70,15 +70,7 @@ public class PLANC extends LinearOpMode {
 
     public static final String TAG = "Vuforia Navigation Sample";
 
-    OpenGLMatrix lastLocation = null;
 
-
-    VuforiaLocalizer vuforia;
-
-
-    TouchSensor touchSensor;
-    ColorSensor sensorColor;
-    DistanceSensor sensorDistance;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     Servo servo_catching_block_1;
@@ -92,7 +84,7 @@ public class PLANC extends LinearOpMode {
     double servo_position_2 = 0.00;
     double power_raising = 0.50;
 
-    double servo_position_ball = 1;
+
 
     //* private DcMotor rightDrive = null;
     DcMotor Leftfront;
@@ -179,7 +171,7 @@ public class PLANC extends LinearOpMode {
         servo_catching_block_1.setPosition(servo_position_1);
         servo_catching_block_2.setPosition(servo_position_2);//init
 
-        servo_kicking_ball.setPosition(servo_position_ball);
+
 
         // Wait for the game to start (driver presses PLAY)
 
@@ -205,21 +197,8 @@ public class PLANC extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-        if (gamepad2.dpad_up) {
-            if (servo_position_ball <= 1) {
-                servo_position_ball = servo_position_ball + 0.02;
-            }
-            sleep(50);
-        }
 
-        if (gamepad2.dpad_down) {
-            if (servo_position_ball >= 0) {
-                servo_position_ball = servo_position_ball - 0.02;
-            }
-            sleep(50);
-        }
 
-        servo_kicking_ball.setPosition(servo_position_ball);
 
         if (gamepad2.x) {
             servo_position_1 = 0.00;
@@ -227,8 +206,8 @@ public class PLANC extends LinearOpMode {
             servo_catching_block_1.setPosition(servo_position_1);
             servo_catching_block_2.setPosition(servo_position_2);
         } else if (gamepad2.b) {
-            servo_position_1 = 0.40;
-            servo_position_2 = 0.00;
+            servo_position_1 = 0.30;
+            servo_position_2 = 0.10;
             servo_catching_block_1.setPosition(servo_position_1);
             servo_catching_block_2.setPosition(servo_position_2);
         }
