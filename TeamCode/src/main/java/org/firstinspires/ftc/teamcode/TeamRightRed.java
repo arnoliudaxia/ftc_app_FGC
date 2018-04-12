@@ -409,7 +409,10 @@ public class TeamRightRed extends LinearOpMode {
                     sleep(50);
                     Forward(0.8);
                     sleep(50);
-                    Release(0.40, 0.00);
+                    Release(0.20, 0.15);
+                    sleep(20);
+                    Release(0.30,0.10);
+                    sleep(10);
                     Rear(0.8);
                     sleep(50);
                     Right(0.8);
@@ -425,7 +428,10 @@ public class TeamRightRed extends LinearOpMode {
                     sleep(50);
                     Forward(0.8);
                     sleep(50);
-                    Release(0.40, 0.00);
+                    Release(0.20, 0.15);
+                    sleep(20);
+                    Release(0.30,0.10);
+                    sleep(10);
                     Rear(0.8);
                     sleep(30);
                 }
@@ -441,7 +447,7 @@ public class TeamRightRed extends LinearOpMode {
                             counter = counter + 1;
                             Stop();
                             sleep(10);
-                            Catch(0.00, 0.40);
+                            Catch(0.30, 0.10);
                             sleep(50);
                             Nishi(0.8);
                             sleep(80);
@@ -453,7 +459,10 @@ public class TeamRightRed extends LinearOpMode {
                             sleep(20);
                             Right(0.4);
                             sleep(30);
-                            Release(0.40, 0.00);
+                            Release(0.35, 0.15);
+                            sleep(20);
+                            Release(0.40,0.00);
+                            sleep(10);
                             Rear(0.8);
                             sleep(200);
                             Shunshi(0.8);
@@ -462,7 +471,7 @@ public class TeamRightRed extends LinearOpMode {
                         while (counter < 4 && counter > 2) {
                             Stop();
                             sleep(10);
-                            Catch(0.00, 0.40);
+                            Catch(0.30, 0.10);
                             sleep(50);
                             Nishi(0.8);
                             sleep(80);
@@ -477,7 +486,10 @@ public class TeamRightRed extends LinearOpMode {
                             sleep(20);
                             Right(0.4);
                             sleep(30);
-                            Release(0.40, 0.00);
+                            Release(0.35, 0.15);
+                            sleep(20);
+                            Release(0.40,0.00);
+                            sleep(10);
                             Down();
                             Rear(0.8);
                             sleep(50);

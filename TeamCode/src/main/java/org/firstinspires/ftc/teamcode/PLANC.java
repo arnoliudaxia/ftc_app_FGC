@@ -40,6 +40,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import android.app.Activity;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.view.View;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -330,8 +331,15 @@ public class PLANC extends LinearOpMode {
                     Leftrear.setPower(power1);
                     Rightfront.setPower(power1);
                     Rightrear.setPower(-power1);
+                } else {
+                    power1 = 0;
+                    Leftfront.setPower(-power1);
+                    Leftrear.setPower(power1);
+                    Rightfront.setPower(power1);
+                    Rightrear.setPower(-power1);
                 }
             }
+
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         // telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
