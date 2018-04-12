@@ -122,7 +122,7 @@ public class TeamLeftRed extends LinearOpMode {
     double servo_position_1 = 0.40;
     double servo_position_2 = 0.00;
     double power_raising = 0.50;
-    double servo_position_ball = 1;
+    double servo_position_ball = 0.5;
 
     //* private DcMotor rightDrive = null;
     DcMotor Leftfront;
@@ -134,14 +134,14 @@ public class TeamLeftRed extends LinearOpMode {
     double power1 = 0.8;
 
     public void Ball1() {
-        if (servo_position_ball <= 1) {
+        if (servo_position_ball <= 0.9) {
             servo_position_ball = servo_position_ball + 0.02;
         }
         sleep(50);
     }
 
     public void Ball2() {
-        if (servo_position_ball >= 0) {
+        if (servo_position_ball >= 0.5) {
             servo_position_ball = servo_position_ball - 0.02;
         }
         sleep(50);
@@ -363,26 +363,28 @@ public class TeamLeftRed extends LinearOpMode {
 /////////////////////////////////////////////////////////////////////////////////////////////// Automatic /////////////////////////////////////////////////////////////////
 
             Right(0.8);
-            sleep(40);
+            sleep(100);
             Ball1();
                 if (sensorColor.red() > sensorColor.blue()) {
                     Right(0.6);
-                    sleep(40);
+                    sleep(80);
                     Shunshi(0.6);
                     sleep(150);
                     Ball2();
                     Nishi(0.6);
                     sleep(150);
                 }
-                if (sensorColor.red() > sensorColor.blue()) {
+               else {
                     Right(0.6);
-                    sleep(40);
+                    sleep(80);
                     Nishi(0.6);
                     sleep(150);
                     Ball2();
                     Shunshi(0.6);
                     sleep(150);
                 }
+                stop();
+                sleep(10);
                 if (vuMark == RelicRecoveryVuMark.LEFT) {
                     Forward(0.8);
                     sleep(100);
@@ -392,7 +394,7 @@ public class TeamLeftRed extends LinearOpMode {
                     sleep(80);
                     Release(0.40, 0.00);
                 }
-                if (vuMark == RelicRecoveryVuMark.CENTER) {
+                else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     Forward(0.8);
                     sleep(100);
                     Left(0.8);
@@ -402,7 +404,7 @@ public class TeamLeftRed extends LinearOpMode {
                     Release(0.40, 0.00);
                 }
 
-                if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                else /*(vuMark == RelicRecoveryVuMark.RIGHT)*/ {
                     Forward(0.8);
                     sleep(100);
                     Left(0.8);
@@ -411,6 +413,8 @@ public class TeamLeftRed extends LinearOpMode {
                     sleep(80);
                     Release(0.40, 0.00);
                 }
+                stop();
+                sleep(10);
                 Rear(0.8);
                 sleep(200);
                 Nishi(0.6);

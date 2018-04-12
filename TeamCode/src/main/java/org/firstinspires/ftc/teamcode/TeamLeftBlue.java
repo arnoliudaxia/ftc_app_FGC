@@ -376,7 +376,7 @@ public class TeamLeftBlue extends LinearOpMode {
                     Nishi(0.8);
                     sleep(90);
                 }
-                if (sensorColor.red() < sensorColor.blue()) {
+                else  {
                     Right(0.6);
                     sleep(40);
                     Nishi(0.8);
@@ -385,7 +385,8 @@ public class TeamLeftBlue extends LinearOpMode {
                     Shunshi(0.8);
                     sleep(90);
                 }
-
+                stop();
+                sleep(10);
                 if (vuMark == RelicRecoveryVuMark.LEFT) {
                     Rear(0.8);
                     sleep(180);
@@ -463,7 +464,7 @@ public class TeamLeftBlue extends LinearOpMode {
                         while (counter < 4 && counter > 2) {
                             Stop();
                             sleep(10);
-                            Catch(0.00, 0.40);
+                            Catch(0.30, 0.10);
                             sleep(50);
                             Nishi(0.8);
                             sleep(80);

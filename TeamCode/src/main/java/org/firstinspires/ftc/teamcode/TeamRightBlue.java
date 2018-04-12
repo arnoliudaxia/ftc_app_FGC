@@ -63,7 +63,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-
+/*
 /**
  * This 2016-2017 OpMode illustrates the basics of using the Vuforia localizer to determine
  * positioning and orientation of robot on the FTC field.
@@ -227,12 +227,6 @@ public class TeamRightBlue extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        /*
-         * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
-         * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
-         */
-///////////////////////////////////////////////////////////////////////////////////////////////////Vuforia/////////////////////////////////////////////////////
-
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -272,7 +266,7 @@ public class TeamRightBlue extends LinearOpMode {
         Leftfront.setDirection(DcMotor.Direction.FORWARD);
         Leftrear.setDirection(DcMotor.Direction.FORWARD);
         Rightfront.setDirection(DcMotor.Direction.REVERSE);
-        Rightrear.setDirection(DcMotor.Direction.FORWARD);
+        Rightrear.setDirection(DcMotor.Direction.REVERSE);
         telemetry.addData(">", "按 Play 就开始");
         telemetry.update();
 
@@ -374,7 +368,7 @@ public class TeamRightBlue extends LinearOpMode {
                     Nishi(0.6);
                     sleep(150);
                 }
-                if (sensorColor.red() > sensorColor.blue()) {
+                else {
                     Right(0.6);
                     sleep(40);
                     Nishi(0.6);
@@ -383,7 +377,8 @@ public class TeamRightBlue extends LinearOpMode {
                     Shunshi(0.6);
                     sleep(150);
                 }
-
+                stop();
+                sleep(10);
                 if (vuMark == RelicRecoveryVuMark.LEFT) {
                     Rear(0.8);
                     sleep(100);
@@ -393,7 +388,7 @@ public class TeamRightBlue extends LinearOpMode {
                     sleep(50);
                     Release(0.40, 0.00);
                 }
-                if (vuMark == RelicRecoveryVuMark.CENTER) {
+               else  if (vuMark == RelicRecoveryVuMark.CENTER) {
                     Rear(0.8);
                     sleep(150);
                     Shunshi(0.8);
@@ -405,7 +400,7 @@ public class TeamRightBlue extends LinearOpMode {
                     sleep(50);
                 }
 
-                if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                else /*(vuMark == RelicRecoveryVuMark.RIGHT)*/ {
                     Rear(0.8);
                     sleep(200);
                     Shunshi(0.8);
@@ -445,6 +440,8 @@ public class TeamRightBlue extends LinearOpMode {
                         Shunshi(0.8);
                         sleep(100);
                     }
+
+
                     while (counter < 4 && counter > 2) {
                         Stop();
                         sleep(10);
