@@ -254,7 +254,7 @@ public class PLANC extends LinearOpMode {
                     Rightfront.setPower(power1);
                     Rightrear.setPower(-power1);
                 }
-                if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y < 0 && gamepad1.left_stick_y > -0.5) {
+                /*if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y < 0 && gamepad1.left_stick_y > -0.5) {
                     power1 = 0.8;
                     Leftfront.setPower(power1);
                     Leftrear.setPower(power1);
@@ -288,7 +288,7 @@ public class PLANC extends LinearOpMode {
                     Leftrear.setPower(power1);
                     Rightfront.setPower(power1);
                     Rightrear.setPower(power1);
-                }//stop}
+                }//stop}*/
                 if (gamepad1.a) {
                     power1 = 0.7;
                     Leftfront.setPower(power1);
@@ -304,14 +304,14 @@ public class PLANC extends LinearOpMode {
                     Rightrear.setPower(power1);
                 } }else {
                 if (gamepad1.y) {
-                    power1 = 0.7;
+                    power1 = 0.6;
                     Leftfront.setPower(power1);
                     Rightfront.setPower(power1);
                     Leftrear.setPower(power1);
                     Rightrear.setPower(power1);
                 }
                 if (gamepad1.a) {
-                    power1 = 0.7;
+                    power1 = 0.6;
                     Leftfront.setPower(power1);
                     Leftrear.setPower(-power1);
                     Rightfront.setPower(-power1);
@@ -319,14 +319,14 @@ public class PLANC extends LinearOpMode {
                 }
                 //hou tui
                 if (gamepad1.x) {
-                    power1 = 0.7;
+                    power1 = 0.6;
                     Leftfront.setPower(power1);
                     Leftrear.setPower(-power1);
                     Rightfront.setPower(-power1);
                     Rightrear.setPower(power1);
                 }
                 if (gamepad1.b) {
-                    power1 = 0.7;
+                    power1 = 0.6;
                     Leftfront.setPower(-power1);
                     Leftrear.setPower(power1);
                     Rightfront.setPower(power1);
