@@ -289,7 +289,7 @@ public class PLANC extends LinearOpMode {
                     Rightfront.setPower(power1);
                     Rightrear.setPower(power1);
                 }//stop}*/
-                if (gamepad1.a) {
+                if (gamepad1.x) {
                     power1 = 0.7;
                     Leftfront.setPower(power1);
                     Leftrear.setPower(power1);
