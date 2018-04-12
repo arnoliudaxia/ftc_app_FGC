@@ -331,132 +331,224 @@ public class TeamLeftBlue extends LinearOpMode {
             Ball1();
             Right(0.8);
             sleep(40);
+            stop();
+            sleep(500);
                 if (sensorColor.red() > sensorColor.blue()) {
-
-                    Shunshi(0.8);
-                    sleep(90);
+                    Shunshi(0.3);
+                    sleep(180);
                     Ball2();
-                    Nishi(0.8);
-                    sleep(90);
+                    stop();
+                    sleep(300);
+                    Nishi(0.3);
+                    sleep(180);
                 }
                 else  {
-
-                    Nishi(0.8);
-                    sleep(90);
+                    Nishi(0.3);
+                    sleep(180);
                     Ball2();
-                    Shunshi(0.8);
-                    sleep(90);
+                    stop();
+                    sleep(300);
+                    sleep(500);
+                    Shunshi(0.3);
+                    sleep(180);
                 }
                 stop();
-                sleep(10);
+                sleep(300);
                 if (vuMark == RelicRecoveryVuMark.LEFT) {
                     Rear(0.8);
                     sleep(180);
+                    stop();
+                    sleep(500);
                     Left(0.8);
                     sleep(50);
+                    stop();
+                    sleep(500);
                     Nishi(0.8);
                     sleep(100);
+                    stop();
+                    sleep(500);
                     Forward(0.8);
                     sleep(60);
+                    stop();
+                    sleep(500);
                     Right(0.8);
                     sleep(30);
+                    stop();
+                    sleep(500);
                     Left(0.8);
                     sleep(30);
+                    stop();
+                    sleep(400);
                     Release(0.40, 0.00);
+                    sleep(100);
+                    stop();
+                    sleep(500);
                 }
                 if (vuMark == RelicRecoveryVuMark.CENTER) {
                     Rear(0.8);
                     sleep(180);
+                    stop();
+                    sleep(500);
                     Left(0.8);
                     sleep(100);
+                    stop();
+                    sleep(500);
                     Nishi(0.8);
                     sleep(100);
+                    stop();
+                    sleep(500);
                     Forward(0.8);
                     sleep(60);
+                    stop();
+                    sleep(500);
                     Right(0.8);
                     sleep(30);
+                    stop();
+                    sleep(500);
                     Left(0.8);
                     sleep(30);
+                    stop();
+                    sleep(500);
                     Release(0.40, 0.00);
+                    sleep(100);
+                    stop();
+                    sleep(500);
                 }
 
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     Rear(0.8);
                     sleep(180);
+                    stop();
+                    sleep(500);
                     Left(0.8);
                     sleep(150);
+                    stop();
+                    sleep(500);
                     Nishi(0.8);
                     sleep(100);
+                    stop();
+                    sleep(500);
                     Forward(0.8);
                     sleep(60);
+                    stop();
+                    sleep(500);
                     Right(0.8);
-                    sleep(30);
+                    sleep(60);
+                    stop();
+                    sleep(500);
                     Left(0.8);
                     sleep(30);
+                    stop();
+                    sleep(500);
                     Release(0.40, 0.00);
+                    stop();
+                    sleep(500);
                 }
                 Rear(0.8);
                 sleep(300);
+                stop();
+                sleep(500);
                 Nishi(0.6);
                 sleep(100);
+                stop();
+                sleep(500);
                 switch ("Touch") {
                     case "Is Pressed":
                         while (counter < 2) {
                             counter = counter + 1;
                             Stop();
-                            sleep(10);
+                            sleep(100);
                             Catch(0.30, 0.10);
-                            sleep(50);
+                            sleep(500);
+                            stop();
+                            sleep(500);
                             Nishi(0.8);
                             sleep(80);
+                            stop();
+                            sleep(500);
                             Left(0.8);
                             sleep(20*counter);
+                            stop();
+                            sleep(500);
                             Forward(0.8);
                             sleep(350);
+                            stop();
+                            sleep(500);
                             Left(0.6);
                             sleep(20);
+                            stop();
+                            sleep(500);
                             Right(0.69);
                             sleep(30);
+                            stop();
+                            sleep(500);
                             Release(0.35, 0.15);
-                            sleep(20);
-                            Release(0.40,0.00);
-                            sleep(10);
+                            sleep(300);
+                            stop();
                             sleep(200);
+                            Release(0.40,0.00);
+                            sleep(300);
+                            stop();
+                            sleep(500);
                             Shunshi(0.8);
                             sleep(80);
+                            stop();
+                            sleep(500);
                         }
                         while (counter < 4 && counter > 2) {
                             Stop();
-                            sleep(10);
+                            sleep(100);
                             Catch(0.30, 0.10);
-                            sleep(50);
+                            sleep(500);
+                            stop();
+                            sleep(500);
                             Nishi(0.8);
                             sleep(80);
+                            stop();
+                            sleep(500);
                             Left(0.8);
                             sleep(20*counter);
+                            stop();
+                            sleep(500);
                             Forward(0.8);
                             sleep(300);
+                            stop();
+                            sleep(500);
                             Raisng();//////////////////////////////////////////////////
-                            sleep(50);
+                            sleep(99);
+                            stop();
+                            sleep(500);
                             Stable();//////////////////////////////////////////////////
                             Left(0.6);
                             sleep(20);
+                            stop();
+                            sleep(500);
                             Right(0.6);
                             sleep(30);
+                            stop();
+                            sleep(500);
                             Release(0.35, 0.15);
-                            sleep(20);
+                            sleep(300);
+                            stop();
+                            sleep(500);
                             Release(0.40,0.00);
-                            sleep(10);
+                            sleep(300);
+                            stop();
+                            sleep(500);
                             Down();
+                            sleep(100);
                             Rear(0.8);
                             sleep(50);
+                            stop();
+                            sleep(500);
                             Shunshi(0.8);
                             sleep(80);
+                            stop();
+                            sleep(500);
                             counter = counter + 1;
                         }
                     case "Is Not Pressed":
                         Forward(0.8);
-
                 }
             if (runtime.equals(30)) {
                     stop();}
