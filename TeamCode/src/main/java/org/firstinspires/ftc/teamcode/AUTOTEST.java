@@ -57,14 +57,6 @@ import java.util.Locale;
 //@Disabled
 public class AUTOTEST extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    public static final String TAG = "Vuforia VuMark Sample";
-    OpenGLMatrix lastLocation = null;
-
-    VuforiaLocalizer vuforia;
-    TouchSensor touchSensor;
-    ColorSensor sensorColor;
-    DistanceSensor sensorDistance;
-
 
     Servo servo_catching_block_1;
     Servo servo_catching_block_2;
@@ -88,7 +80,7 @@ public class AUTOTEST extends LinearOpMode {
     double power1 = 0.8;
 
     public void Ball1() {
-        if (servo_position_ball <= 1) {
+        if (servo_position_ball <= 0.9) {
             servo_position_ball = servo_position_ball + 0.02;
         }
         sleep(50);
@@ -181,26 +173,6 @@ public class AUTOTEST extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        /*
-         * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
-         * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
-         */
-///////////////////////////////////////////////////////////////////////////////////////////////////Vuforia/////////////////////////////////////////////////////
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-        parameters.vuforiaLicenseKey = "JAX5jFWu6OruN0EVesmSeo+m8FKtw9HexPxtE4G2EWjPx/kFe5dcd7oTi0ZYOUENJIr/bP+de6Iz3X12Nv46jRn07ywhorHvSA+FJbqZxLOxsr1ZxlEuBfH45s7K0woMUQjTGzQTcEozTRld/zAxWf9vyShez7WrjkHqJQmsYeuWLeheKvWi/Ncm60lyYHYFTzctYYf2vx4pYWR6z+N/ra26Jj0bNXGLYqKUzmjiatOmwVzXW04n/jp8p/JKljzT5N4SDgYrT7wEJGpmCX6YvWbh/1MLR2fGZ4lUHyYVE7v7BW/ZvOJNf8DpEWVQFVuvcyKD61Q5ft2557nuJMahsI";
-
-
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;//表示调用后置摄像头；
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-
-
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
-        //加载数据
 
         servo_catching_block_1 = hardwareMap.servo.get("servo_catching_block_1");
         servo_catching_block_2 = hardwareMap.servo.get("servo_catching_block_2");
@@ -209,7 +181,7 @@ public class AUTOTEST extends LinearOpMode {
 
         servo_kicking_ball = hardwareMap.get(Servo.class, "servo_kicking_ball");
 
-        Catch(0.00, 0.40);//init
+
 
         servo_kicking_ball.setPosition(servo_position_ball);
 
@@ -233,342 +205,64 @@ public class AUTOTEST extends LinearOpMode {
 
         waitForStart();
 
-        relicTrackables.activate();
-//////////////////////////////////////////////////////////////////////////////////////////////////////颜色传感器/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
-        // get a reference to the distance sensor that shares the same name.
-        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
-        // hsvValues is an array that will hold the hue, saturation, and value information.
-        float hsvValues[] = {0F, 0F, 0F};
-        // values is a reference to the hsvValues array.
-        final float values[] = hsvValues;
-        // sometimes it helps to multiply the raw RGB values with a scale factor
-        // to amplify/attentuate the measured values.
-        final double SCALE_FACTOR = 255;
-        // get a reference to the RelativeLayout so we can change the background
-        // color of the Robot Controller app to match the hue detected by the RGB sensor.
-        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
-//////////////////////////////////////////////////////////////////////////////////////////////////触觉传感器/////////////////////////////////////////////////////////
-        touchSensor = hardwareMap.get(TouchSensor.class, "sensor_touch");
-        int counter = 0;
-        waitForStart();
-        runtime.reset();
-        // run until the end of the match (driver presses STOP)
-///////////////////////////////////////////////////////////////////////////////////////////////////主程序///////////////////////////////////////////////////////
-        while (opModeIsActive()) {
-           /* if (digitalTouch.getState()) {
-                telemetry.addData("Digital Touch", "Is Not Pressed");
-            } else {
-                telemetry.addData("Digital Touch", "Is Pressed");
-            }*/
-///////////////////////////////////////////////////////////////////////////////////////////////////Vuforia/////////////////////////////////////////////////////////////
-
-
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-
-
-                telemetry.addData("VuMark", "%s visible", vuMark);
-
-
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
-                telemetry.addData("Pose", format(pose));
-
-///////////////////////////////////////////////////////////////////////////////////////////////////触觉传感器////////////////////////////////////////////////
-                if (touchSensor.isPressed())
-                    telemetry.addData("Touch", "Is Pressed");
-                else
-                    telemetry.addData("Touch", "Is Not Pressed");
-
-                telemetry.update();
-
-                // convert the RGB values to HSV values.
-                // multiply by the SCALE_FACTOR.
-                // then cast it back to int (SCALE_FACTOR is a double)
-                Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
-                        (int) (sensorColor.green() * SCALE_FACTOR),
-                        (int) (sensorColor.blue() * SCALE_FACTOR),
-                        hsvValues);
-
-                // send the info back to driver station using telemetry function.
-                telemetry.addData("Distance (cm)",
-                        String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)));
-                telemetry.addData("Alpha", sensorColor.alpha());
-                telemetry.addData("Red  ", sensorColor.red());
-                telemetry.addData("Blue ", sensorColor.blue());
-                telemetry.addData("Hue", hsvValues[0]);
-
-                // change the background color to match the color detected by the RGB sensor.
-                // pass a reference to the hue, saturation, and value array as an argument
-                // to the HSVToColor method.
-                relativeLayout.post(new Runnable() {
-                    public void run() {
-                        relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
-                    }
-                });
-
-                telemetry.update();
-            }
-
-            // Set the panel back to the default color
-            relativeLayout.post(new Runnable() {
-                public void run() {
-                    relativeLayout.setBackgroundColor(Color.WHITE);
-                }
-            });
-/////////////////////////////////////////////////////////////////////////////////////////////// Automatic /////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////
             if (runtime.equals(30)) {
                 Ball1();
-                if (sensorColor.red() > sensorColor.blue()) {
-                    Right(0.6);
-                    sleep(40);
-                    Shunshi(0.6);
-                    sleep(150);
-                    Ball2();
-                    Nishi(0.6);
-                    sleep(150);
-                }
-                if (sensorColor.red() > sensorColor.blue()) {
-                    Right(0.6);
-                    sleep(40);
-                    Nishi(0.6);
-                    sleep(150);
-                    Ball2();
-                    Shunshi(0.6);
-                    sleep(150);
-                }
-                if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    Forward(0.8);
-                    sleep(200);
-                    Left(0.8);
-                    sleep(100);
-                    Shunshi(0.8);
-                    sleep(50);
-                    Forward(0.6);
-                    sleep(50);
-                    Release(0.40, 0.00);
-                    Rear(0.8);
-                    sleep(50);
-                    Right(0.8);
-                    sleep(100);
-                }
-                if (vuMark == RelicRecoveryVuMark.CENTER) {
-                    Forward(0.8);
-                    sleep(150);
-                    Left(0.8);
-                    sleep(100);
-                    Shunshi(0.8);
-                    sleep(50);
-                    Forward(0.8);
-                    sleep(50);
-                    Release(0.40, 0.00);
-                    Rear(0.8);
-                    sleep(50);
-                    Right(0.8);
-                    sleep(50);
-                }
+                Ball2();
 
-                if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                    Forward(0.8);
-                    sleep(100);
-                    Left(0.8);
-                    sleep(100);
-                    Shunshi(0.8);
-                    sleep(50);
-                    Forward(0.8);
-                    sleep(50);
-                    Release(0.40, 0.00);
-                    Rear(0.8);
-                    sleep(30);
-                }
-                Shunshi(0.6);
-                sleep(100);
+
+                Raisng();
+                sleep(50);
+                Stop();
+                sleep(5000);
+
+
+                Down();
+                sleep(50);
+                Stop();
+
+                Stable();
+                sleep(50);
+                Stop();
+                sleep(5000);
+
+
                 Forward(0.8);
-                sleep(200);
-                switch ("Touch") {
-                    case "Is Pressed":
-                        while (counter < 2) {
-                            counter = counter + 1;
-                            Stop();
-                            sleep(10);
-                            Catch(0.00, 0.40);
-                            sleep(50);
-                            Nishi(0.8);
-                            sleep(80);
-                            Left(0.8);
-                            sleep(20*counter);
-                            Forward(0.8);
-                            sleep(350);
-                            Left(0.4);
-                            sleep(20);
-                            Right(0.4);
-                            sleep(30);
-                            Release(0.40, 0.00);
-                            Rear(0.8);
-                            sleep(200);
-                            Shunshi(0.8);
-                            sleep(80);
-                        }
-                        while (counter < 4 && counter > 2) {
-                            Stop();
-                            sleep(10);
-                            Catch(0.00, 0.40);
-                            sleep(50);
-                            Nishi(0.8);
-                            sleep(80);
-                            Left(0.8);
-                            sleep(20*counter);
-                            Forward(0.8);
-                            sleep(300);
-                            Raisng();//////////////////////////////////////////////////
-                            sleep(50);
-                            Stable();//////////////////////////////////////////////////
-                            Left(0.4);
-                            sleep(20);
-                            Right(0.4);
-                            sleep(30);
-                            Release(0.40, 0.00);
-                            Down();
-                            Rear(0.8);
-                            sleep(50);
-                            Shunshi(0.8);
-                            sleep(80);
-                            counter = counter + 1;
-                        }
-                    case "Is Not Pressed":
-                        Forward(0.8);
+                sleep(50);
+                Stop();
+                sleep(5000);
 
-                }
-            }
-        /*  if (gamepad2.dpad_up) {
-            if (servo_position_ball <= 1) {
-                servo_position_ball = servo_position_ball + 0.02;
-            }
-            sleep(50);
-        }
-        if (gamepad2.dpad_down) {
-            if (servo_position_ball >= 0) {
-                servo_position_ball = servo_position_ball - 0.02;
-            }
-            sleep(50);
-        }
-        servo_kicking_ball.setPosition(servo_position_ball);
-        if (gamepad2.x) {
-            servo_position_1 = 0.00;
-            servo_position_2 = 0.40;
-            servo_catching_block_1.setPosition(servo_position_1);
-            servo_catching_block_2.setPosition(servo_position_2);
-        } else if (gamepad2.b) {
-            servo_position_1 = 0.40;
-            servo_position_2 = 0.00;
-            servo_catching_block_1.setPosition(servo_position_1);
-            servo_catching_block_2.setPosition(servo_position_2);
-        }
+                Rear(0.8);
+                sleep(50);
+                Stop();
+                sleep(5000);
 
-        if (gamepad2.y) {
-            power_raising = 1.0;
-            motor_raising.setPower(power_raising);
-        } else if (gamepad2.a) {
-            power_raising = -1.0;
-            motor_raising.setPower(power_raising);
-        } else {
-            power_raising = 0.08;
-            motor_raising.setPower(power_raising);
-        }
-
-        if (gamepad2.x) {
-            power1 = 0.3;
-        }
-        if (gamepad1.left_stick_y < 0) {
-            power1 = 0.8;
-
-            Leftfront.setPower(power1);
-            Rightfront.setPower(power1);
-            Leftrear.setPower(power1);
-            Rightrear.setPower(power1);
-        }
+                Left(0.8);
+                sleep(50);
+                Stop();
+                sleep(5000);
 
 
-        if (gamepad1.left_stick_y > 0) {
-            power1 = 0.8;
-            Leftfront.setPower(power1);
-            Leftrear.setPower(-power1);
-            Rightfront.setPower(-power1);
-            Rightrear.setPower(power1);
-        }
-        //hou tui
-        if (gamepad1.left_stick_x > 0) {
-            power1 = 0.8;
-            Leftfront.setPower(power1);
-            Leftrear.setPower(-power1);
-            Rightfront.setPower(-power1);
-            Rightrear.setPower(power1);
-        }
+                Right(0.8);
+                sleep(50);
+                Stop();
+                sleep(5000);
 
-        if (gamepad1.left_stick_x < 0) {
-            power1 = 0.8;
-            Leftfront.setPower(-power1);
-            Leftrear.setPower(power1);
-            Rightfront.setPower(power1);
-            Rightrear.setPower(-power1);
-        }
-               /* if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y < 0) {
-                    power1 = 0.5;
-                    Leftfront.setPower(power1);
-                    Leftrear.setPower(power1);
-                    Rightfront.setPower(power1);
-                    Rightrear.setPower(-power1);
-                }//向左上
-                if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y > 0) {
-                    power1 = 0.5;
-                    Leftfront.setPower(-power1);
-                    Leftrear.setPower(-power1);
-                    Rightfront.setPower(power1);
-                    Rightrear.setPower(-power1);
-                }//向左下
-                if (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y > 0) {
-                    power1 = 0.5;
-                    Leftfront.setPower(power1);
-                    Leftrear.setPower(-power1);
-                    Rightfront.setPower(-power1);
-                    Rightrear.setPower(-power1);
-                }//向右下
-                if (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y < 0) {
-                    power1 = 0.5;
-                    Leftfront.setPower(power1);
-                    Leftrear.setPower(-power1);
-                    Rightfront.setPower(power1);
-                    Rightrear.setPower(power1);
-                }//向右上
-                if (gamepad1.left_stick_x == 0 && gamepad1.left_stick_y == 0) {
-                    power1 = 0;
-                    Leftfront.setPower(power1);
-                    Leftrear.setPower(power1);
-                    Rightfront.setPower(power1);
-                    Rightrear.setPower(power1);
-                }//stop
-                if (gamepad1.a) {
-                power1 = 0.5;
-                Leftfront.setPower(power1);
-                Leftrear.setPower(power1);
-                Rightfront.setPower(-power1);
-                Rightrear.setPower(-power1);
-                }
-                if (gamepad1.b) {
-                power1 = 0.5;
-                Leftfront.setPower(-power1);
-                Leftrear.setPower(-power1);
-                Rightfront.setPower(power1);
-                Rightrear.setPower(power1);
-                }//shun shi zheng*/
+                Shunshi(0.8);
+                sleep(50);
+                Stop();
+                sleep(5000);
+
+                Nishi(0.8);
+                sleep(50);
+                Stop();
+                sleep(5000);
 
 
-            else {
-                telemetry.addData("VuMark", "not visible");
-                telemetry.addData("Status", "Run Time: " + runtime.toString());
-                // telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            }
+
+                Release(0.00,0.40);
+
+                Catch(0.30, 0.10);//init
             telemetry.update();
         }
 
