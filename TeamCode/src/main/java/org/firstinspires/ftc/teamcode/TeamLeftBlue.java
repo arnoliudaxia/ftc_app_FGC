@@ -443,7 +443,7 @@ public class TeamLeftBlue extends LinearOpMode {
                             counter = counter + 1;
                             Stop();
                             sleep(10);
-                            Catch(0.00, 0.40);
+                            Catch(0.30, 0.10);
                             sleep(50);
                             Nishi(0.8);
                             sleep(80);
@@ -455,8 +455,10 @@ public class TeamLeftBlue extends LinearOpMode {
                             sleep(20);
                             Right(0.69);
                             sleep(30);
-                            Release(0.40, 0.00);
-                            Rear(0.8);
+                            Release(0.35, 0.15);
+                            sleep(20);
+                            Release(0.40,0.00);
+                            sleep(10);
                             sleep(200);
                             Shunshi(0.8);
                             sleep(80);
@@ -479,7 +481,10 @@ public class TeamLeftBlue extends LinearOpMode {
                             sleep(20);
                             Right(0.6);
                             sleep(30);
-                            Release(0.40, 0.00);
+                            Release(0.35, 0.15);
+                            sleep(20);
+                            Release(0.40,0.00);
+                            sleep(10);
                             Down();
                             Rear(0.8);
                             sleep(50);
