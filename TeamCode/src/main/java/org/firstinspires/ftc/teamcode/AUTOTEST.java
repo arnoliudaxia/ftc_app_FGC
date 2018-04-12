@@ -53,7 +53,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.util.Locale;
 
 
-@Autonomous(name="TeamRightRed", group ="Concept")
+@Autonomous(name="AUTOTEST", group ="Concept")
 //@Disabled
 public class AUTOTEST extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();

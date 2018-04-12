@@ -379,41 +379,114 @@ public class TeamRightBlue extends LinearOpMode {
                 sleep(10);
                 if (vuMark == RelicRecoveryVuMark.LEFT) {
                     Rear(0.8);
-                    sleep(100);
+                    sleep(200);
+                    stop();
+                    sleep(500);
+
                     Shunshi(0.8);
-                    sleep(100);
+                    sleep(200);
+                    stop();
+                    sleep(500);
+
+
                     Forward(0.8);
-                    sleep(50);
+                    sleep(100);
+                    stop();
+                    sleep(500);
+
+
                     Release(0.40, 0.00);
+                    stop();
+                    sleep(500);
+
+
+
                 }
                else  if (vuMark == RelicRecoveryVuMark.CENTER) {
                     Rear(0.8);
-                    sleep(150);
+                    sleep(300);
+                    stop();
+                    sleep(500);
+
+
                     Shunshi(0.8);
-                    sleep(150);
+                    sleep(300);
+                    stop();
+                    sleep(500);
+
+
+
                     Forward(0.8);
-                    sleep(50);
+                    sleep(100);
+                    stop();
+                    sleep(500);
+
+
                     Release(0.40, 0.00);
+                    stop();
+                    sleep(500);
+
+
+
                     Left(0.8);
-                    sleep(50);
+                    sleep(100);
+                    stop();
+                    sleep(500);
+
+
+
                 }
 
                 else /*(vuMark == RelicRecoveryVuMark.RIGHT)*/ {
                     Rear(0.8);
-                    sleep(200);
+                    sleep(400);
+                    stop();
+                    sleep(500);
+
+
+
                     Shunshi(0.8);
-                    sleep(200);
+                    sleep(400);
+                    stop();
+                    sleep(500);
+
+
+
                     Forward(0.8);
-                    sleep(50);
+                    sleep(100);
+                    stop();
+                    sleep(500);
+
+
+
                     Release(0.40, 0.00);
+                    stop();
+                    sleep(500);
+
+
                     Left(0.8);
                     sleep(100);
+                    stop();
+                    sleep(500);
+
+
+
+
+
                 }
 
             Rear(0.8);
             sleep(150);
+            stop();
+            sleep(500);
+
+
             Nishi(0.6);
             sleep(100);
+            stop();
+            sleep(500);
+
+
             switch ("Touch") {
                 case "Is Pressed":
                     while (counter < 2) {

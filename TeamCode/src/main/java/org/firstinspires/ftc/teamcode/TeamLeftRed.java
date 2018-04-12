@@ -365,118 +365,118 @@ public class TeamLeftRed extends LinearOpMode {
             Right(0.8);
             sleep(100);
             Ball1();
-                if (sensorColor.red() > sensorColor.blue()) {
+            if (sensorColor.red() > sensorColor.blue()) {
 
-                    Shunshi(0.6);
-                    sleep(150);
-                    Ball2();
-                    Nishi(0.6);
-                    sleep(150);
-                }
-               else {
-
-                    Nishi(0.6);
-                    sleep(150);
-                    Ball2();
-                    Shunshi(0.6);
-                    sleep(150);
-                }
-                stop();
-                sleep(10);
-                if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    Forward(0.8);
-                    sleep(100);
-                    Left(0.8);
-                    sleep(200);
-                    Forward(0.6);
-                    sleep(80);
-                    Release(0.40, 0.00);
-                }
-                else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                    Forward(0.8);
-                    sleep(100);
-                    Left(0.8);
-                    sleep(150);
-                    Forward(0.8);
-                    sleep(80);
-                    Release(0.40, 0.00);
-                }
-
-                else /*(vuMark == RelicRecoveryVuMark.RIGHT)*/ {
-                    Forward(0.8);
-                    sleep(100);
-                    Left(0.8);
-                    sleep(100);
-                    Forward(0.8);
-                    sleep(80);
-                    Release(0.40, 0.00);
-                }
-                stop();
-                sleep(10);
-                Rear(0.8);
-                sleep(200);
+                Shunshi(0.6);
+                sleep(150);
+                Ball2();
                 Nishi(0.6);
-                sleep(100);
-                switch ("Touch") {
-                    case "Is Pressed":
-                        while (counter < 2) {
-                            counter = counter + 1;
-                            Stop();
-                            sleep(10);
-                            Catch(0.30, 0.10);
-                            sleep(50);
-                            Shunshi(0.8);
-                            sleep(80);
-                            Right(0.8);
-                            sleep(20*counter);
-                            Forward(0.8);
-                            sleep(350);
-                            Left(0.6);
-                            sleep(20);
-                            Right(0.6);
-                            sleep(30);
-                            Release(0.35, 0.15);
-                            sleep(20);
-                            Release(0.40,0.00);
-                            sleep(10);
-                            Rear(0.8);
-                            sleep(200);
-                            Shunshi(0.8);
-                            sleep(80);
-                        }
-                        while (counter < 4 && counter > 2) {
-                            Stop();
-                            sleep(10);
-                            Catch(0.30, 0.10);
-                            sleep(50);
-                            Shunshi(0.8);
-                            sleep(80);
-                            Right(0.8);
-                            sleep(20*counter);
-                            Forward(0.8);
-                            sleep(300);
-                            Raisng();//////////////////////////////////////////////////
-                            sleep(50);
-                            Stable();//////////////////////////////////////////////////
-                            Left(0.4);
-                            sleep(20);
-                            Right(0.4);
-                            sleep(30);
-                            Release(0.35, 0.15);
-                            sleep(20);
-                            Release(0.40,0.00);
-                            sleep(10);
-                            Down();
-                            Rear(0.8);
-                            sleep(50);
-                            Shunshi(0.8);
-                            sleep(80);
-                            counter = counter + 1;
-                        }
-                    case "Is Not Pressed":
-                        Forward(0.8);
+                sleep(150);
+            }
+            else {
 
-                }
+                Nishi(0.6);
+                sleep(150);
+                Ball2();
+                Shunshi(0.6);
+                sleep(150);
+            }
+            stop();
+            sleep(10);
+            if (vuMark == RelicRecoveryVuMark.LEFT) {
+                Forward(0.8);
+                sleep(100);
+                Left(0.8);
+                sleep(200);
+                Forward(0.6);
+                sleep(80);
+                Release(0.40, 0.00);
+            }
+            else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                Forward(0.8);
+                sleep(100);
+                Left(0.8);
+                sleep(150);
+                Forward(0.8);
+                sleep(80);
+                Release(0.40, 0.00);
+            }
+
+            else /*(vuMark == RelicRecoveryVuMark.RIGHT)*/ {
+                Forward(0.8);
+                sleep(100);
+                Left(0.8);
+                sleep(100);
+                Forward(0.8);
+                sleep(80);
+                Release(0.40, 0.00);
+            }
+            stop();
+            sleep(10);
+            Rear(0.8);
+            sleep(200);
+            Nishi(0.6);
+            sleep(100);
+            switch ("Touch") {
+                case "Is Pressed":
+                    while (counter < 2) {
+                        counter = counter + 1;
+                        Stop();
+                        sleep(10);
+                        Catch(0.30, 0.10);
+                        sleep(50);
+                        Shunshi(0.8);
+                        sleep(80);
+                        Right(0.8);
+                        sleep(20*counter);
+                        Forward(0.8);
+                        sleep(350);
+                        Left(0.6);
+                        sleep(20);
+                        Right(0.6);
+                        sleep(30);
+                        Release(0.35, 0.15);
+                        sleep(20);
+                        Release(0.40,0.00);
+                        sleep(10);
+                        Rear(0.8);
+                        sleep(200);
+                        Shunshi(0.8);
+                        sleep(80);
+                    }
+                    while (counter < 4 && counter > 2) {
+                        Stop();
+                        sleep(10);
+                        Catch(0.30, 0.10);
+                        sleep(50);
+                        Shunshi(0.8);
+                        sleep(80);
+                        Right(0.8);
+                        sleep(20*counter);
+                        Forward(0.8);
+                        sleep(300);
+                        Raisng();//////////////////////////////////////////////////
+                        sleep(50);
+                        Stable();//////////////////////////////////////////////////
+                        Left(0.4);
+                        sleep(20);
+                        Right(0.4);
+                        sleep(30);
+                        Release(0.35, 0.15);
+                        sleep(20);
+                        Release(0.40,0.00);
+                        sleep(10);
+                        Down();
+                        Rear(0.8);
+                        sleep(50);
+                        Shunshi(0.8);
+                        sleep(80);
+                        counter = counter + 1;
+                    }
+                case "Is Not Pressed":
+                    Forward(0.8);
+
+            }
             if (runtime.equals(30)) {
                 stop();
             }
