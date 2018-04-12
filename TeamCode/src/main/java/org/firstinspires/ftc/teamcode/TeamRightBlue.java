@@ -360,8 +360,7 @@ public class TeamRightBlue extends LinearOpMode {
             Right(0.8);
             sleep(40);
                 if (sensorColor.red() > sensorColor.blue()) {
-                    Right(0.6);
-                    sleep(40);
+
                     Shunshi(0.6);
                     sleep(150);
                     Ball2();
@@ -369,8 +368,7 @@ public class TeamRightBlue extends LinearOpMode {
                     sleep(150);
                 }
                 else {
-                    Right(0.6);
-                    sleep(40);
+
                     Nishi(0.6);
                     sleep(150);
                     Ball2();
