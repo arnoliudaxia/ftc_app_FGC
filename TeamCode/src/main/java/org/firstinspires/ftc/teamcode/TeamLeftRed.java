@@ -50,6 +50,9 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.util.Locale;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -98,6 +101,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @Autonomous(name="TeamLeftRed", group ="Concept")
 //@Disabled
 public class TeamLeftRed extends LinearOpMode {
+    /**
+     * The REV Robotics Touch Sensor
+     * is treated as a digital channel.  It is HIGH if the button is unpressed.
+     * It pulls LOW if the button is pressed.
+     *
+     * Also, when you connect a REV Robotics Touch Sensor to the digital I/O port on the
+     * Expansion Hub using a 4-wire JST cable, the second pin gets connected to the Touch Sensor.
+     * The lower (first) pin stays unconnected.*
+     */
     private ElapsedTime runtime = new ElapsedTime();
     public static final String TAG = "Vuforia VuMark Sample";
     OpenGLMatrix lastLocation = null;
@@ -107,7 +119,7 @@ public class TeamLeftRed extends LinearOpMode {
      */
 
     VuforiaLocalizer vuforia;
-    TouchSensor touchSensor;
+    DigitalChannel digitalTouch;  // Hardware Device Object
     ColorSensor sensorColor;
     DistanceSensor sensorDistance;
 
@@ -295,18 +307,21 @@ public class TeamLeftRed extends LinearOpMode {
         int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
         final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 //////////////////////////////////////////////////////////////////////////////////////////////////触觉传感器/////////////////////////////////////////////////////////
-        touchSensor = hardwareMap.get(TouchSensor.class, "sensor_touch");
-        int counter = 0;
+        // get a reference to our digitalTouch object.
+        digitalTouch = hardwareMap.get(DigitalChannel.class, "sensor_digital");
+
+        // set the digital channel to input.
+        digitalTouch.setMode(DigitalChannel.Mode.INPUT);
+
+        // wait for the start button to be pressed.
         waitForStart();
-        runtime.reset();
-        // run until the end of the match (driver presses STOP)
 ///////////////////////////////////////////////////////////////////////////////////////////////////主程序///////////////////////////////////////////////////////
         while (opModeIsActive()) {
-           /* if (digitalTouch.getState()) {
+            if (digitalTouch.getState() == true) {
                 telemetry.addData("Digital Touch", "Is Not Pressed");
             } else {
                 telemetry.addData("Digital Touch", "Is Pressed");
-            }*/
+            }
 ///////////////////////////////////////////////////////////////////////////////////////////////////Vuforia/////////////////////////////////////////////////////////////
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
@@ -319,13 +334,6 @@ public class TeamLeftRed extends LinearOpMode {
                 telemetry.addData("Pose", format(pose));
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////触觉传感器////////////////////////////////////////////////
-                if (touchSensor.isPressed())
-                    telemetry.addData("Touch", "Is Pressed");
-                else
-                    telemetry.addData("Touch", "Is Not Pressed");
-
-                telemetry.update();
-
                 // convert the RGB values to HSV values.
                 // multiply by the SCALE_FACTOR.
                 // then cast it back to int (SCALE_FACTOR is a double)
@@ -417,8 +425,7 @@ public class TeamLeftRed extends LinearOpMode {
             sleep(200);
             Nishi(0.6);
             sleep(100);
-            switch ("Touch") {
-                case "Is Pressed":
+            if (digitalTouch.getState() == false)  {
                     while (counter < 2) {
                         counter = counter + 1;
                         Stop();
@@ -472,8 +479,8 @@ public class TeamLeftRed extends LinearOpMode {
                         Shunshi(0.8);
                         sleep(80);
                         counter = counter + 1;
-                    }
-                case "Is Not Pressed":
+                    }}
+                else{
                     Forward(0.8);
 
             }
