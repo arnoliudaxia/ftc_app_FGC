@@ -67,6 +67,8 @@ public class fantastic extends LinearOpMode {
 
     Servo servo_kicking_ball;
 
+    Servo servo_kicking_ball_2;
+
     Servo servo_catching_baby_1;
     Servo servo_catching_baby_2;//定义机械臂舵机
     //Servo servo_catching_baby_up_1;
@@ -86,6 +88,8 @@ public class fantastic extends LinearOpMode {
 
     double servo_baby_position_1 = 0;
     double servo_baby_position_2 = 0.8;//定义机械臂舵机position
+
+    double ball_position_2 = 0.59;
 
     boolean arm_safe_case = true;
     boolean catching_baby_case = false;//机械臂安全锁
@@ -165,11 +169,11 @@ public class fantastic extends LinearOpMode {
     }
 
     public double switch_PowerMode(){//切换低/高速模式函数
-        if(gamepad1.x){
+        if(gamepad1.right_stick_y  > 0.4){
             return (2.5);
         }
 
-        else if(gamepad1.a){
+        else if(gamepad1.right_stick_y < -0.4){
             return (1);
         }
 
@@ -211,8 +215,11 @@ public class fantastic extends LinearOpMode {
         servo_catching_baby_2 = hardwareMap.get(Servo.class,"servo_catching_baby_2");
 
         servo_kicking_ball = hardwareMap.get(Servo.class,"servo_kicking_ball");
+        servo_kicking_ball_2 = hardwareMap.get(Servo.class,"servo_kicking_ball_2");
 
         catching_block(0.35, 0.38);
+
+        servo_kicking_ball_2.setPosition(0.44);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -273,6 +280,9 @@ public class fantastic extends LinearOpMode {
 
                     servo_baby_position_2 = 0.8;
                     servo_catching_baby_2.setPosition(servo_baby_position_2);
+
+                    ball_position_2 = 0.44;
+                    servo_kicking_ball_2.setPosition(ball_position_2);
                 }
 
                 if (gamepad2.right_stick_button) {//初始化机械臂
@@ -368,8 +378,26 @@ public class fantastic extends LinearOpMode {
                 }
 
                 if (gamepad1.y){
-                    servo_kicking_ball.setPosition(0.8);
+                    servo_kicking_ball.setPosition(0.15);
                 }
+
+                if (gamepad1.a){
+                    servo_kicking_ball.setPosition(0.82);
+                }
+
+                if (gamepad1.x && ball_position_2 <= 1){
+                    ball_position_2 = ball_position_2 +0.02;
+
+                    sleep(20);
+                }
+
+                if (gamepad1.b && ball_position_2 >= 0){
+                    ball_position_2 = ball_position_2 -0.02;
+
+                    sleep(20);
+                }
+
+                servo_kicking_ball_2.setPosition(ball_position_2);
 
                 if(gamepad1.x && gamepad1.y && gamepad1.a && gamepad1.b){
                     break;

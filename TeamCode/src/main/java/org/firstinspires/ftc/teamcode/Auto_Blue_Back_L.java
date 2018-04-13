@@ -87,6 +87,7 @@ public class Auto_Blue_Back_L extends LinearOpMode {
     Servo servo_catching_block_2;
 
     Servo servo_kicking_ball;
+    Servo servo_kicking_ball_2;
 
     DcMotor motor_raising;
 
@@ -109,6 +110,7 @@ public class Auto_Blue_Back_L extends LinearOpMode {
 
     ColorSensor sensorColor;
     DistanceSensor sensorDistance;
+
 
 
     public void qianjin(double power){
@@ -158,8 +160,9 @@ public class Auto_Blue_Back_L extends LinearOpMode {
         servo_catching_block_2.setPosition(servo_block_position_2);
     }
 
-    public void kicking_ball(double servo_position_ball){
+    public void kicking_ball(double servo_position_ball,double servo_position_ball_2){
         servo_kicking_ball.setPosition(servo_position_ball);
+        servo_kicking_ball_2.setPosition(servo_position_ball_2);
     }
 
     public void raising(double power_raising){
@@ -167,22 +170,72 @@ public class Auto_Blue_Back_L extends LinearOpMode {
     }
 
     public void cube(RelicRecoveryVuMark vuMark){
+
+        qianjin(0);
+
+        sleep(200);
+
+        houtui(0.3);//轻怼平衡板定位
+
+        sleep(1080);
+
+        qianjin(0);
+
+        sleep(400);
+
+        qianjin(0.3);
+
+        sleep(540);
+
+        qianjin(0);
+
+        sleep(400);
+
+        houtui(0.5);
+
+        sleep(360);
+
+        qianjin(0);
+
+        sleep(400);
+
+        youzhuan(0.6);
+
+        sleep(1500);
+
+        qianjin(0);
+
+        sleep(400);
+
+                /*houtui(0.3);
+
+                sleep(60);*/
+
+
+        houtui(0.5);
+
+        sleep(60);
+
+        qianjin(0);
+
+        sleep(300);
+
         if (vuMark == RIGHT){
             youpingyi(1);//左平移
 
-            sleep(930);
+            sleep(950);
         }
 
         else if (vuMark == CENTER){//done
             youpingyi(1);//左平移
 
-            sleep(540);
+            sleep(560);
         }
 
         else if (vuMark == LEFT){
             youpingyi(1);//左平移
 
-            sleep(260);
+            sleep(280);
         }
 
         qianjin(0);
@@ -229,6 +282,11 @@ public class Auto_Blue_Back_L extends LinearOpMode {
         qianjin(0.3);//往前推一点点
 
         sleep(380);
+
+        qianjin(0);
+
+        sleep(100);
+
     }
 
     @Override public void runOpMode() {
@@ -260,6 +318,7 @@ public class Auto_Blue_Back_L extends LinearOpMode {
         motor_youhou = hardwareMap.get(DcMotor.class, "motor_youhou");
 
         servo_kicking_ball = hardwareMap.get(Servo.class, "servo_kicking_ball");
+        servo_kicking_ball_2 = hardwareMap.get(Servo.class,"servo_kicking_ball_2");
 
         motor_zuoqian.setDirection(DcMotor.Direction.FORWARD);
         motor_zuohou.setDirection(DcMotor.Direction.FORWARD);
@@ -283,26 +342,23 @@ public class Auto_Blue_Back_L extends LinearOpMode {
         final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
 
+
         telemetry.addData(">", "Press Play to start");
         telemetry.update();
 
         waitForStart();
 
-        kicking_ball(0.5);
+        catching_block(0.78, 0.0);
 
         sleep(300);
 
-        kicking_ball(0.25);
+        kicking_ball(0.7,0.51);
 
-        sleep(350);
+        sleep(500);
 
-        kicking_ball(0.2);
+        kicking_ball(0.84,0.51);
 
-        sleep(350);
-
-        kicking_ball(0.17);
-
-        sleep(300);//以上三步为 缓降 击宝石的杆子
+        sleep(400);
 
         raising(1);//抬升滑轨
 
@@ -310,107 +366,31 @@ public class Auto_Blue_Back_L extends LinearOpMode {
 
         raising(0.08);//卡住滑轨
 
-        sleep(1000);
+        sleep(500);
+
+        if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
+            kicking_ball(0.84,0.65);
+
+            sleep(300);
+
+            kicking_ball(0.15,0.51);
+        }
+
+        else if (sensorColor.blue() > sensorColor.red()) {//判断为 红色宝石
+            kicking_ball(0.84,0.3);
+
+            sleep(300);
+
+            kicking_ball(0.15,0.51);
+        }
 
 
         relicTrackables.activate();
 
         while (opModeIsActive()) {
-                if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
-                    youzhuan(0.2);
+            cube(LEFT);
 
-                    sleep(320);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    kicking_ball(0.6);
-
-                    sleep(200);
-
-                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
-
-                    zuozhuan(0.2);
-
-                    sleep(320);
-                } else if (sensorColor.blue() > sensorColor.red()) {//判断为 红色宝石
-
-                    zuozhuan(0.2);
-
-                    sleep(320);
-
-                    qianjin(0);
-
-                    sleep(400);
-
-                    kicking_ball(0.6);
-
-                    sleep(200);
-
-                    kicking_ball(0.8);//这两步是 缓升 击宝石的杆子（免得舵机力量太大搞坏colour sensor）
-
-                    youzhuan(0.2);
-
-                    sleep(320);
-
-                }
-
-                qianjin(0);
-
-                sleep(200);
-
-                houtui(0.3);//轻怼平衡板定位
-
-                sleep(1080);
-
-                qianjin(0);
-
-                sleep(300);
-
-                zuozhuan(0.3);
-
-                sleep(100);
-
-                qianjin(0);
-
-                sleep(400);
-
-                qianjin(0.3);
-
-                sleep(470);
-
-                qianjin(0);
-
-                sleep(400);
-
-                houtui(0.5);
-
-                sleep(300);
-
-                qianjin(0);
-
-                sleep(400);
-
-                youzhuan(0.6);
-
-                sleep(1230);
-
-                qianjin(0);
-
-                sleep(400);
-
-                /*houtui(0.3);
-
-                sleep(60);*/
-
-                cube(LEFT);
-
-                qianjin(0);
-
-                sleep(100);
-
-                break;
+            break;
             }
 
             telemetry.update();
