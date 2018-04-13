@@ -205,20 +205,19 @@ public class AUTOTEST extends LinearOpMode {
 
         waitForStart();
 
-        //////////////////////////////////////////////////
-            if (runtime.equals(30)) {
+        ///////////////////////////////////////////////
                 Ball1();
                 Ball2();
 
 
                 Raisng();
-                sleep(50);
+                sleep(80);
                 Stop();
                 sleep(5000);
 
 
                 Down();
-                sleep(50);
+                sleep(80);
                 Stop();
 
                 Stable();
@@ -228,17 +227,17 @@ public class AUTOTEST extends LinearOpMode {
 
 
                 Forward(0.8);
-                sleep(50);
+                sleep(100);
                 Stop();
                 sleep(5000);
 
                 Rear(0.8);
-                sleep(50);
+                sleep(200);
                 Stop();
                 sleep(5000);
 
                 Left(0.8);
-                sleep(50);
+                sleep(300);
                 Stop();
                 sleep(5000);
 
@@ -248,13 +247,13 @@ public class AUTOTEST extends LinearOpMode {
                 Stop();
                 sleep(5000);
 
-                Shunshi(0.8);
-                sleep(50);
+                Shunshi(0.3);
+                sleep(180);
                 Stop();
                 sleep(5000);
 
-                Nishi(0.8);
-                sleep(50);
+                Nishi(0.3);
+                sleep(200);
                 Stop();
                 sleep(5000);
 
@@ -266,7 +265,7 @@ public class AUTOTEST extends LinearOpMode {
             telemetry.update();
         }
 
-    }
+
 
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
