@@ -30,39 +30,28 @@ package org.firstinspires.ftc.teamcode;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.text.method.Touch;
 import android.view.View;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.hardware.TouchSensor;
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import java.util.Locale;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
+import java.util.Locale;
 
 /**
  * This 2016-2017 OpMode illustrates the basics of using the Vuforia localizer to determine
@@ -95,18 +84,34 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * is explained below.
  */
 
-@Autonomous(name="TeamRightRed", group ="Concept")
+
+/**
+ * This OpMode illustrates the basics of using the Vuforia engine to determine
+ * the identity of Vuforia VuMarks encountered on the field. The code is structured as
+ * a LinearOpMode. It shares much structure with {@link ConceptVuforiaNavigation}; we do not here
+ * duplicate the core Vuforia documentation found there, but rather instead focus on the
+ * differences between the use of Vuforia for navigation vs VuMark identification.
+ *
+ * @see ConceptVuforiaNavigation
+ * @see VuforiaLocalizer
+ * @see VuforiaTrackableDefaultListener
+ * see  ftc_app/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
+ *
+ * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
+ *
+ * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
+ * is explained in {@link ConceptVuforiaNavigation}.
+ */
+
+@Autonomous(name="TeamRightRed_left", group ="Concept")
 //@Disabled
-public class TeamRightRed extends LinearOpMode {
+public class TeamRightRed_left extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     public static final String TAG = "Vuforia VuMark Sample";
     OpenGLMatrix lastLocation = null;
-    /**
-     * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
-     * localization engine.
-     */
 
-    VuforiaLocalizer vuforia;
+
     TouchSensor touchSensor;
     ColorSensor sensorColor;
     DistanceSensor sensorDistance;
@@ -117,12 +122,14 @@ public class TeamRightRed extends LinearOpMode {
 
     Servo servo_kicking_ball;
 
+
+    Servo servo_kicking_ball2;
     DcMotor motor_raising;
 
     double servo_position_1 = 0.40;
     double servo_position_2 = 0.00;
     double power_raising = 0.50;
-    double servo_position_ball = 1;
+    double servo_position_ball = 0.1;
 
     //* private DcMotor rightDrive = null;
     DcMotor Leftfront;
@@ -134,15 +141,21 @@ public class TeamRightRed extends LinearOpMode {
     double power1 = 0.8;
 
     public void Ball1() {
-        if (servo_position_ball <= 1) {
-            servo_position_ball = servo_position_ball + 0.02;
+        if (servo_position_ball >= 0.2) {
+            servo_position_ball = servo_position_ball - 0.02;
+            servo_kicking_ball.setPosition(servo_position_ball);
+
         }
         sleep(50);
     }
 
     public void Ball2() {
-        if (servo_position_ball >= 0) {
-            servo_position_ball = servo_position_ball - 0.02;
+        if (servo_position_ball <= 0.8) {
+            servo_position_ball = servo_position_ball + 0.02;
+
+            servo_kicking_ball.setPosition(servo_position_ball);
+            servo_kicking_ball2.setPosition(0.85);
+
         }
         sleep(50);
     }
@@ -236,36 +249,25 @@ public class TeamRightRed extends LinearOpMode {
          */
 ///////////////////////////////////////////////////////////////////////////////////////////////////Vuforia/////////////////////////////////////////////////////
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-        parameters.vuforiaLicenseKey = "AXQcjoz/////AAABmZHq2ALQ5EDvr0pzYI/5xQECaIBP91rdgvvcHBhGafOACEo+OAVegw1I17Nerx7pn1DrJUPHJpMfw3bQDeC7m6G/IqWOb1348XHM1HjY1tspPk7koyhWM4DKCQKfvWZZfvZ0EcZeXY4eJ5I/Ytm7o+yZTGQ50FcAbqYac0yL7M/iifDK8NYnDOaEs0bKm9gYp6TJvLblJBPqjRoGfZU288tqMT2ZxiIaqY8n4EsM0t3OuJh8aKWZF9qGJ1I879nu2MCbERZr1akfHR1uimsrgKHl05BbZmcXrIYjGgWD3BirUAU26fqyUraTtD2ms1EV1XwVTwnrhQdzxbOaO056NFgNv1HmTxQSoJ28qIuTD+f3";
-
-
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;//表示调用后置摄像头；
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-
-
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
-        //加载数据
 
         servo_catching_block_1 = hardwareMap.servo.get("servo_catching_block_1");
         servo_catching_block_2 = hardwareMap.servo.get("servo_catching_block_2");
 
         motor_raising = hardwareMap.dcMotor.get("motor_raising");
 
+
+        servo_kicking_ball2 =hardwareMap.servo.get("servo_kicking_ball2");
+        servo_kicking_ball2.setPosition(0.15);
+
         servo_kicking_ball = hardwareMap.get(Servo.class, "servo_kicking_ball");
 
-        Catch(0.30, 0.10);//init
+
 
         servo_kicking_ball.setPosition(servo_position_ball);
 
-        // Wait for the game to start (driver presses PLAY)
+        Catch(0.30, 0.10);//init
 
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
         Leftfront = hardwareMap.get(DcMotor.class, "Leftfront");
         Rightfront = hardwareMap.get(DcMotor.class, "Rightfront");
         Leftrear = hardwareMap.get(DcMotor.class, "Leftrear");
@@ -282,7 +284,7 @@ public class TeamRightRed extends LinearOpMode {
 
         waitForStart();
 
-        relicTrackables.activate();
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////颜色传感器/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
         // get a reference to the distance sensor that shares the same name.
@@ -306,7 +308,14 @@ public class TeamRightRed extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
 ///////////////////////////////////////////////////////////////////////////////////////////////////主程序///////////////////////////////////////////////////////
         while (opModeIsActive()) {
-           /* if (digitalTouch.getState()) {
+            /**
+             * See if any of the instances of {@link relicTemplate} are currently visible.
+             * {@link RelicRecoveryVuMark} is an enum which can have the following values:
+             * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
+             * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
+             */
+
+            /* if (digitalTouch.getState()) {
                 telemetry.addData("Digital Touch", "Is Not Pressed");
             } else {
                 telemetry.addData("Digital Touch", "Is Pressed");
@@ -314,15 +323,11 @@ public class TeamRightRed extends LinearOpMode {
 ///////////////////////////////////////////////////////////////////////////////////////////////////Vuforia/////////////////////////////////////////////////////////////
 
 
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
 
-                telemetry.addData("VuMark", "%s visible", vuMark);
 
 
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
-                telemetry.addData("Pose", format(pose));
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////触觉传感器////////////////////////////////////////////////
                 if (touchSensor.isPressed())
@@ -374,8 +379,7 @@ public class TeamRightRed extends LinearOpMode {
                 Ball1();
                 if (sensorColor.red() > sensorColor.blue()) {
 
-                    Shunshi(0.3);
-                    sleep(180);
+                    servo_kicking_ball2.setPosition(0.00);
                     stop();
                     sleep(500);
 
@@ -385,10 +389,7 @@ public class TeamRightRed extends LinearOpMode {
 
 
 
-                    Nishi(0.3);
-                    sleep(180);
-                    stop();
-                    sleep(500);
+
 /////////////////////////////////////////////
 
                     Forward(0.8);
@@ -402,49 +403,21 @@ public class TeamRightRed extends LinearOpMode {
                     sleep(200);
                     stop();
                     sleep(500);
-                    if (vuMark == RelicRecoveryVuMark.LEFT) {
+
                         Left(0.8);
                         sleep(920);
                         stop();
                         sleep(500);
 
-                    }
-
-                    if (vuMark == RelicRecoveryVuMark.CENTER) {
-                        Left(0.8);
-                        sleep(525);
-                        stop();
-                        sleep(500);
-
-                    }
-                    if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                        Left(0.8);
-                        sleep(320);
-                        stop();
-                        sleep(500);
-
-                    }
-
-                    Forward(0.8);
-                    sleep(100);
-                    stop();
-                    Release(0.00,0.40);
 
                 }
                else {
 
-                    Nishi(0.3);
-
-                    sleep(180);
+                    servo_kicking_ball2.setPosition(0.30);
                     stop();
                     sleep(500);
 
                     Ball2();
-                    stop();
-                    sleep(500);
-
-                    Shunshi(0.3);
-                    sleep(180);
                     stop();
                     sleep(500);
                 /////////////////////////////
@@ -460,33 +433,13 @@ public class TeamRightRed extends LinearOpMode {
                     sleep(200);
                     stop();
                     sleep(500);
-                    if (vuMark == RelicRecoveryVuMark.LEFT) {
+
                         Left(0.8);
                         sleep(920);
                         stop();
                         sleep(500);
 
-                    }
 
-                    if (vuMark == RelicRecoveryVuMark.CENTER) {
-                        Left(0.8);
-                        sleep(525);
-                        stop();
-                        sleep(500);
-
-                    }
-                    if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                        Left(0.8);
-                        sleep(320);
-                        stop();
-                        sleep(500);
-
-                    }
-
-                    Forward(0.8);
-                    sleep(100);
-                    stop();
-                    Release(0.00,0.40);
 
 
                 }
@@ -498,7 +451,7 @@ public class TeamRightRed extends LinearOpMode {
                 sleep(10);
 
 
-
+/*
             switch ("Touch") {
                     case "Is Pressed":
                         while (counter < 2) {
@@ -556,7 +509,7 @@ public class TeamRightRed extends LinearOpMode {
                             counter = counter + 1;
                         }
                     case "Is Not Pressed":
-                        Forward(0.8);   }
+                        Forward(0.8);   }*/
 
                         if (runtime.equals(30)) { stop();}
 
@@ -568,7 +521,7 @@ public class TeamRightRed extends LinearOpMode {
             telemetry.update();
         }
 
-    }
+
 
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";

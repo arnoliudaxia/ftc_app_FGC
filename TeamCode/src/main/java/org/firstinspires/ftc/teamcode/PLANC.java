@@ -194,7 +194,9 @@ public class PLANC extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        // run until the end of the match (driver presses STOP)
+
+
+
         while (opModeIsActive()) {
         if (gamepad2.x) {
             servo_position_1 = 0.00;

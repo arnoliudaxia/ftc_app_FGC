@@ -57,7 +57,7 @@ import java.util.Locale;
 //@Disabled
 public class AUTOTEST extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
-
+    public static final String TAG = "Vuforia VuMark Sample";
     Servo servo_catching_block_1;
     Servo servo_catching_block_2;
 
@@ -75,7 +75,7 @@ public class AUTOTEST extends LinearOpMode {
     DcMotor Rightfront;
     DcMotor Leftrear;
     DcMotor Rightrear;
-
+    VuforiaLocalizer vuforia;
     int counter = 0;
     double power1 = 0.8;
 
@@ -173,6 +173,21 @@ public class AUTOTEST extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+        parameters.vuforiaLicenseKey = "AXQcjoz/////AAABmZHq2ALQ5EDvr0pzYI/5xQECaIBP91rdgvvcHBhGafOACEo+OAVegw1I17Nerx7pn1DrJUPHJpMfw3bQDeC7m6G/IqWOb1348XHM1HjY1tspPk7koyhWM4DKCQKfvWZZfvZ0EcZeXY4eJ5I/Ytm7o+yZTGQ50FcAbqYac0yL7M/iifDK8NYnDOaEs0bKm9gYp6TJvLblJBPqjRoGfZU288tqMT2ZxiIaqY8n4EsM0t3OuJh8aKWZF9qGJ1I879nu2MCbERZr1akfHR1uimsrgKHl05BbZmcXrIYjGgWD3BirUAU26fqyUraTtD2ms1EV1XwVTwnrhQdzxbOaO056NFgNv1HmTxQSoJ28qIuTD+f3";
+
+
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;//表示调用后置摄像头；
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+        //加载数据
+
 
         servo_catching_block_1 = hardwareMap.servo.get("servo_catching_block_1");
         servo_catching_block_2 = hardwareMap.servo.get("servo_catching_block_2");
@@ -206,65 +221,84 @@ public class AUTOTEST extends LinearOpMode {
         waitForStart();
 
         ///////////////////////////////////////////////
-                Ball1();
-                Ball2();
+        while(opModeIsActive()) {
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
 
-                Raisng();
-                sleep(80);
-                Stop();
-                sleep(5000);
+                telemetry.addData("VuMark", "%s visible", vuMark);
 
 
-                Down();
-                sleep(80);
-                Stop();
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
+                telemetry.addData("Pose", format(pose));
 
-                Stable();
-                sleep(50);
-                Stop();
-                sleep(5000);
+                if(vuMark==RelicRecoveryVuMark.LEFT){
 
-
-                Forward(0.8);
-                sleep(100);
-                Stop();
-                sleep(5000);
-
-                Rear(0.8);
-                sleep(200);
-                Stop();
-                sleep(5000);
-
-                Left(0.8);
-                sleep(300);
-                Stop();
-                sleep(5000);
+                    Ball1();
+                    Ball2();
 
 
-                Right(0.8);
-                sleep(50);
-                Stop();
-                sleep(5000);
-
-                Shunshi(0.3);
-                sleep(180);
-                Stop();
-                sleep(5000);
-
-                Nishi(0.3);
-                sleep(200);
-                Stop();
-                sleep(5000);
+                    Raisng();
+                    sleep(80);
+                    Stop();
+                    sleep(5000);
 
 
+                    Down();
+                    sleep(80);
+                    Stop();
 
-                Release(0.00,0.40);
+                    Stable();
+                    sleep(50);
+                    Stop();
+                    sleep(5000);
 
-                Catch(0.30, 0.10);//init
+
+                    Forward(0.8);
+                    sleep(100);
+                    Stop();
+                    sleep(5000);
+
+                    Rear(0.8);
+                    sleep(200);
+                    Stop();
+                    sleep(5000);
+
+                    Left(0.8);
+                    sleep(300);
+                    Stop();
+                    sleep(5000);
+
+
+                    Right(0.8);
+                    sleep(50);
+                    Stop();
+                    sleep(5000);
+
+                    Shunshi(0.3);
+                    sleep(180);
+                    Stop();
+                    sleep(5000);
+
+                    Nishi(0.3);
+                    sleep(200);
+                    Stop();
+                    sleep(5000);
+
+
+                    Release(0.00, 0.40);
+
+                    Catch(0.30, 0.10);//init
+                    telemetry.update();
+                }
+            } else {
+                telemetry.addData("VuMark", "not visible");
+                telemetry.addData("Status", "Run Time: " + runtime.toString());
+                // telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            }
             telemetry.update();
         }
-
+    }
 
 
     String format(OpenGLMatrix transformationMatrix) {

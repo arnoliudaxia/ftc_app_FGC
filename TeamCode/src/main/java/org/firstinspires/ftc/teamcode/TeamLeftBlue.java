@@ -192,6 +192,27 @@ public class TeamLeftBlue extends LinearOpMode {
         Rightrear.setPower(0.0);
     }
 
+
+
+    public void cube(RelicRecoveryVuMark vuMark){
+        if(vuMark ==RelicRecoveryVuMark.LEFT){
+            Left(1.00);
+            sleep(920);
+        }
+        else if (vuMark == RelicRecoveryVuMark.CENTER){
+            Left(1.00);
+            sleep(525);
+        }
+        else if(vuMark==RelicRecoveryVuMark.RIGHT){
+            Left(1.00);
+            sleep(320);
+        }
+
+
+    }
+
+
+
     @Override
     public void runOpMode() {
 
@@ -219,7 +240,7 @@ public class TeamLeftBlue extends LinearOpMode {
 
         servo_kicking_ball = hardwareMap.get(Servo.class, "servo_kicking_ball");
 
-        Catch(0.00, 0.40);//init
+        Catch(0.30, 0.10);//init
 
         servo_kicking_ball.setPosition(servo_position_ball);
 
@@ -330,7 +351,7 @@ public class TeamLeftBlue extends LinearOpMode {
 /////////////////////////////////////////////////////////////////////////////////////////////// Automatic /////////////////////////////////////////////////////////////////
             Ball1();
             Right(0.8);
-            sleep(40);
+            sleep(100);
             if (sensorColor.red() > sensorColor.blue()) {
 
                 Shunshi(0.8);

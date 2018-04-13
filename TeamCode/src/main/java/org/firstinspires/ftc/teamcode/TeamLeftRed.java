@@ -254,7 +254,7 @@ public class TeamLeftRed extends LinearOpMode {
 
         servo_kicking_ball = hardwareMap.get(Servo.class, "servo_kicking_ball");
 
-        Catch(0.00, 0.40);//init
+        Catch(0.30, 0.10);//init
 
         servo_kicking_ball.setPosition(servo_position_ball);
 

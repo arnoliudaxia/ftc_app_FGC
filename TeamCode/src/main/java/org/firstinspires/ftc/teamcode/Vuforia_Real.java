@@ -80,8 +80,8 @@ import java.util.List;
  * is explained below.
  */
 
-@Autonomous(name="Concept: Vuforia Navigation", group ="Concept")
-@Disabled
+@Autonomous(name="Vuforia_Real", group ="Concept")
+//@Disabled
 public class Vuforia_Real extends LinearOpMode {
 
     public static final String TAG = "Vuforia Navigation Sample";
@@ -111,13 +111,13 @@ public class Vuforia_Real extends LinearOpMode {
          * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
          * web site at https://developer.vuforia.com/license-manager.
          *
-         * Vuforia license keys are always 380 characters long, and look as if they contain mostly
+         * Vuforia license keys are always 380 characters long, and loVuforia_Realok as if they contain mostly
          * random data. As an example, here is a example of a fragment of a valid key:
          *      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...
          * Once you've obtained a license key, copy the string from the Vuforia web site
          * and paste it in to your code onthe next line, between the double quotes.
          */
-        parameters.vuforiaLicenseKey = "ATsODcD/////AAAAAVw2lR...d45oGpdljdOh5LuFB9nDNfckoxb8COxKSFX";
+        parameters.vuforiaLicenseKey = "AXQcjoz/////AAABmZHq2ALQ5EDvr0pzYI/5xQECaIBP91rdgvvcHBhGafOACEo+OAVegw1I17Nerx7pn1DrJUPHJpMfw3bQDeC7m6G/IqWOb1348XHM1HjY1tspPk7koyhWM4DKCQKfvWZZfvZ0EcZeXY4eJ5I/Ytm7o+yZTGQ50FcAbqYac0yL7M/iifDK8NYnDOaEs0bKm9gYp6TJvLblJBPqjRoGfZU288tqMT2ZxiIaqY8n4EsM0t3OuJh8aKWZF9qGJ1I879nu2MCbERZr1akfHR1uimsrgKHl05BbZmcXrIYjGgWD3BirUAU26fqyUraTtD2ms1EV1XwVTwnrhQdzxbOaO056NFgNv1HmTxQSoJ28qIuTD+f3";
 
         /*
          * We also indicate which camera on the RC that we wish to use.

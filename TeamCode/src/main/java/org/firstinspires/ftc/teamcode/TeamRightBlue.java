@@ -249,7 +249,7 @@ public class TeamRightBlue extends LinearOpMode {
 
         servo_kicking_ball = hardwareMap.get(Servo.class, "servo_kicking_ball");
 
-        Catch(0.00, 0.40);//init
+        Catch(0.30, 0.10);//init
 
         servo_kicking_ball.setPosition(servo_position_ball);
 
@@ -358,7 +358,7 @@ public class TeamRightBlue extends LinearOpMode {
 /////////////////////////////////////////////////////////////////////////////////////////////// Automatic /////////////////////////////////////////////////////////////////
             Ball1();
             Right(0.8);
-            sleep(40);
+            sleep(100);
                 if (sensorColor.red() > sensorColor.blue()) {
 
                     Shunshi(0.6);
