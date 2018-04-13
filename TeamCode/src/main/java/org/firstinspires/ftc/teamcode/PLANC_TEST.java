@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Catching_block", group="Linear Opmode")
+@TeleOp(name="PLANC_TEST", group="Linear Opmode")
 //@Disabled
 public class PLANC_TEST extends LinearOpMode {
 
