@@ -71,25 +71,25 @@ import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryV
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@Autonomous(name="Auto_Red_back", group ="Concept")
+@Autonomous(name="Auto_Red_Forward_R", group ="Concept")
 //@Disabled
-public class Auto_Red_Back extends LinearOpMode {
+public class Auto_Red_Forward_R extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor motor_zuoqian;
-    private DcMotor motor_youqian;
-    private DcMotor motor_zuohou;
-    private DcMotor motor_youhou;
+    DcMotor motor_zuoqian;
+    DcMotor motor_youqian;
+    DcMotor motor_zuohou;
+    DcMotor motor_youhou;
 
-    private Servo servo_catching_block_1;
-    private Servo servo_catching_block_2;
+    Servo servo_catching_block_1;
+    Servo servo_catching_block_2;
 
     Servo servo_kicking_ball;
     Servo servo_kicking_ball_2;
 
-    private DcMotor motor_raising;
+    DcMotor motor_raising;
 
     double servo_position_block_1 = 0.78;
     double servo_position_block_2 = 0.00;
@@ -172,13 +172,15 @@ public class Auto_Red_Back extends LinearOpMode {
     public void cube(RelicRecoveryVuMark vuMark){
         qianjin(0.4);//前进
 
-        sleep(750);
+        sleep(950);
 
-        qianjin(0.2);//缓停
+        qianjin(0);
+
+        sleep(300);
 
         houtui(0.35);//轻怼平衡板定位
 
-        sleep(600);
+        sleep(780);
 
         qianjin(0);
 
@@ -186,47 +188,41 @@ public class Auto_Red_Back extends LinearOpMode {
 
         qianjin(0.5);
 
-        sleep(300);
+        sleep(600);
 
         qianjin(0);
 
         sleep(400);
 
-        if (vuMark == LEFT){
-            zuopingyi(1);//左平移
+        youzhuan(0.6);
 
-            sleep(920);
+        sleep(700);
+
+        qianjin(0);
+
+        sleep(300);
+
+        if (vuMark == LEFT){
+            zuopingyi(0.6);//左平移
+
+            sleep(400);
         }
 
         else if (vuMark == CENTER){//done
-            zuopingyi(1);//左平移
+            youpingyi(0.6);
 
-            sleep(525);
+            sleep(100);
         }
 
         else if (vuMark == RIGHT){
-            zuopingyi(1);//左平移
+            youpingyi(0.6);
 
-            sleep(320);
+            sleep(530);
         }
 
         qianjin(0);
 
-        sleep(500);
-
-        youzhuan(0.3);
-
-        sleep(170);
-
-        qianjin(0);
-
-        sleep(250);
-
-        qianjin(0.4);//前进一点点
-
-        sleep(200);
-
-        qianjin(0);
+        sleep(400);
 
         raising(-1);//下降滑轨
 
@@ -240,30 +236,65 @@ public class Auto_Red_Back extends LinearOpMode {
 
         qianjin(0.4);//往前怼
 
-        sleep(900);
+        sleep(1100);
 
-        //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
-        houtui(0.3);//后退一点点
+        qianjin(0);//停止
 
-        sleep(120);
+        sleep(400);
 
-        youzhuan(0.4);//右转
+        if (vuMark == RIGHT){
+            houtui(0.3);//后退一点点
 
-        sleep(600);
+            sleep(120);
 
-        zuozhuan(0.4);//左转
+            youzhuan(0.4);//右转
 
-        sleep(600);
+            sleep(600);
 
-        qianjin(0.3);//往前推一点点
+            zuozhuan(0.4);//左转
 
-        sleep(380);
+            sleep(600);
 
-        houtui(1);
+            qianjin(0.3);//往前推一点点
 
-        sleep(150);
+            sleep(380);
+        }
+
+        if (vuMark == LEFT){
+            houtui(0.3);//后退一点点
+
+            sleep(120);
+
+            zuozhuan(0.4);//左转
+
+            sleep(400);
+
+            youzhuan(0.4);//右转
+
+            sleep(400);
+
+            qianjin(0.3);//往前推一点点
+
+            sleep(380);
+        }
+
+        if (vuMark == CENTER){
+            houtui(0.6);
+
+            sleep(200);
+
+            qianjin(0);
+
+            sleep(400);
+
+            qianjin(0.6);
+
+            sleep(300);
+        }
 
         qianjin(0);
+
+        sleep(100);
     }
 
     @Override public void runOpMode() {
@@ -365,50 +396,18 @@ public class Auto_Red_Back extends LinearOpMode {
         relicTrackables.activate();
 
         while (opModeIsActive()) {
+            cube(RIGHT);
 
-            /**
-             * See if any of the instances of {@link relicTemplate} are currently visible.
-             * {@link RelicRecoveryVuMark} is an enum which can have the following values:
-             * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
-             * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
-             */
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {//如果壁画密码被破译
-
-                /* Found an instance of the template. In the actual game, you will probably
-                 * loop until this condition occurs, then move on to act accordingly depending
-                 * on which VuMark was visible. */
-                telemetry.addData("VuMark", "%s visible", vuMark);
-
-                /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
-                 * it is perhaps unlikely that you will actually need to act on this pose information, but
-                 * we illustrate it nevertheless, for completeness. */
-
-                cube(vuMark);
-
-                break;
+            break;
             }
-
-            else {
-                telemetry.addData("VuMark", "not visible");
-
-                sleep(20);
-
-                count++;
-
-            }
-
-            if (count >= 400){
-                cube(RIGHT);
-
-                break;
-            }
-
 
             telemetry.update();
         }
-    }
+
         String format(OpenGLMatrix transformationMatrix) {
             return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
         }
 }
+
+
+

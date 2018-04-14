@@ -313,7 +313,7 @@ public class Auto_Blue_Forward extends LinearOpMode {
 
             sleep(200);
         }
-    }
+}
 
     @Override public void runOpMode() {
 
