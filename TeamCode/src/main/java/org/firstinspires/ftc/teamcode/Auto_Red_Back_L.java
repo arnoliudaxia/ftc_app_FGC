@@ -71,7 +71,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryV
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@Autonomous(name="Auto_Red_Back_C", group ="Concept")
+@Autonomous(name="Auto_Red_Back_L", group ="Concept")
 //@Disabled
 public class Auto_Red_Back_L extends LinearOpMode {
 
@@ -360,9 +360,6 @@ public class Auto_Red_Back_L extends LinearOpMode {
 
             kicking_ball(0.15,0.51);
         }
-
-
-        relicTrackables.activate();
 
         while (opModeIsActive()) {
             cube(LEFT);

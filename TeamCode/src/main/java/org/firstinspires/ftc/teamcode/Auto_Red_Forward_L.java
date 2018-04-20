@@ -395,7 +395,7 @@ public class Auto_Red_Forward_L extends LinearOpMode {
         }
 
 
-        relicTrackables.activate();
+
 
         while (opModeIsActive()) {
             cube(LEFT);

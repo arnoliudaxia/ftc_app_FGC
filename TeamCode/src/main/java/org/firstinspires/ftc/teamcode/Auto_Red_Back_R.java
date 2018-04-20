@@ -361,9 +361,6 @@ public class Auto_Red_Back_R extends LinearOpMode {
             kicking_ball(0.15,0.51);
         }
 
-
-        relicTrackables.activate();
-
         while (opModeIsActive()) {
             cube(RIGHT);
 
