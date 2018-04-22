@@ -60,7 +60,7 @@ public class fantastic extends TurningEchoHardwareConfig{
     private ElapsedTime runtime = new ElapsedTime();//计时
 
     public void runOpMode(){
-        TurningEchoHardwareMap();
+        TurningEchoHardwareMethod();
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
