@@ -37,6 +37,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.disnodeteam.dogecv.CameraViewDisplay;
+import com.disnodeteam.dogecv.detectors.*;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.BasicOpMode_Linear;
 
@@ -72,172 +74,149 @@ public class fantastic extends TurningEchoHardwareConfig{
         runtime.reset();
 
         while (opModeIsActive()) {
+
             double PowerFL = motorFL.getPower();
             double PowerFR = motorFR.getPower();
             double PowerBL = motorBL.getPower();
             double PowerBR = motorBR.getPower();
 
-                powerMode = switchPowerMode();//powerMode变量——SwitchpowerMode方法，powerMode变量将有1（正常速度）、2.5（慢速）的返回值
+            powerMode = switchPowerMode();//powerMode变量——SwitchpowerMode方法，powerMode变量将有1（正常速度）、2.5（慢速）的返回值
 
-                if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0 || gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {//底盘平移
-                    moveVar(-gamepad1.left_stick_y,gamepad1.left_stick_x,gamepad1.right_trigger - gamepad1.left_trigger,powerMode);
+            frameContorl();
+
+            /*if (gamepad1.dpad_up || gamepad1.dpad_left || gamepad1.dpad_right || gamepad1.dpad_down) {//dpad的底盘中速运行模式
+                if (gamepad1.dpad_up) {
+                    moveFix(0.7,moveStatus.xF);
+                } else if (gamepad1.dpad_down) {
+                    moveFix(0.7,moveStatus.xB);
+                } else if (gamepad1.dpad_left) {
+                    moveFix(1,moveStatus.rL);
+                } else if (gamepad1.dpad_right) {
+                    moveFix(1,moveStatus.rR);
                 }
+            }*/
+             if (gamepad1.left_bumper || gamepad1.right_bumper) {//左、右平移
+                 if (gamepad1.left_bumper) {
+                     moveFix(1,moveStatus.yL);
+                 } else if (gamepad1.right_bumper) {
+                     moveFix(1, moveStatus.yR);
+                 }
+             }
 
-                else {
-                    moveVar(0,0,0,0);
-                }
+            if (gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1) {//机械臂安全锁
+                armIns = false;
+                servoBabyPosition_2 = 0.8;
+                servoCatchBaby_2.setPosition(servoBabyPosition_2);
 
-                if (gamepad1.dpad_up || gamepad1.dpad_left || gamepad1.dpad_right || gamepad1.dpad_down) {//dpad的底盘中速运行模式
-                    if (gamepad1.dpad_up) {
-                        moveFix(0.7,moveStatus.xF);
-                    } else if (gamepad1.dpad_down) {
-                        moveFix(0.7,moveStatus.xB);
-                    } else if (gamepad1.dpad_left) {
-                        moveFix(1,moveStatus.rL);
-                    } else if (gamepad1.dpad_right) {
-                        moveFix(1,moveStatus.rR);
+                servoBallPosition_2 = 0.44;
+                servoKickBall_2.setPosition(servoBallPosition_2);
+            }
+
+            if (gamepad2.right_stick_button) {//初始化机械臂
+                armIns = true;
+                motorCatchBaby(0, 0);
+            }
+
+            if (gamepad1.x) {//夹持方块
+                servoCatchBlock(0.78, 0.0);
+            } else if (gamepad1.b) {//松开方块
+                servoCatchBlock(0.37, 0.36);
+            }
+
+            if (gamepad1.y) {//抬升滑轨
+                lift(1);
+            } else if (gamepad1.a) {//下降滑轨
+                lift(-1);
+            } else {//卡住滑轨
+                lift(0.08);
+            }
+             //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
+            if (gamepad2.right_trigger != 0) {
+                if (servoBabyPosition_1 < 1) {
+                    if (gamepad2.right_trigger >= 0.9){//快速降机械臂第三节
+                        servoBabyPosition_1 = servoBabyPosition_1 + 0.02;
+                    }
+                    else {
+                        servoBabyPosition_1 = servoBabyPosition_1 + 0.01;//慢速降机械臂第三节
                     }
                 }
+                sleep(25);
+            }
 
-                if (gamepad1.left_bumper || gamepad1.right_bumper) {//左、右平移
-                    if (gamepad1.left_bumper) {
-                        moveFix(1,moveStatus.yL);
-                    } else if (gamepad1.right_bumper) {
-                        moveFix(1,moveStatus.yR);
+            if (gamepad2.left_trigger != 0) {
+                if (servoBabyPosition_1 > 0) {
+                    if (gamepad2.left_trigger >= 0.9) {//快速升机械臂第三节
+                        servoBabyPosition_1 = servoBabyPosition_1 - 0.02;
+                    } else {
+                        servoBabyPosition_1 = servoBabyPosition_1 - 0.01;//慢速升机械臂第三节
                     }
                 }
+                sleep(25);
+            }
 
-                if (gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1) {//机械臂安全锁
-                    armIns = false;
+            servoCatchBaby_1(servoBabyPosition_1);
 
-                    ServoBabyPosition_2 = 0.8;
-                    servoCatchBaby_2.setPosition(ServoBabyPosition_2);
-
-                    ServoBallPosition_2 = 0.44;
-                    servoKickBall_2.setPosition(ServoBallPosition_2);
+            if (gamepad2.right_bumper && !babyIns) {//机械臂末节夹持小人
+                servoCatchBaby_2(0.13);
+                servoBabyPosition_2 = 0.13;
+                while (gamepad2.right_bumper){
+                    babyIns =true;
                 }
+            }
+             if (gamepad2.right_bumper && babyIns) {//机械臂末节松开小人
+                 servoCatchBaby_2(0.8);
+                 servoBabyPosition_2 = 0.8;
+                 while (gamepad2.right_bumper){
+                     babyIns =false;
+                 }
+             }
+             if (gamepad2.left_bumper){
+                 if (servoBabyPosition_2 < 1){
+                     servoBabyPosition_2 = servoBabyPosition_2 + 0.03;//慢速松末节机械臂夹子
+                     servoCatchBaby_2(servoBabyPosition_2);
+                 }
 
-                if (gamepad2.right_stick_button) {//初始化机械臂
-                    armIns = true;
-                    motorCatchBaby(0, 0);
-                }
+                 while (gamepad2.left_bumper){
+                     sleep(1);
+                     babyIns =false;
+                 }
+             }
 
-                if (gamepad2.x) {//夹持方块
-                    servoCatchBlock(0.78, 0.0);
-                } else if (gamepad2.b) {//松开方块
-                    servoCatchBlock(0.37, 0.36);
-                }
+            if (gamepad2.dpad_up && !armIns) {
+                motorCatchBaby(0.8, -0.56);
+            } else {
+                motorCatchBaby_1.setPower(0);
+            }
 
-                if (gamepad2.y) {//抬升滑轨
-                    lift(1);
-                } else if (gamepad2.a) {//下降滑轨
-                    lift(-1);
-                } else {//卡住滑轨
-                    lift(0.08);
-                }
+            if (gamepad2.dpad_down && !armIns) {
+                motorCatchBaby(-0.8, 0.2);
+            }
+            if (gamepad1.dpad_up){
+                servoKickBall_1.setPosition(0.15);
+            }
+             if (gamepad1.dpad_down) {
+                 servoKickBall_1.setPosition(0.82);
+             }
 
-                //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
-                if (gamepad2.right_trigger != 0) {
-                    if (ServoBabyPosition_1 < 1) {
-                        if (gamepad2.right_trigger >= 0.9){//快速降机械臂第三节
-                            ServoBabyPosition_1 = ServoBabyPosition_1 + 0.02;
-                        }
+             if (gamepad1.dpad_left && servoBallPosition_2 <= 1){
+                 servoBallPosition_2 = servoBallPosition_2 +0.02;
+                 sleep(20);
+             }
 
-                        else {
-                            ServoBabyPosition_1 = ServoBabyPosition_1 + 0.01;//慢速降机械臂第三节
-                        }
-                    }
-                    sleep(25);
-                }
+             if (gamepad1.dpad_right && servoBallPosition_2 >= 0){
+                 servoBallPosition_2 = servoBallPosition_2 -0.02;
+                 sleep(20);
+             }
 
-                if (gamepad2.left_trigger != 0) {
-                    if (ServoBabyPosition_1 > 0) {
-                        if (gamepad2.left_trigger >= 0.9){//快速升机械臂第三节
-                            ServoBabyPosition_1 = ServoBabyPosition_1 - 0.02;
-                        }
+             servoKickBall_2.setPosition(servoBallPosition_2);
 
-                        else {
-                            ServoBabyPosition_1 = ServoBabyPosition_1 - 0.01;//慢速升机械臂第三节
-                        }
-                    }
+             if(gamepad1.x && gamepad1.y && gamepad1.a && gamepad1.b){
+                 break;
+             }
 
-                    sleep(25);
-                }
-
-                servoCatchBaby_1(ServoBabyPosition_1);
-
-                if (gamepad2.right_bumper && !babyIns) {//机械臂末节夹持小人
-                    servoCatchBaby_2(0.13);
-
-                    ServoBabyPosition_2 = 0.13;
-
-                    while (gamepad2.right_bumper){
-                       babyIns =true;
-                    }
-                }
-
-                if (gamepad2.right_bumper && babyIns) {//机械臂末节松开小人
-                    servoCatchBaby_2(0.8);
-                    ServoBabyPosition_2 = 0.8;
-
-                    while (gamepad2.right_bumper){
-                        babyIns =false;
-                    }
-                }
-
-                if (gamepad2.left_bumper){
-                    if (ServoBabyPosition_2 < 1){
-                        ServoBabyPosition_2 = ServoBabyPosition_2 + 0.03;//慢速松末节机械臂夹子
-
-                        servoCatchBaby_2(ServoBabyPosition_2);
-                    }
-
-                    while (gamepad2.left_bumper){
-                        sleep(1);
-
-                        babyIns =false;
-                    }
-                }
-
-                if (gamepad2.dpad_up && !armIns) {
-                    motorCatchBaby(0.8, -0.56);
-                } else {
-                    motorCatchBaby_1.setPower(0);
-                }
-
-                if (gamepad2.dpad_down && !armIns) {
-                    motorCatchBaby(-0.8, 0.2);
-                }
-
-                if (gamepad1.y){
-                    servoKickBall_1.setPosition(0.15);
-                }
-
-                if (gamepad1.a){
-                    servoKickBall_1.setPosition(0.82);
-                }
-
-                if (gamepad1.x && ServoBallPosition_2 <= 1){
-                    ServoBallPosition_2 = ServoBallPosition_2 +0.02;
-
-                    sleep(20);
-                }
-
-                if (gamepad1.b && ServoBallPosition_2 >= 0){
-                    ServoBallPosition_2 = ServoBallPosition_2 -0.02;
-
-                    sleep(20);
-                }
-
-                servoKickBall_2.setPosition(ServoBallPosition_2);
-
-                if(gamepad1.x && gamepad1.y && gamepad1.a && gamepad1.b){
-                    break;
-                }
-
-                telemetry.addData("Status", "Run Time: " + runtime.toString());
-                telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",PowerFL,PowerFR,PowerBL,PowerBR);
-                telemetry.update();
+             telemetry.addData("Status", "Run Time: " + runtime.toString());
+             telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",PowerFL,PowerFR,PowerBL,PowerBR);
+             telemetry.update();
         }
     }
 }
