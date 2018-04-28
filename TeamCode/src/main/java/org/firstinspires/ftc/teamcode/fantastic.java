@@ -47,22 +47,22 @@ import org.firstinspires.ftc.robotcontroller.external.samples.BasicOpMode_Linear
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
  * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
- *
+ * <p>
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all linear OpModes contain.
- *
+ * <p>
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="fantastic", group="Linear Opmode")
+@TeleOp(name = "fantastic", group = "Linear Opmode")
 //@Disabled
-public class fantastic extends TurningEchoHardwareConfig{
+public class fantastic extends TurningEchoHardwareConfig {
 
     private ElapsedTime runtime = new ElapsedTime();//计时
 
-    public void runOpMode(){
-        TurningEchoHardwareMethod();
+    public void runOpMode() {
+        TurningEchoHardwareConfigure();
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -95,13 +95,13 @@ public class fantastic extends TurningEchoHardwareConfig{
                     moveFix(1,moveStatus.rR);
                 }
             }*/
-             if (gamepad1.left_bumper || gamepad1.right_bumper) {//左、右平移
-                 if (gamepad1.left_bumper) {
-                     moveFix(1,moveStatus.yL);
-                 } else if (gamepad1.right_bumper) {
-                     moveFix(1, moveStatus.yR);
-                 }
-             }
+            if (gamepad1.left_bumper || gamepad1.right_bumper) {//左、右平移
+                if (gamepad1.left_bumper) {
+                    moveFix(1, moveStatus.yL);
+                } else if (gamepad1.right_bumper) {
+                    moveFix(1, moveStatus.yR);
+                }
+            }
 
             if (gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1) {//机械臂安全锁
                 armIns = false;
@@ -130,13 +130,12 @@ public class fantastic extends TurningEchoHardwareConfig{
             } else {//卡住滑轨
                 lift(0.08);
             }
-             //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
+            //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
             if (gamepad2.right_trigger != 0) {
                 if (servoBabyPosition_1 < 1) {
-                    if (gamepad2.right_trigger >= 0.9){//快速降机械臂第三节
+                    if (gamepad2.right_trigger >= 0.9) {//快速降机械臂第三节
                         servoBabyPosition_1 = servoBabyPosition_1 + 0.02;
-                    }
-                    else {
+                    } else {
                         servoBabyPosition_1 = servoBabyPosition_1 + 0.01;//慢速降机械臂第三节
                     }
                 }
@@ -159,28 +158,29 @@ public class fantastic extends TurningEchoHardwareConfig{
             if (gamepad2.right_bumper && !babyIns) {//机械臂末节夹持小人
                 servoCatchBaby_2(0.13);
                 servoBabyPosition_2 = 0.13;
-                while (gamepad2.right_bumper){
-                    babyIns =true;
+                while (gamepad2.right_bumper) {
+                    babyIns = true;
                 }
             }
-             if (gamepad2.right_bumper && babyIns) {//机械臂末节松开小人
-                 servoCatchBaby_2(0.8);
-                 servoBabyPosition_2 = 0.8;
-                 while (gamepad2.right_bumper){
-                     babyIns =false;
-                 }
-             }
-             if (gamepad2.left_bumper){
-                 if (servoBabyPosition_2 < 1){
-                     servoBabyPosition_2 = servoBabyPosition_2 + 0.03;//慢速松末节机械臂夹子
-                     servoCatchBaby_2(servoBabyPosition_2);
-                 }
+            if (gamepad2.right_bumper && babyIns) {//机械臂末节松开小人
+                servoCatchBaby_2(0.8);
+                servoBabyPosition_2 = 0.8;
+                while (gamepad2.right_bumper) {
+                    babyIns = false;
+                    idle();
+                }
+            }
+            if (gamepad2.left_bumper) {
+                if (servoBabyPosition_2 < 1) {
+                    servoBabyPosition_2 = servoBabyPosition_2 + 0.03;//慢速松末节机械臂夹子
+                    servoCatchBaby_2(servoBabyPosition_2);
+                }
 
-                 while (gamepad2.left_bumper){
-                     sleep(1);
-                     babyIns =false;
-                 }
-             }
+                while (gamepad2.left_bumper) {
+                    idle();
+                    babyIns = false;
+                }
+            }
 
             if (gamepad2.dpad_up && !armIns) {
                 motorCatchBaby(0.8, -0.56);
@@ -191,32 +191,34 @@ public class fantastic extends TurningEchoHardwareConfig{
             if (gamepad2.dpad_down && !armIns) {
                 motorCatchBaby(-0.8, 0.2);
             }
-            if (gamepad1.dpad_up){
+            if (gamepad1.dpad_up) {
                 servoKickBall_1.setPosition(0.15);
             }
-             if (gamepad1.dpad_down) {
-                 servoKickBall_1.setPosition(0.82);
-             }
+            if (gamepad1.dpad_down) {
+                servoKickBall_1.setPosition(0.82);
+            }
 
-             if (gamepad1.dpad_left && servoBallPosition_2 <= 1){
-                 servoBallPosition_2 = servoBallPosition_2 +0.02;
-                 sleep(20);
-             }
+            if (gamepad1.dpad_left && servoBallPosition_2 <= 1) {
+                servoBallPosition_2 = servoBallPosition_2 + 0.02;
+                sleep(20);
+            }
 
-             if (gamepad1.dpad_right && servoBallPosition_2 >= 0){
-                 servoBallPosition_2 = servoBallPosition_2 -0.02;
-                 sleep(20);
-             }
+            if (gamepad1.dpad_right && servoBallPosition_2 >= 0) {
+                servoBallPosition_2 = servoBallPosition_2 - 0.02;
+                sleep(20);
+            }
 
-             servoKickBall_2.setPosition(servoBallPosition_2);
+            servoKickBall_2.setPosition(servoBallPosition_2);
 
-             if(gamepad1.x && gamepad1.y && gamepad1.a && gamepad1.b){
-                 break;
-             }
+            if (gamepad1.x && gamepad1.y && gamepad1.a && gamepad1.b) {
+                break;
+            }
 
-             telemetry.addData("Status", "Run Time: " + runtime.toString());
-             telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",PowerFL,PowerFR,PowerBL,PowerBR);
-             telemetry.update();
+            composeTelemetry();
+
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
+            telemetry.update();
         }
     }
 }

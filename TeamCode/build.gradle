@@ -22,4 +22,6 @@ repositories {
     flatDir { dirs '../libs' }
 }
 dependencies {
+    compile project(':openCVLibrary320')
+    compile project(':DogeCV')
 }
