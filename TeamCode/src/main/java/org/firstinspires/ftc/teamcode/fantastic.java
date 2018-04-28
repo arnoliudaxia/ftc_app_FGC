@@ -29,18 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-import com.disnodeteam.dogecv.CameraViewDisplay;
-import com.disnodeteam.dogecv.detectors.*;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.BasicOpMode_Linear;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -57,7 +47,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.BasicOpMode_Linear
 
 @TeleOp(name = "fantastic", group = "Linear Opmode")
 //@Disabled
-public class fantastic extends TurningEchoHardwareConfig {
+public class fantastic extends TurningEchoHardware {
 
     private ElapsedTime runtime = new ElapsedTime();//计时
 
