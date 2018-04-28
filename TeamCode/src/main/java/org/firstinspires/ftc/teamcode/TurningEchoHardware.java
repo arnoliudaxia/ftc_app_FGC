@@ -29,7 +29,7 @@ import java.util.Locale;
  * @see <a href="http://www.adafruit.com/products/2472">Adafruit IMU</a>
  */
 
-public class TurningEchoHardwareConfig extends BasicOpMode_Linear {
+public class TurningEchoHardware extends BasicOpMode_Linear {
 
     BNO055IMU imu;
 
