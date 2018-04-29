@@ -5,7 +5,9 @@ import android.view.KeyEvent;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -13,11 +15,13 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.BasicOpMode_Linear;
 import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import java.util.Locale;
 
@@ -38,9 +42,14 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     private ElapsedTime runtime = new ElapsedTime();//计时
 
     BNO055IMU imu;
-
     Orientation angles;
     Acceleration gravity;
+
+    OpenGLMatrix lastLocation = null;
+    VuforiaLocalizer vuforia;
+
+    ColorSensor sensorColor;
+    DistanceSensor sensorDistance;
 
     public DcMotor motorFL = null;
     public DcMotor motorFR = null;
@@ -236,7 +245,15 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         } else {
             return (powerMode);
         }
+    }
 
+    public void shakeHead(double range){
+        tripodHeadPosition = tripodHeadPosition + range;
+        tripodHead.setPosition(tripodHeadPosition);
+        sleep(500);
+        tripodHeadPosition = tripodHeadPosition - 2*range;
+        tripodHead.setPosition(tripodHeadPosition);
+        sleep(500);
     }
 
     public void frameContorl() {

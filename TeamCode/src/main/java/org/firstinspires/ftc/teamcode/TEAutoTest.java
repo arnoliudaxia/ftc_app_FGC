@@ -29,11 +29,25 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.app.Activity;
+import android.view.View;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.detectors.*;
+
+import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
+import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.UNKNOWN;
 
 
 /**
@@ -48,6 +62,24 @@ import com.disnodeteam.dogecv.detectors.*;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
+/**
+ * This OpMode illustrates the basics of using the Vuforia engine to determine
+ * the identity of Vuforia VuMarks encountered on the field. The code is structured as
+ * a LinearOpMode. It shares much structure with {@link ConceptVuforiaNavigation}; we do not here
+ * duplicate the core Vuforia documentation found there, but rather instead focus on the
+ * differences between the use of Vuforia for navigation vs VuMark identification.
+ *
+ * @see ConceptVuforiaNavigation
+ * @see VuforiaLocalizer
+ * @see VuforiaTrackableDefaultListener
+ * see  ftc_app/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
+ *
+ * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
+ *
+ * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
+ * is explained in {@link ConceptVuforiaNavigation}.
+ */
 
 @Autonomous(name="TEAutoTest", group="Linear Opmode")
 //@Disabled
@@ -61,14 +93,15 @@ public class TEAutoTest extends TurningEchoHardware {
 
     private JewelDetector jewelDetector = null;
 
-
-
     @Override
 
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        cryptoboxDetector = new CryptoboxDetector();
+
+        TurningEchoHardwareConfigure();
+
+        /*cryptoboxDetector = new CryptoboxDetector();
         cryptoboxDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
         cryptoboxDetector.rotateMat = false;
         //cryptoboxDetector.enable();
@@ -79,7 +112,7 @@ public class TEAutoTest extends TurningEchoHardware {
         glyphDetector.minScore = 1;
         glyphDetector.downScaleFactor = 0.3;
         glyphDetector.speed = GlyphDetector.GlyphDetectionSpeed.SLOW;
-        glyphDetector.enable();
+        glyphDetector.enable();*/
 
 
         jewelDetector = new JewelDetector();
@@ -94,14 +127,93 @@ public class TEAutoTest extends TurningEchoHardware {
         jewelDetector.minArea = 700;
         //jewelDetector.enable();
 
-        telemetry.addData("Status", "Initialized");
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+        parameters.vuforiaLicenseKey = "AVBZ8J//////AAAAmUh1NI3160yckxL9jxR0wQcUr8yieqkZdNjB+5YalDuty4KXzCOkSolr6sHq3/fpV/RIj6mOgl8bULILxJBdKOoGjAMVic54WUzwQk0Le88nb3sV20pEMonnqTnWvKp/pmpe5PPJJQE2gjs58sJSX7ROIBRMsDjVhu09ep3cmmyVhdIBLjkgvKafXDVtjpzAJJ/3HDenn2ocZ10F66ZHgSg7muIuMsobb30shiby9l9E30KN8Hy6GXu8BQlaBMzy4sRclYcCApVw/hFUUNN25tCFc0ex2Zn71AWr/1DyPwEWiva0M+75k8L3Nz2NTqv2bEruKLahBbjmT2haZ0cfOhiUuDwA4bfpfTyg0iRv0hHV";
+
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+
+        // get a reference to the RelativeLayout so we can change the background
+        // color of the Robot Controller app to match the hue detected by the RGB sensor.
+        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
 
         waitForStart();
         runtime.reset();
 
-        // run until the end of the match (driver presses STOP)
+        relicTrackables.activate();
+
+        sleep(500);
+
         while (opModeIsActive()) {
+            /**
+             * See if any of the instances of {@link relicTemplate} are currently visible.
+             * {@link RelicRecoveryVuMark} is an enum which can have the following values:
+             * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
+             * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
+             */
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
+
+            tripodHeadPosition = 0;
+            while (vuMark == RelicRecoveryVuMark.UNKNOWN){
+                tripodHead.setPosition(tripodHeadPosition);
+                tripodHeadPosition = tripodHeadPosition + 0.05;
+                sleep(100);
+                if (tripodHeadPosition > 1){
+                    tripodHeadPosition = 0;
+                }
+                if (getRuntime() > 5){
+                    break;
+                }
+            }
+
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {//如果壁画密码被破译
+                relicTrackables.deactivate();
+                telemetry.addData("VuMark", "%s visible", vuMark);
+//                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
+//                telemetry.addData("Pose", format(pose));
+                jewelDetector.enable();
+                sleep(500);
+                tripodHeadPosition = 0;
+                while (jewelDetector.getCurrentOrder() == UNKNOWN){
+                    tripodHead.setPosition(tripodHeadPosition);
+                    tripodHeadPosition = tripodHeadPosition + 0.05;
+                    sleep(100);
+                    if (tripodHeadPosition > 1){
+                        tripodHeadPosition = 0;
+                    }
+                    if (getRuntime() > 3){
+                        break;
+                    }
+                }
+
+                if (jewelDetector.getCurrentOrder().toString().equals("BLUE_RED")){
+                    moveFix(0.2,moveStatus.xF);
+
+                    sleep(500);
+                }
+                else if (jewelDetector.getCurrentOrder().toString().equals("RED_BLUE")){
+                    moveFix(0.2,moveStatus.xB);
+
+                    sleep(500);
+                }
+
+
+
+
+                break;
+            }
+            else {
+                telemetry.addData("VuMark", "not visible");
+            }
 
 
 
@@ -115,8 +227,8 @@ public class TEAutoTest extends TurningEchoHardware {
 //            telemetry.addData("Column Center ",  cryptoboxDetector.getCryptoBoxCenterPosition());
 //            telemetry.addData("Column Right ",  cryptoboxDetector.getCryptoBoxRightPosition());
 
-            telemetry.addData("Glyph Pos X", glyphDetector.getChosenGlyphOffset());
-            telemetry.addData("Glyph Pos Offest", glyphDetector.getChosenGlyphPosition().toString());
+            //telemetry.addData("Glyph Pos X", glyphDetector.getChosenGlyphOffset());
+            //telemetry.addData("Glyph Pos Offest", glyphDetector.getChosenGlyphPosition().toString());
 
 //            telemetry.addData("Current Order", "Jewel Order: " + jewelDetector.getCurrentOrder().toString()); // Current Result
 //            telemetry.addData("Last Order", "Jewel Order: " + jewelDetector.getLastOrder().toString()); // Last Known Result
@@ -124,5 +236,8 @@ public class TEAutoTest extends TurningEchoHardware {
             telemetry.update();
 
         }
+    }
+    String format(OpenGLMatrix transformationMatrix) {
+        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
 }

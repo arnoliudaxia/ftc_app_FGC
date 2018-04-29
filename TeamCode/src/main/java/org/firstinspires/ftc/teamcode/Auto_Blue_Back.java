@@ -73,7 +73,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryV
 
 @Autonomous(name="Auto_Blue_Back", group ="Concept")
 //@Disabled
-public class Auto_Blue_Back extends LinearOpMode {
+public class Auto_Blue_Back extends TurningEchoHardware {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
