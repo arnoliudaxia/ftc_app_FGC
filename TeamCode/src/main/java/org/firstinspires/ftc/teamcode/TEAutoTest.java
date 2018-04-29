@@ -41,13 +41,17 @@ import com.disnodeteam.dogecv.detectors.*;
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.UNKNOWN;
+import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.BLUE_RED;
+import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.RED_BLUE;
 
 
 /**
@@ -148,6 +152,7 @@ public class TEAutoTest extends TurningEchoHardware {
 
         waitForStart();
         runtime.reset();
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
         relicTrackables.activate();
 
