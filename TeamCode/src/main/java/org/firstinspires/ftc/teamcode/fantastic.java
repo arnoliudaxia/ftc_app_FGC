@@ -14,7 +14,7 @@
  * Neither the name of FIRST nor the names of its contributors may be used to endorse or
  * promote products derived from this software without specific prior written permission.
  *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
+ * NO EYPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
  * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -29,8 +29,17 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -51,6 +60,9 @@ public class fantastic extends TurningEchoHardware {
 
     private ElapsedTime runtime = new ElapsedTime();//计时
 
+    double ceshi = 0;
+    double ceshi2 = 0;
+
     public void runOpMode() {
         TurningEchoHardwareConfigure();
         telemetry.addData("Status", "Initialized");
@@ -60,8 +72,34 @@ public class fantastic extends TurningEchoHardware {
 
         servoKickBall_2.setPosition(0.44);
 
+        tripodHead.setPosition(tripodHeadPosition);
+
+
+
+        // Set up the parameters with which we will use our IMU. Note that integration
+        // algorithm here just reports accelerations to the logcat log; it doesn't actually
+        // provide positional information.
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled      = true;
+        parameters.loggingTag          = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+
+        // Set up our telemetry dashboard
+        //composeTelemetry();
+
         waitForStart();
         runtime.reset();
+
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
         while (opModeIsActive()) {
 
@@ -200,11 +238,53 @@ public class fantastic extends TurningEchoHardware {
 
             servoKickBall_2.setPosition(servoBallPosition_2);
 
+            if (gamepad1.right_stick_y < -0.5){
+                tripodHeadPosition = tripodHeadPosition + 0.02;
+                tripodHead.setPosition(tripodHeadPosition);
+                sleep(25);
+            }
+
+            else if (gamepad1.right_stick_y > 0.5){
+                tripodHeadPosition = tripodHeadPosition - 0.02;
+                tripodHead.setPosition(tripodHeadPosition);
+                sleep(25);
+            }
+
             if (gamepad1.x && gamepad1.y && gamepad1.a && gamepad1.b) {
                 break;
             }
 
-            composeTelemetry();
+            if (gamepad1.right_stick_button){
+                double Y = Range.clip(0,-10,10);
+                double blankX = Range.clip(0,-0.8,0.8);
+                double rPower = 0;
+
+                double yPower;
+                double xPower = Range.clip(0,-0.3,0.3);
+
+                while (true){
+                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                    gravity = imu.getGravity();
+                    Y = Double.parseDouble(formatAngle(angles.angleUnit,angles.thirdAngle)) + 0.9;
+                    blankX = Double.parseDouble(formatAngle(angles.angleUnit,angles.secondAngle)) + 0.5;
+
+                    ceshi = Y;
+
+                    yPower = -1.2468324983583301e-18*Y*Y*Y*Y-0.00015625000000000957*Y*Y*Y+6.938893903907228e-18*Y*Y+0.09562500000000004*Y;
+
+                    ceshi2 = yPower;
+
+                    //moveVar(yPower,0,0,1);
+                    telemetry.addData("blankY",ceshi);
+                    telemetry.addData("yPower",ceshi2);
+                    telemetry.update();
+
+                    if ((!gamepad1.right_stick_button) && (!gamepad1.left_stick_button)){
+                        frameStop();
+                        break;
+                    }
+                }
+            }
 
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);

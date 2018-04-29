@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -59,6 +60,8 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
     public DcMotor motorLift = null;//定义抬升滑轨的电机
 
+    public Servo tripodHead = null;
+
     public void TurningEchoHardwareConfigure() {
         motorFL = hardwareMap.get(DcMotor.class, "motorFL");
         motorFR = hardwareMap.get(DcMotor.class, "motorFR");
@@ -84,6 +87,8 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
         servoKickBall_1 = hardwareMap.get(Servo.class, "servoKickBall_1");
         servoKickBall_2 = hardwareMap.get(Servo.class, "servoKickBall_2");
+
+        tripodHead = hardwareMap.get(Servo.class,"tripodHead");
     }
 
     double servoBabyPosition_1 = 0;
@@ -91,14 +96,19 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
     double servoBallPosition_2 = 0.59;
 
+    double tripodHeadPosition = Range.clip(0.5,0,1);
+
     boolean armIns = true;
     boolean babyIns = false;//机械臂安全锁
+    boolean autoBlankBalance = false;
     //boolean robot_case_1 = false;
     //boolean robot_case_2 = false;
 
     double powerMode;//切换快/慢速模式
     final double POWER_MODE_SLOW = 2.5;
     final double POWER_MODE_FAST = 1;
+
+    final double errorIMU = 0.8;
 
     enum moveStatus {
         xF, xB, yR, yL, rL, rR, S
@@ -177,6 +187,17 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         motorFR.setPower(FinalPower2);
         motorBL.setPower(FinalPower3);
         motorBR.setPower(FinalPower4);
+    }
+
+    public void frameStop(){
+        motorFL.setPower(0);
+        motorFR.setPower(0);
+        motorBL.setPower(0);
+        motorBR.setPower(0);
+
+        moveVar(0,0,0,1);
+
+        moveFix(0,moveStatus.xF);
     }
 
     public void servoCatchBlock(double servoBlockPosition_1, double servoBlockPosition_2) {//夹持方块函数
@@ -271,7 +292,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
                 });
 
         telemetry.addLine()
-                .addData("grvty", new Func<String>() {
+                .addData("gravity", new Func<String>() {
                     @Override
                     public String value() {
                         return gravity.toString();
