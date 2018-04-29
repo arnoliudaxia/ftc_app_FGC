@@ -57,7 +57,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 @TeleOp(name = "fantastic", group = "Linear Opmode")
 //@Disabled
 public class fantastic extends TurningEchoHardware {
-
     private ElapsedTime runtime = new ElapsedTime();//计时
 
     double ceshi = 0;
@@ -75,16 +74,15 @@ public class fantastic extends TurningEchoHardware {
         tripodHead.setPosition(tripodHeadPosition);
 
 
-
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
@@ -238,13 +236,11 @@ public class fantastic extends TurningEchoHardware {
 
             servoKickBall_2.setPosition(servoBallPosition_2);
 
-            if (gamepad1.right_stick_y < -0.5){
+            if (gamepad1.right_stick_y < -0.5) {
                 tripodHeadPosition = tripodHeadPosition + 0.02;
                 tripodHead.setPosition(tripodHeadPosition);
                 sleep(25);
-            }
-
-            else if (gamepad1.right_stick_y > 0.5){
+            } else if (gamepad1.right_stick_y > 0.5) {
                 tripodHeadPosition = tripodHeadPosition - 0.02;
                 tripodHead.setPosition(tripodHeadPosition);
                 sleep(25);
@@ -254,32 +250,64 @@ public class fantastic extends TurningEchoHardware {
                 break;
             }
 
-            if (gamepad1.right_stick_button){
-                double Y = Range.clip(0,-10,10);
-                double blankX = Range.clip(0,-0.8,0.8);
+            if (gamepad1.left_stick_button) {
+                imu.initialize(parameters);
+                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+            }
+
+            if (isDoubleClick("left_stick_button")) {
+                double R;
+                double rPower;
+                while (true) {
+                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                    gravity = imu.getGravity();
+                    R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
+                    while (R > 180) {
+                        R = R - 360;
+                    }
+                    while (R < -180) {
+                        R = R + 360;
+                    }
+                    rPower = Math.abs(R / 180);
+                    if (R < 0) {
+                        moveFix(rPower, moveStatus.rR);
+                    } else if (R > 0) {
+                        moveFix(rPower, moveStatus.rL);
+                    } else idle();
+
+                    if (isDoubleClick("left_stick_button")) {
+                        break;
+                    }
+                }
+            }
+
+            if (gamepad1.right_stick_button) {
+                double Y = Range.clip(0, -10, 10);
+                double X = Range.clip(0, -0.8, 0.8);
                 double rPower = 0;
 
                 double yPower;
-                double xPower = Range.clip(0,-0.3,0.3);
+                double xPower = Range.clip(0, -0.3, 0.3);
 
-                while (true){
+                while (true) {
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                     gravity = imu.getGravity();
-                    Y = Double.parseDouble(formatAngle(angles.angleUnit,angles.thirdAngle)) + 0.9;
-                    blankX = Double.parseDouble(formatAngle(angles.angleUnit,angles.secondAngle)) + 0.5;
+                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) + 0.9;
+                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle)) + 0.5;
 
                     ceshi = Y;
 
-                    yPower = -1.2468324983583301e-18*Y*Y*Y*Y-0.00015625000000000957*Y*Y*Y+6.938893903907228e-18*Y*Y+0.09562500000000004*Y;
+                    yPower = -0.00001546223958333325 * Y * Y * Y * Y * Y - 1.1564823173178688e-18 * Y * Y * Y * Y + 0.0019205729166666588 * Y * Y * Y + 4.278984574076107e-17 * Y * Y + 0.0425651041666667 * Y - 1.6653345369377286e-16;
+                    xPower = -0.05 * X;
 
                     ceshi2 = yPower;
 
-                    //moveVar(yPower,0,0,1);
-                    telemetry.addData("blankY",ceshi);
-                    telemetry.addData("yPower",ceshi2);
+                    moveVar(yPower, xPower, 0, 1);
+                    telemetry.addData("blankY", ceshi);
+                    telemetry.addData("yPower", ceshi2);
                     telemetry.update();
 
-                    if ((!gamepad1.right_stick_button) && (!gamepad1.left_stick_button)){
+                    if (!gamepad1.right_stick_button) {
                         frameStop();
                         break;
                     }

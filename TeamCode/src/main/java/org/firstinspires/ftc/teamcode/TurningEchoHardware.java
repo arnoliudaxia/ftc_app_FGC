@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.view.KeyEvent;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.BasicOpMode_Linear;
@@ -31,6 +35,7 @@ import java.util.Locale;
  */
 
 public class TurningEchoHardware extends BasicOpMode_Linear {
+    private ElapsedTime runtime = new ElapsedTime();//计时
 
     BNO055IMU imu;
 
@@ -88,7 +93,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         servoKickBall_1 = hardwareMap.get(Servo.class, "servoKickBall_1");
         servoKickBall_2 = hardwareMap.get(Servo.class, "servoKickBall_2");
 
-        tripodHead = hardwareMap.get(Servo.class,"tripodHead");
+        tripodHead = hardwareMap.get(Servo.class, "tripodHead");
     }
 
     double servoBabyPosition_1 = 0;
@@ -96,7 +101,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
     double servoBallPosition_2 = 0.59;
 
-    double tripodHeadPosition = Range.clip(0.5,0,1);
+    double tripodHeadPosition = Range.clip(0.5, 0, 1);
 
     boolean armIns = true;
     boolean babyIns = false;//机械臂安全锁
@@ -189,15 +194,15 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         motorBR.setPower(FinalPower4);
     }
 
-    public void frameStop(){
+    public void frameStop() {
         motorFL.setPower(0);
         motorFR.setPower(0);
         motorBL.setPower(0);
         motorBR.setPower(0);
 
-        moveVar(0,0,0,1);
+        moveVar(0, 0, 0, 1);
 
-        moveFix(0,moveStatus.xF);
+        moveFix(0, moveStatus.xF);
     }
 
     public void servoCatchBlock(double servoBlockPosition_1, double servoBlockPosition_2) {//夹持方块函数
@@ -240,6 +245,167 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         } else {
             moveVar(0, 0, 0, 0);
         }
+    }
+
+    public boolean isDoubleClick(String key) {
+        if (key.equals("dpad_up")) {
+            if (gamepad1.dpad_up) {
+                runtime.reset();
+                while (gamepad1.dpad_up) {
+                    idle();
+                }
+                while (getRuntime() < 0.8) {
+                    if (gamepad1.dpad_up) {
+                        return true;
+                    } else idle();
+                }
+            }
+            return false;
+        } else if (key.equals("dpad_down")) {
+            if (gamepad1.dpad_down) {
+                runtime.reset();
+                while (gamepad1.dpad_down) {
+                    idle();
+                }
+                while (getRuntime() < 0.8) {
+                    if (gamepad1.dpad_down) {
+                        return true;
+                    } else idle();
+                }
+            }
+            return false;
+        } else if (key.equals("dpad_right")) {
+            if (gamepad1.dpad_right) {
+                runtime.reset();
+                while (gamepad1.dpad_right) {
+                    idle();
+                }
+                while (getRuntime() < 0.8) {
+                    if (gamepad1.dpad_right) {
+                        return true;
+                    } else idle();
+                }
+            }
+            return false;
+        } else if (key.equals("dpad_left")) {
+            if (gamepad1.dpad_left) {
+                runtime.reset();
+                while (gamepad1.dpad_left) {
+                    idle();
+                }
+                while (getRuntime() < 0.8) {
+                    if (gamepad1.dpad_left) {
+                        return true;
+                    } else idle();
+                }
+            }
+            return false;
+        } else if (key.equals("a")) {
+            if (gamepad1.a) {
+                runtime.reset();
+                while (gamepad1.a) {
+                    idle();
+                }
+                while (getRuntime() < 0.8) {
+                    if (gamepad1.a) {
+                        return true;
+                    } else idle();
+                }
+            }
+            return false;
+        } else if (key.equals("b")) {
+            if (gamepad1.b) {
+                runtime.reset();
+                while (gamepad1.b) {
+                    idle();
+                }
+                while (getRuntime() < 0.8) {
+                    if (gamepad1.b) {
+                        return true;
+                    } else idle();
+                }
+            }
+            return false;
+        } else if (key.equals("x")) {
+            if (gamepad1.x) {
+                runtime.reset();
+                while (gamepad1.x) {
+                    idle();
+                }
+                while (getRuntime() < 0.8) {
+                    if (gamepad1.x) {
+                        return true;
+                    } else idle();
+                }
+            }
+            return false;
+        } else if (key.equals("y")) {
+            if (gamepad1.y) {
+                runtime.reset();
+                while (gamepad1.y) {
+                    idle();
+                }
+                while (getRuntime() < 0.8) {
+                    if (gamepad1.y) {
+                        return true;
+                    } else idle();
+                }
+            }
+            return false;
+        } else if (key.equals("right_bumper")) {
+            if (gamepad1.right_bumper) {
+                runtime.reset();
+                while (gamepad1.right_bumper) {
+                    idle();
+                }
+                while (getRuntime() < 0.8) {
+                    if (gamepad1.right_bumper) {
+                        return true;
+                    } else idle();
+                }
+            }
+            return false;
+        } else if (key.equals("left_bumper")) {
+            if (gamepad1.left_bumper) {
+                runtime.reset();
+                while (gamepad1.left_bumper) {
+                    idle();
+                }
+                while (getRuntime() < 0.8) {
+                    if (gamepad1.left_bumper) {
+                        return true;
+                    } else idle();
+                }
+            }
+            return false;
+        } else if (key.equals("left_stick_button")) {
+            if (gamepad1.left_stick_button) {
+                runtime.reset();
+                while (gamepad1.left_stick_button) {
+                    idle();
+                }
+                while (getRuntime() < 0.8) {
+                    if (gamepad1.left_stick_button) {
+                        return true;
+                    } else idle();
+                }
+            }
+            return false;
+        } else if (key.equals("right_stick_button")) {
+            if (gamepad1.right_stick_button) {
+                runtime.reset();
+                while (gamepad1.right_stick_button) {
+                    idle();
+                }
+                while (getRuntime() < 0.8) {
+                    if (gamepad1.right_stick_button) {
+                        return true;
+                    } else idle();
+                }
+            }
+            return false;
+        }
+        return false;
     }
 
     void composeTelemetry() {
