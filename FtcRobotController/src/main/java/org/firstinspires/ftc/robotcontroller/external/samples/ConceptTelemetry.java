@@ -165,7 +165,7 @@ public class ConceptTelemetry extends LinearOpMode  {
     }
 
     // Computes the current battery voltage
-    double getBatteryVoltage() {
+    public double getBatteryVoltage() {
         double result = Double.POSITIVE_INFINITY;
         for (VoltageSensor sensor : hardwareMap.voltageSensor) {
             double voltage = sensor.getVoltage();

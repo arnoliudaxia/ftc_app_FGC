@@ -32,6 +32,8 @@ package org.firstinspires.ftc.teamcode;
 import android.app.Activity;
 import android.view.View;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -105,6 +107,26 @@ public class TEAutoTest extends TurningEchoHardware {
 
         TurningEchoHardwareConfigure();
 
+        // Set up the parameters with which we will use our IMU. Note that integration
+        // algorithm here just reports accelerations to the logcat log; it doesn't actually
+        // provide positional information.
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+
+        // Set up our telemetry dashboard
+        //composeTelemetry();
+
         /*cryptoboxDetector = new CryptoboxDetector();
         cryptoboxDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
         cryptoboxDetector.rotateMat = false;
@@ -133,12 +155,12 @@ public class TEAutoTest extends TurningEchoHardware {
 
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        VuforiaLocalizer.Parameters parameters2 = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-        parameters.vuforiaLicenseKey = "AVBZ8J//////AAAAmUh1NI3160yckxL9jxR0wQcUr8yieqkZdNjB+5YalDuty4KXzCOkSolr6sHq3/fpV/RIj6mOgl8bULILxJBdKOoGjAMVic54WUzwQk0Le88nb3sV20pEMonnqTnWvKp/pmpe5PPJJQE2gjs58sJSX7ROIBRMsDjVhu09ep3cmmyVhdIBLjkgvKafXDVtjpzAJJ/3HDenn2ocZ10F66ZHgSg7muIuMsobb30shiby9l9E30KN8Hy6GXu8BQlaBMzy4sRclYcCApVw/hFUUNN25tCFc0ex2Zn71AWr/1DyPwEWiva0M+75k8L3Nz2NTqv2bEruKLahBbjmT2haZ0cfOhiUuDwA4bfpfTyg0iRv0hHV";
+        parameters2.vuforiaLicenseKey = "AVBZ8J//////AAAAmUh1NI3160yckxL9jxR0wQcUr8yieqkZdNjB+5YalDuty4KXzCOkSolr6sHq3/fpV/RIj6mOgl8bULILxJBdKOoGjAMVic54WUzwQk0Le88nb3sV20pEMonnqTnWvKp/pmpe5PPJJQE2gjs58sJSX7ROIBRMsDjVhu09ep3cmmyVhdIBLjkgvKafXDVtjpzAJJ/3HDenn2ocZ10F66ZHgSg7muIuMsobb30shiby9l9E30KN8Hy6GXu8BQlaBMzy4sRclYcCApVw/hFUUNN25tCFc0ex2Zn71AWr/1DyPwEWiva0M+75k8L3Nz2NTqv2bEruKLahBbjmT2haZ0cfOhiUuDwA4bfpfTyg0iRv0hHV";
 
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+        parameters2.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters2);
 
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
@@ -154,9 +176,6 @@ public class TEAutoTest extends TurningEchoHardware {
         runtime.reset();
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
-        relicTrackables.activate();
-
-        sleep(500);
 
         while (opModeIsActive()) {
             /**
@@ -165,55 +184,106 @@ public class TEAutoTest extends TurningEchoHardware {
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
 
-            tripodHeadPosition = 0;
-            while (vuMark == RelicRecoveryVuMark.UNKNOWN){
+            tripodHeadPosition = 0.4;
+            int count = 0;
+
+
+
+            tripodHeadPosition = 0.3;
+            tripodHead.setPosition(tripodHeadPosition);
+            jewelDetector.enable();
+            sleep(500);
+            count = 0;
+            while (jewelDetector.getCurrentOrder() == UNKNOWN){
                 tripodHead.setPosition(tripodHeadPosition);
                 tripodHeadPosition = tripodHeadPosition + 0.05;
-                sleep(100);
-                if (tripodHeadPosition > 1){
-                    tripodHeadPosition = 0;
+                sleep(400);
+                count++;
+                if (tripodHeadPosition > 0.7){
+                    tripodHeadPosition = 0.3;
                 }
-                if (getRuntime() > 5){
+                if (count > 14){
                     break;
                 }
             }
 
+
+
+            servoCatchBlock(0.78, 0.0);
+
+            sleep(300);
+
+            servoKickBall(0.7,0.51);
+
+            sleep(500);
+
+            servoKickBall(0.84,0.51);
+
+            sleep(400);
+
+            lift(1);//抬升滑轨
+
+            sleep(1200);
+
+            lift(0);//卡住滑轨
+
+            sleep(500);
+            if (jewelDetector.getCurrentOrder().toString().equals("BLUE_RED")){
+                servoKickBall(0.84,0.65);
+
+                sleep(300);
+
+                servoKickBall(0.15,0.51);
+            }
+            else if (jewelDetector.getCurrentOrder().toString().equals("RED_BLUE")){
+                servoKickBall(0.84,0.3);
+
+                sleep(300);
+
+                servoKickBall(0.15,0.51);
+            }
+
+            else {
+                moveFix(0.3,moveStatus.rR);
+                sleep(200);
+            }
+            jewelDetector.disable();
+
+
+            relicTrackables.activate();
+            sleep(1000);
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
+            while (RelicRecoveryVuMark.from(relicTemplate) == RelicRecoveryVuMark.UNKNOWN){
+                if (RelicRecoveryVuMark.from(relicTemplate) != RelicRecoveryVuMark.UNKNOWN){
+                    vuMark = RelicRecoveryVuMark.from(relicTemplate);
+                }
+                telemetry.addData("VuMark", "%s visible", vuMark);
+                telemetry.update();
+                tripodHead.setPosition(tripodHeadPosition);
+                tripodHeadPosition = tripodHeadPosition + 0.05;
+                sleep(700);
+                count++;
+                if (tripodHeadPosition > 0.7) {
+                    tripodHeadPosition = 0.4;
+                }
+                if (count > 10){
+                    break;
+                }
+            }
+            telemetry.addData("VuMark", "%s visible", vuMark);
+            telemetry.update();
+
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {//如果壁画密码被破译
                 relicTrackables.deactivate();
+
                 telemetry.addData("VuMark", "%s visible", vuMark);
 //                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
 //                telemetry.addData("Pose", format(pose));
-                jewelDetector.enable();
-                sleep(500);
-                tripodHeadPosition = 0;
-                while (jewelDetector.getCurrentOrder() == UNKNOWN){
-                    tripodHead.setPosition(tripodHeadPosition);
-                    tripodHeadPosition = tripodHeadPosition + 0.05;
-                    sleep(100);
-                    if (tripodHeadPosition > 1){
-                        tripodHeadPosition = 0;
-                    }
-                    if (getRuntime() > 3){
-                        break;
-                    }
-                }
-
-                if (jewelDetector.getCurrentOrder().toString().equals("BLUE_RED")){
-                    moveFix(0.2,moveStatus.xF);
-
-                    sleep(500);
-                }
-                else if (jewelDetector.getCurrentOrder().toString().equals("RED_BLUE")){
-                    moveFix(0.2,moveStatus.xB);
-
-                    sleep(500);
-                }
 
 
 
-
+                frameStop();
                 break;
             }
             else {

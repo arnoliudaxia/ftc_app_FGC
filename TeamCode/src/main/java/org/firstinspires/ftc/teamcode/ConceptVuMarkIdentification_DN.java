@@ -113,7 +113,7 @@ public class ConceptVuMarkIdentification_DN extends LinearOpMode {
          * Here we chose the back (HiRes) camera (for greater range), but
          * for a competition robot, the front camera might be more convenient.
          */
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;//设置使用后摄像头
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;//设置使用后摄像头
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
         /**

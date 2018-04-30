@@ -32,14 +32,19 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.ConceptTelemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -73,7 +78,6 @@ public class fantastic extends TurningEchoHardware {
 
         tripodHead.setPosition(tripodHeadPosition);
 
-
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
@@ -100,6 +104,8 @@ public class fantastic extends TurningEchoHardware {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
         while (opModeIsActive()) {
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            gravity = imu.getGravity();
 
             double PowerFL = motorFL.getPower();
             double PowerFR = motorFR.getPower();
@@ -108,7 +114,7 @@ public class fantastic extends TurningEchoHardware {
 
             powerMode = switchPowerMode();//powerMode变量——SwitchpowerMode方法，powerMode变量将有1（正常速度）、2.5（慢速）的返回值
 
-            frameContorl();
+            frameControl();
 
             /*if (gamepad1.dpad_up || gamepad1.dpad_left || gamepad1.dpad_right || gamepad1.dpad_down) {//dpad的底盘中速运行模式
                 if (gamepad1.dpad_up) {
@@ -123,9 +129,9 @@ public class fantastic extends TurningEchoHardware {
             }*/
             if (gamepad1.left_bumper || gamepad1.right_bumper) {//左、右平移
                 if (gamepad1.left_bumper) {
-                    moveFix(1, moveStatus.yL);
+                    moveFix(1, moveStatus.xL);
                 } else if (gamepad1.right_bumper) {
-                    moveFix(1, moveStatus.yR);
+                    moveFix(1, moveStatus.xR);
                 }
             }
 
@@ -154,7 +160,7 @@ public class fantastic extends TurningEchoHardware {
             } else if (gamepad1.a) {//下降滑轨
                 lift(-1);
             } else {//卡住滑轨
-                lift(0.08);
+                lift(0);
             }
             //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
             if (gamepad2.right_trigger != 0) {
@@ -236,14 +242,14 @@ public class fantastic extends TurningEchoHardware {
 
             servoKickBall_2.setPosition(servoBallPosition_2);
 
-            if (gamepad1.right_stick_y < -0.5) {
+            if (gamepad1.dpad_up) {
                 tripodHeadPosition = tripodHeadPosition + 0.02;
                 tripodHead.setPosition(tripodHeadPosition);
-                sleep(25);
-            } else if (gamepad1.right_stick_y > 0.5) {
+                sleep(15);
+            } else if (gamepad1.dpad_down) {
                 tripodHeadPosition = tripodHeadPosition - 0.02;
                 tripodHead.setPosition(tripodHeadPosition);
-                sleep(25);
+                sleep(15);
             }
 
             if (gamepad1.x && gamepad1.y && gamepad1.a && gamepad1.b) {
@@ -253,29 +259,32 @@ public class fantastic extends TurningEchoHardware {
             if (gamepad1.left_stick_button) {
                 imu.initialize(parameters);
                 imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+
             }
 
-            if (isDoubleClick("left_stick_button")) {
+            if (gamepad1.start) {
+//                moveFix(1,moveStatus.xF);
+//                sleep(200);
                 double R;
                 double rPower;
                 while (true) {
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                     gravity = imu.getGravity();
                     R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
-                    while (R > 180) {
-                        R = R - 360;
+                    rPower = Range.clip(Math.abs(R / 45),0.16,1);
+                    telemetry.addData("rPower = ",rPower);
+                    telemetry.update();
+                    if (R>=-0.4&&R<=0.4){
+                        break;
                     }
-                    while (R < -180) {
-                        R = R + 360;
-                    }
-                    rPower = Math.abs(R / 180);
-                    if (R < 0) {
-                        moveFix(rPower, moveStatus.rR);
-                    } else if (R > 0) {
-                        moveFix(rPower, moveStatus.rL);
+                    else if (R < -0.4) {
+                        moveVar(0,0,-rPower,1);
+                    } else if (R > 0.4) {
+                        moveVar(0,0,rPower,1);
                     } else idle();
 
-                    if (isDoubleClick("left_stick_button")) {
+                    if (!gamepad1.start) {
+                        frameStop();
                         break;
                     }
                 }
@@ -284,28 +293,58 @@ public class fantastic extends TurningEchoHardware {
             if (gamepad1.right_stick_button) {
                 double Y = Range.clip(0, -10, 10);
                 double X = Range.clip(0, -0.8, 0.8);
-                double rPower = 0;
+                //double R;
 
                 double yPower;
                 double xPower = Range.clip(0, -0.3, 0.3);
+                //double rPower;
 
                 while (true) {
+                    double Battery = getBatteryVoltage();
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                     gravity = imu.getGravity();
-                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) + 0.9;
-                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle)) + 0.5;
+                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) + 1.1;
+                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle)) + 0.2;
+                    //R = Double.parseDouble(formatAngle(angles.angleUnit,angles.firstAngle));
+
+
+                    if (Y > 10){
+                        Y=10;
+                    }
+                    else if (Y<-10){
+                        Y = -10;
+                    }
+
+                    if (X > 5){
+                        X = 5;
+                    }
+
+                    else if (X<-5){
+                        X = -5;
+                    }
+
+//                    if (R>10){
+//                        R = 10;
+//                    }
+//
+//                    else if (R<-10){
+//                        R =-10;
+//                    }
 
                     ceshi = Y;
 
-                    yPower = -0.00001546223958333325 * Y * Y * Y * Y * Y - 1.1564823173178688e-18 * Y * Y * Y * Y + 0.0019205729166666588 * Y * Y * Y + 4.278984574076107e-17 * Y * Y + 0.0425651041666667 * Y - 1.6653345369377286e-16;
-                    xPower = -0.05 * X;
+                    yPower = -1.6878858024698782e-7*Y*Y*Y*Y*Y*Y*Y+1.860119047627557e-7*Y*Y*Y*Y*Y*Y+0.00003153935185185975*Y*Y*Y*Y*Y-0.00002604166666674018*Y*Y*Y*Y-0.0014074074074075045*Y*Y*Y+0.0012916666666677812*Y*Y+0.06013580246913608*Y-0.01476190476190806;
+                    xPower = +0.003416666666666672*X*X*X-0.13341666666666666*X;
+                    //rPower = -0.000036630036630037064*R*R*R-1.734723475976807e-18*R*R+0.03366300366300366*R;
 
                     ceshi2 = yPower;
 
                     moveVar(yPower, xPower, 0, 1);
                     telemetry.addData("blankY", ceshi);
                     telemetry.addData("yPower", ceshi2);
+                    telemetry.addData("Battery",Battery);
                     telemetry.update();
+
 
                     if (!gamepad1.right_stick_button) {
                         frameStop();
@@ -315,6 +354,9 @@ public class fantastic extends TurningEchoHardware {
             }
 
             telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("heading",formatAngle(angles.angleUnit, angles.firstAngle));
+            telemetry.addData("roll",formatAngle(angles.angleUnit, angles.secondAngle));
+            telemetry.addData("pitch",formatAngle(angles.angleUnit, angles.thirdAngle));
             telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
             telemetry.update();
         }

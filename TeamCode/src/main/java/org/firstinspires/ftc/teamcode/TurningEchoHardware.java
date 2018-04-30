@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -103,6 +104,19 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         servoKickBall_2 = hardwareMap.get(Servo.class, "servoKickBall_2");
 
         tripodHead = hardwareMap.get(Servo.class, "tripodHead");
+
+        motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+
+    public double getBatteryVoltage() {
+        double result = Double.POSITIVE_INFINITY;
+        for (VoltageSensor sensor : hardwareMap.voltageSensor) {
+            double voltage = sensor.getVoltage();
+            if (voltage > 0) {
+                result = Math.min(result, voltage);
+            }
+        }
+        return result;
     }
 
     double servoBabyPosition_1 = 0;
@@ -118,18 +132,18 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     //boolean robot_case_1 = false;
     //boolean robot_case_2 = false;
 
-    double powerMode;//切换快/慢速模式
+    double powerMode = 1;//切换快/慢速模式
     final double POWER_MODE_SLOW = 2.5;
     final double POWER_MODE_FAST = 1;
 
     final double errorIMU = 0.8;
 
     enum moveStatus {
-        xF, xB, yR, yL, rL, rR, S
-//      xF = forward 前进
-//         xB = back 后退
-//            yR = right 右平移
-//               yL = left 左平移
+        yF, yB, xR, xL, rL, rR, S
+//      yF = forward 前进
+//         yB = back 后退
+//            xR = right 右平移
+//               xL = left 左平移
 //                   rL = 左转
 //                      rR = 右转
 //                          S = stop 停止
@@ -137,28 +151,28 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
     public void moveFix(double power, moveStatus moveStatus) {//0 <= power <= 1
         switch (moveStatus) {
-            case xF:
+            case yF:
                 motorFL.setPower(power / powerMode);
                 motorFR.setPower(power / powerMode);
                 motorBL.setPower(power / powerMode);
                 motorBR.setPower(power / powerMode);
                 break;
 
-            case xB:
+            case yB:
                 motorFL.setPower(-power / powerMode);
                 motorFR.setPower(-power / powerMode);
                 motorBL.setPower(-power / powerMode);
                 motorBR.setPower(-power / powerMode);
                 break;
 
-            case yL:
+            case xL:
                 motorFL.setPower(-power / powerMode);
                 motorFR.setPower(power / powerMode);
                 motorBL.setPower(power / powerMode);
                 motorBR.setPower(-power / powerMode);
                 break;
 
-            case yR:
+            case xR:
                 motorFL.setPower(power / powerMode);
                 motorFR.setPower(-power / powerMode);
                 motorBL.setPower(-power / powerMode);
@@ -211,7 +225,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
         moveVar(0, 0, 0, 1);
 
-        moveFix(0, moveStatus.xF);
+        moveFix(0, moveStatus.yF);
     }
 
     public void servoCatchBlock(double servoBlockPosition_1, double servoBlockPosition_2) {//夹持方块函数
@@ -232,19 +246,26 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     public void servoCatchBaby_2(double servoBabyPosition_2) {//夹小人末节舵机函数
         servoCatchBaby_2.setPosition(servoBabyPosition_2);
     }
+    
+    public void servoKickBall(double servoBallPosition_1,double servoBallPosition_2){
+        servoKickBall_1.setPosition(servoBallPosition_1);
+        servoKickBall_2.setPosition(servoBallPosition_2);
+    }
 
     public void lift(double powerLift) {//滑轨抬升函数
         motorLift.setPower(powerLift);
     }
 
     public double switchPowerMode() {//切换低/高速模式函数
-        if (gamepad1.right_stick_y > 0.4) {
-            return (POWER_MODE_SLOW);
-        } else if (gamepad1.right_stick_y < -0.4) {
-            return (POWER_MODE_FAST);
-        } else {
-            return (powerMode);
-        }
+        powerMode = Range.clip(0.75*gamepad1.right_stick_y+1.75,POWER_MODE_FAST,POWER_MODE_SLOW);
+        return powerMode;
+//        if (gamepad1.right_stick_y > 0.4) {
+//            return (POWER_MODE_SLOW);
+//        } else if (gamepad1.right_stick_y < -0.4) {
+//            return (POWER_MODE_FAST);
+//        } else {
+//            return (powerMode);
+//        }
     }
 
     public void shakeHead(double range){
@@ -256,7 +277,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         sleep(500);
     }
 
-    public void frameContorl() {
+    public void frameControl() {
         if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0 || gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {//底盘平移
             moveVar(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_trigger - gamepad1.left_trigger, powerMode);
         } else {
@@ -396,18 +417,15 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
             }
             return false;
         } else if (key.equals("left_stick_button")) {
-            if (gamepad1.left_stick_button) {
-                runtime.reset();
-                while (gamepad1.left_stick_button) {
-                    idle();
+            int count = 0;
+            while (gamepad1.left_stick_button && count<=5) {
+                count++;
+                sleep(100);
                 }
-                while (getRuntime() < 0.8) {
-                    if (gamepad1.left_stick_button) {
-                        return true;
-                    } else idle();
+                if (count > 4){
+                return true;
                 }
-            }
-            return false;
+                else return false;
         } else if (key.equals("right_stick_button")) {
             if (gamepad1.right_stick_button) {
                 runtime.reset();
