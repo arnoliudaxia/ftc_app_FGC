@@ -39,10 +39,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.detectors.*;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
@@ -54,6 +59,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.UNKNOWN;
 import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.BLUE_RED;
 import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.RED_BLUE;
+import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.CENTER;
+import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.LEFT;
+import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.RIGHT;
 
 
 /**
@@ -99,6 +107,10 @@ public class TEAutoTest extends TurningEchoHardware {
 
     private JewelDetector jewelDetector = null;
 
+    double R;
+    double rPower;
+
+    double d;
     @Override
 
     public void runOpMode() {
@@ -155,6 +167,84 @@ public class TEAutoTest extends TurningEchoHardware {
 
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+
+
+        // get a reference to the RelativeLayout so we can change the background
+        // color of the Robot Controller app to match the hue detected by the RGB sensor.
+        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+
+        waitForStart();
+        runtime.reset();
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+
+
+        int count = 0;
+
+
+
+        tripodHeadPosition = 0.3;
+        tripodHead.setPosition(tripodHeadPosition);
+        jewelDetector.enable();
+        sleep(500);
+        count = 0;
+        while (jewelDetector.getCurrentOrder() == UNKNOWN){
+            tripodHead.setPosition(tripodHeadPosition);
+            tripodHeadPosition = tripodHeadPosition + 0.05;
+            sleep(400);
+            count++;
+            if (tripodHeadPosition > 0.7){
+                tripodHeadPosition = 0.3;
+            }
+            if (count > 14){
+                break;
+            }
+        }
+
+
+
+        servoCatchBlock(0.78, 0.0);
+
+        sleep(300);
+
+        servoKickBall(0.7,0.54);
+
+        sleep(500);
+
+        servoKickBall(0.84,0.54);
+
+        sleep(400);
+
+        lift(1);//抬升滑轨
+
+        sleep(1200);
+
+        lift(0);//卡住滑轨
+
+        sleep(500);
+        if (jewelDetector.getCurrentOrder().toString().equals("RED_BLUE")){
+            servoKickBall(0.84,0.70);
+
+            sleep(400);
+
+            servoKickBall(0.15,0.51);
+        }
+        else if (jewelDetector.getCurrentOrder().toString().equals("BLUE_RED")){
+            servoKickBall(0.84,0.25);
+
+            sleep(400);
+
+            servoKickBall(0.15,0.51);
+        }
+
+        else {
+            moveFix(0.3,moveStatus.rR);
+            sleep(200);
+        }
+        jewelDetector.disable();
+        sleep(1000);
+
+
         VuforiaLocalizer.Parameters parameters2 = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         parameters2.vuforiaLicenseKey = "AVBZ8J//////AAAAmUh1NI3160yckxL9jxR0wQcUr8yieqkZdNjB+5YalDuty4KXzCOkSolr6sHq3/fpV/RIj6mOgl8bULILxJBdKOoGjAMVic54WUzwQk0Le88nb3sV20pEMonnqTnWvKp/pmpe5PPJJQE2gjs58sJSX7ROIBRMsDjVhu09ep3cmmyVhdIBLjkgvKafXDVtjpzAJJ/3HDenn2ocZ10F66ZHgSg7muIuMsobb30shiby9l9E30KN8Hy6GXu8BQlaBMzy4sRclYcCApVw/hFUUNN25tCFc0ex2Zn71AWr/1DyPwEWiva0M+75k8L3Nz2NTqv2bEruKLahBbjmT2haZ0cfOhiUuDwA4bfpfTyg0iRv0hHV";
@@ -166,16 +256,7 @@ public class TEAutoTest extends TurningEchoHardware {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
-        // get a reference to the RelativeLayout so we can change the background
-        // color of the Robot Controller app to match the hue detected by the RGB sensor.
-        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
-
-
-        waitForStart();
-        runtime.reset();
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-
+        relicTrackables.activate();
 
         while (opModeIsActive()) {
             /**
@@ -184,75 +265,7 @@ public class TEAutoTest extends TurningEchoHardware {
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
-
-            tripodHeadPosition = 0.4;
-            int count = 0;
-
-
-
-            tripodHeadPosition = 0.3;
-            tripodHead.setPosition(tripodHeadPosition);
-            jewelDetector.enable();
-            sleep(500);
-            count = 0;
-            while (jewelDetector.getCurrentOrder() == UNKNOWN){
-                tripodHead.setPosition(tripodHeadPosition);
-                tripodHeadPosition = tripodHeadPosition + 0.05;
-                sleep(400);
-                count++;
-                if (tripodHeadPosition > 0.7){
-                    tripodHeadPosition = 0.3;
-                }
-                if (count > 14){
-                    break;
-                }
-            }
-
-
-
-            servoCatchBlock(0.78, 0.0);
-
-            sleep(300);
-
-            servoKickBall(0.7,0.51);
-
-            sleep(500);
-
-            servoKickBall(0.84,0.51);
-
-            sleep(400);
-
-            lift(1);//抬升滑轨
-
-            sleep(1200);
-
-            lift(0);//卡住滑轨
-
-            sleep(500);
-            if (jewelDetector.getCurrentOrder().toString().equals("BLUE_RED")){
-                servoKickBall(0.84,0.65);
-
-                sleep(300);
-
-                servoKickBall(0.15,0.51);
-            }
-            else if (jewelDetector.getCurrentOrder().toString().equals("RED_BLUE")){
-                servoKickBall(0.84,0.3);
-
-                sleep(300);
-
-                servoKickBall(0.15,0.51);
-            }
-
-            else {
-                moveFix(0.3,moveStatus.rR);
-                sleep(200);
-            }
-            jewelDetector.disable();
-
-
-            relicTrackables.activate();
-            sleep(1000);
+            tripodHeadPosition = 0.5;
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
             while (RelicRecoveryVuMark.from(relicTemplate) == RelicRecoveryVuMark.UNKNOWN){
                 if (RelicRecoveryVuMark.from(relicTemplate) != RelicRecoveryVuMark.UNKNOWN){
@@ -265,7 +278,7 @@ public class TEAutoTest extends TurningEchoHardware {
                 sleep(700);
                 count++;
                 if (tripodHeadPosition > 0.7) {
-                    tripodHeadPosition = 0.4;
+                    tripodHeadPosition = 0.5;
                 }
                 if (count > 10){
                     break;
@@ -276,10 +289,169 @@ public class TEAutoTest extends TurningEchoHardware {
 
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {//如果壁画密码被破译
                 relicTrackables.deactivate();
-
                 telemetry.addData("VuMark", "%s visible", vuMark);
+                telemetry.update();
 //                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
 //                telemetry.addData("Pose", format(pose));
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                gravity = imu.getGravity();
+
+                moveFix(0.4,moveStatus.yF);//前进
+
+                sleep(750);
+
+                moveFix(0.2,moveStatus.yF);//缓停
+
+                sleep(320);
+
+                frameStop();
+
+                sleep(300);
+
+                moveFix(0.35,moveStatus.yB);//轻怼平衡板定位
+
+                sleep(500);
+
+                frameStop();
+
+                sleep(200);
+
+                imu.initialize(parameters);
+                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+
+                sleep(400);
+
+                moveFix(0.5,moveStatus.yF);
+
+                sleep(300);
+
+                frameStop();
+
+                sleep(400);
+
+                if (vuMark == LEFT){
+                    moveFix(1,moveStatus.xL);//左平移
+
+                    sleep(920);
+                }
+
+                else if (vuMark == CENTER){//done
+                    moveFix(1,moveStatus.xL);//左平移
+
+                    sleep(525);
+                }
+
+                else if (vuMark == RIGHT){
+                    moveFix(1,moveStatus.xL);//左平移
+
+                    sleep(3200);
+                }
+
+                frameStop();
+
+                sleep(500);
+
+                moveFix(0.3,moveStatus.rR);
+
+                sleep(170);
+
+                frameStop();
+
+                sleep(250);
+
+                moveFix(0.4,moveStatus.yF);//前进一点点
+
+                sleep(200);
+
+                frameStop();
+
+                lift(-1);//下降滑轨
+
+                sleep(950);
+
+                lift(0);//停止滑轨
+
+                servoCatchBlock(0.35, 0.15);//松开方块夹子
+
+                sleep(300);
+
+                moveFix(0.4,moveStatus.yF);//往前怼
+
+                sleep(900);
+
+                //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
+                moveFix(0.3,moveStatus.yB);//后退一点点
+
+                sleep(120);
+
+                moveFix(0.4,moveStatus.rR);//右转
+
+                sleep(600);
+
+                moveFix(0.4,moveStatus.rL);//左转
+
+                sleep(600);
+
+                moveFix(0.3,moveStatus.yF);//往前推一点点
+
+                sleep(380);
+
+                moveFix(0.5,moveStatus.yB);
+
+                sleep(300);
+
+                frameStop();
+
+                sleep(500);
+
+                while (Math.abs(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)))>=0.6){
+                    while (true) {
+                        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                        gravity = imu.getGravity();
+                        R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
+                        rPower = Range.clip(Math.abs(R / 45), 0.14, 1);
+                        telemetry.addData("rPower = ", rPower);
+                        telemetry.update();
+                        if (R >= -0.6 && R <= 0.6) {
+                            break;
+                        } else if (R < -0.6) {
+                            moveVar(0, 0, -rPower, 1);
+                        } else if (R > 0.6) {
+                            moveVar(0, 0, rPower, 1);
+                        } else break;
+                    }
+                }
+
+                frameStop();
+
+                sleep(500);
+
+                moveFix(0.7,moveStatus.rL);
+
+                sleep(850);
+
+                frameStop();
+
+                sleep(200);
+
+                imu.initialize(parameters);
+                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+
+
+                runtime.reset();
+                d = sensorDistance.getDistance(DistanceUnit.CM);
+
+                while ((d >10 && getRuntime()<=3) || Double.toString(d).equals("NaN")){
+                    d = sensorDistance.getDistance(DistanceUnit.CM);
+                    moveFix(0.5,moveStatus.yF);
+                }
+                frameStop();
+                sleep(300);
+
+                if (d <= 10){
+                    catchBlock();
+                }
+
 
 
 

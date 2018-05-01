@@ -49,7 +49,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
 
-    ColorSensor sensorColor;
+    ColorSensor sensorColour;
     DistanceSensor sensorDistance;
 
     public DcMotor motorFL = null;
@@ -105,6 +105,10 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
         tripodHead = hardwareMap.get(Servo.class, "tripodHead");
 
+        sensorColour = hardwareMap.get(ColorSensor.class, "sensorColourDistance");
+
+        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensorColourDistance");
+
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
@@ -137,6 +141,9 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     final double POWER_MODE_FAST = 1;
 
     final double errorIMU = 0.8;
+
+    double servoBlockPosition_1 = 0;
+    double servoBlockPosition_2 = 0;
 
     enum moveStatus {
         yF, yB, xR, xL, rL, rR, S
@@ -252,13 +259,28 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         servoKickBall_2.setPosition(servoBallPosition_2);
     }
 
+    public void catchBlock(){
+        servoBlockPosition_1 = 0.78;
+        servoBlockPosition_2 = 0.02;
+        servoCatchBlock(servoBlockPosition_1, servoBlockPosition_2);
+    }
+
+    public void releaseBlock(){
+        servoBlockPosition_1 = 0.38;
+        servoBlockPosition_2 = 0.38;
+        servoCatchBlock(servoBlockPosition_1, servoBlockPosition_2);
+    }
+
     public void lift(double powerLift) {//滑轨抬升函数
         motorLift.setPower(powerLift);
     }
 
     public double switchPowerMode() {//切换低/高速模式函数
-        powerMode = Range.clip(0.75*gamepad1.right_stick_y+1.75,POWER_MODE_FAST,POWER_MODE_SLOW);
+        if (gamepad1.right_stick_button){
+            powerMode = Range.clip(0.75*gamepad1.right_stick_y+1.75,POWER_MODE_FAST,POWER_MODE_SLOW);
+        }
         return powerMode;
+
 //        if (gamepad1.right_stick_y > 0.4) {
 //            return (POWER_MODE_SLOW);
 //        } else if (gamepad1.right_stick_y < -0.4) {

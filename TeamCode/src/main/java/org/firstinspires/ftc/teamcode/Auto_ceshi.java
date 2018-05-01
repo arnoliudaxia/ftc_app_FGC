@@ -51,97 +51,129 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Auto_ceshi", group="Linear Opmode")
+@TeleOp(name="Auto_ceshi", group="Linear Opmode")
 @Disabled
-public class Auto_ceshi extends LinearOpMode {
+public class Auto_ceshi extends TurningEchoHardware {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
-    private DcMotor motor_zuoqian;
-    private DcMotor motor_youqian;
-    private DcMotor motor_zuohou;
-    private DcMotor motor_youhou;
+    int P1 = 0;
+    int P2 = 0;
+    int P3 = 0;
+    int P4 = 0;
 
-    public void qianjin(double power){
-        motor_zuoqian.setPower(-power);
-        motor_youqian.setPower(power);
-        motor_zuohou.setPower(power);
-        motor_youhou.setPower(power);
-    }
 
-    public void houtui(double power){
-        motor_zuoqian.setPower(power);
-        motor_youqian.setPower(-power);
-        motor_zuohou.setPower(-power);
-        motor_youhou.setPower(-power);
-    }
-
-    public void zuopingyi(double power){
-        motor_zuoqian.setPower(power);
-        motor_youqian.setPower(power);
-        motor_zuohou.setPower(power);
-        motor_youhou.setPower(-power);
-    }
-
-    public void youpingyi(double power){
-        motor_zuoqian.setPower(-power);
-        motor_youqian.setPower(-power);
-        motor_zuohou.setPower(-power);
-        motor_youhou.setPower(power);
-    }
-
-    public void zuozhuan(double power){
-        motor_zuoqian.setPower(power);
-        motor_youqian.setPower(power);
-        motor_zuohou.setPower(-power);
-        motor_youhou.setPower(power);
-    }
-
-    public void youzhuan(double power) {
-        motor_zuoqian.setPower(-power);
-        motor_youqian.setPower(-power);
-        motor_zuohou.setPower(power);
-        motor_youhou.setPower(-power);
-
-    }
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        motor_zuoqian  = hardwareMap.get(DcMotor.class, "motor_zuoqian");
-        motor_youqian = hardwareMap.get(DcMotor.class, "motor_youqian");
-        motor_zuohou = hardwareMap.get(DcMotor.class, "motor_zuohou");
-        motor_youhou = hardwareMap.get(DcMotor.class, "motor_youhou");
+        TurningEchoHardwareConfigure();
+//        motorFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        motorFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        motorBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        motorBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        motor_zuoqian.setDirection(DcMotor.Direction.FORWARD);
-        motor_zuohou.setDirection(DcMotor.Direction.FORWARD);
-        motor_youqian.setDirection(DcMotor.Direction.REVERSE);
-        motor_youhou.setDirection(DcMotor.Direction.REVERSE);
+        motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            if (gamepad1.dpad_up){
+                runtime.reset();
 
-            qianjin(1);
-
-            sleep(500);
-
-            zuopingyi(1);
-
-            sleep(500);
-
-            houtui(1);
-
-            sleep(500);
-
-            youpingyi(1);
-
-            sleep(500);
+                motorFL.setTargetPosition(3350);
+                motorFR.setTargetPosition(-3350);
+                motorBL.setTargetPosition(-3350);
+                motorBR.setTargetPosition(3350);
+                motorFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorFL.setPower(0.5);
+                motorFR.setPower(-0.5);
+                motorBL.setPower(-0.5);
+                motorBR.setPower(0.5);
+                while(runtime.seconds()<3 && motorFL.isBusy() && motorFR.isBusy()&&motorBL.isBusy() && motorBR.isBusy()){}
+                motorFL.setPower(0);
+                motorFR.setPower(0);
+                motorBL.setPower(0);
+                motorBR.setPower(0);
+                sleep(500);
+            }
+            if (gamepad1.dpad_down){
+//                P1 = P1 - 200;
+//                P2 = P2 - 200;
+//                P3 = P3 - 200;
+//                P4 = P4 - 200;
+                motorFL.setTargetPosition(200);
+                motorFR.setTargetPosition(200);
+                motorBL.setTargetPosition(200);
+                motorBR.setTargetPosition(200);
+                motorFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorFL.setPower(-0.5);
+                motorFR.setPower(-0.5);
+                motorBL.setPower(-0.5);
+                motorBR.setPower(-0.5);
+                while (motorFL.isBusy()&&motorFR.isBusy()&&motorBL.isBusy()&&motorBR.isBusy()){
+                    idle();
+                }
+                frameStop();
+            }
+            if (gamepad1.dpad_left){
+                P1 = P1 - 200;
+                P2 = P2 + 200;
+                P3 = P3 + 200;
+                P4 = P4 - 200;
+                motorFL.setTargetPosition(P1);
+                motorFR.setTargetPosition(P2);
+                motorBL.setTargetPosition(P3);
+                motorBR.setTargetPosition(P4);
+                motorFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorFL.setPower(-0.5);
+                motorFR.setPower(0.5);
+                motorBL.setPower(0.5);
+                motorBR.setPower(-0.5);
+                while (motorFL.isBusy()&&motorFR.isBusy()&&motorBL.isBusy()&&motorBR.isBusy()){
+                    idle();
+                }
+                frameStop();
+            }
+            if (gamepad1.dpad_up){
+                P1 = P1 + 200;
+                P2 = P2 - 200;
+                P3 = P3 - 200;
+                P4 = P4 + 200;
+                motorFL.setTargetPosition(P1);
+                motorFR.setTargetPosition(P2);
+                motorBL.setTargetPosition(P3);
+                motorBR.setTargetPosition(P4);
+                motorFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorFL.setPower(0.5);
+                motorFR.setPower(-0.5);
+                motorBL.setPower(-0.5);
+                motorBR.setPower(0.5);
+                while (motorFL.isBusy()&&motorFR.isBusy()&&motorBL.isBusy()&&motorBR.isBusy()){
+                    idle();
+                }
+                frameStop();
+            }
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());

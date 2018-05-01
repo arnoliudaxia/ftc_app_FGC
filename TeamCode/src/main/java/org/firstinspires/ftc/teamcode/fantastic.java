@@ -42,8 +42,10 @@ import org.firstinspires.ftc.robotcontroller.external.samples.ConceptTelemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 /**
@@ -66,6 +68,10 @@ public class fantastic extends TurningEchoHardware {
 
     double ceshi = 0;
     double ceshi2 = 0;
+
+    boolean catchBlockCase = false;
+
+    int count = 0;
 
     public void runOpMode() {
         TurningEchoHardwareConfigure();
@@ -127,6 +133,17 @@ public class fantastic extends TurningEchoHardware {
                     moveFix(1,moveStatus.rR);
                 }
             }*/
+
+//            if (!catchBlockCase){
+//                if (count == 0){
+//                    servoCatchBlock(0.38, 0.36);
+//                    count++;
+//                }
+//                else if (count == 1){
+//                    servoCatchBlock(0.37, 0.37);
+//                    count--;
+//                }
+//            }
             if (gamepad1.left_bumper || gamepad1.right_bumper) {//左、右平移
                 if (gamepad1.left_bumper) {
                     moveFix(1, moveStatus.xL);
@@ -150,9 +167,11 @@ public class fantastic extends TurningEchoHardware {
             }
 
             if (gamepad1.x) {//夹持方块
-                servoCatchBlock(0.78, 0.0);
+                catchBlock();
+                catchBlockCase = true;
             } else if (gamepad1.b) {//松开方块
-                servoCatchBlock(0.37, 0.36);
+                releaseBlock();
+                catchBlockCase = false;
             }
 
             if (gamepad1.y) {//抬升滑轨
@@ -242,11 +261,11 @@ public class fantastic extends TurningEchoHardware {
 
             servoKickBall_2.setPosition(servoBallPosition_2);
 
-            if (gamepad1.dpad_up) {
+            if (gamepad1.right_stick_x > 0.4) {
                 tripodHeadPosition = tripodHeadPosition + 0.02;
                 tripodHead.setPosition(tripodHeadPosition);
                 sleep(15);
-            } else if (gamepad1.dpad_down) {
+            } else if (gamepad1.right_stick_x < -0.4) {
                 tripodHeadPosition = tripodHeadPosition - 0.02;
                 tripodHead.setPosition(tripodHeadPosition);
                 sleep(15);
@@ -271,16 +290,15 @@ public class fantastic extends TurningEchoHardware {
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                     gravity = imu.getGravity();
                     R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
-                    rPower = Range.clip(Math.abs(R / 45),0.16,1);
-                    telemetry.addData("rPower = ",rPower);
+                    rPower = Range.clip(Math.abs(R / 45), 0.16, 1);
+                    telemetry.addData("rPower = ", rPower);
                     telemetry.update();
-                    if (R>=-0.4&&R<=0.4){
+                    if (R >= -0.8 && R <= 0.8) {
                         break;
-                    }
-                    else if (R < -0.4) {
-                        moveVar(0,0,-rPower,1);
+                    } else if (R < -0.4) {
+                        moveVar(0, 0, -rPower, 1);
                     } else if (R > 0.4) {
-                        moveVar(0,0,rPower,1);
+                        moveVar(0, 0, rPower, 1);
                     } else idle();
 
                     if (!gamepad1.start) {
@@ -303,23 +321,20 @@ public class fantastic extends TurningEchoHardware {
                     double Battery = getBatteryVoltage();
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                     gravity = imu.getGravity();
-                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) + 1.1;
-                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle)) + 0.2;
+                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) + 1.6;
+                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));
                     //R = Double.parseDouble(formatAngle(angles.angleUnit,angles.firstAngle));
 
 
-                    if (Y > 10){
-                        Y=10;
-                    }
-                    else if (Y<-10){
+                    if (Y > 10) {
+                        Y = 10;
+                    } else if (Y < -10) {
                         Y = -10;
                     }
 
-                    if (X > 5){
+                    if (X > 5) {
                         X = 5;
-                    }
-
-                    else if (X<-5){
+                    } else if (X < -5) {
                         X = -5;
                     }
 
@@ -333,8 +348,8 @@ public class fantastic extends TurningEchoHardware {
 
                     ceshi = Y;
 
-                    yPower = -1.6878858024698782e-7*Y*Y*Y*Y*Y*Y*Y+1.860119047627557e-7*Y*Y*Y*Y*Y*Y+0.00003153935185185975*Y*Y*Y*Y*Y-0.00002604166666674018*Y*Y*Y*Y-0.0014074074074075045*Y*Y*Y+0.0012916666666677812*Y*Y+0.06013580246913608*Y-0.01476190476190806;
-                    xPower = +0.003416666666666672*X*X*X-0.13341666666666666*X;
+                    yPower = -5.511463844802554e-8*Y*Y*Y*Y*Y*Y*Y+2.0667989418056136e-7*Y*Y*Y*Y*Y*Y+0.000017650462962969592*Y*Y*Y*Y*Y+0.000017361111111058314*Y*Y*Y*Y-0.0011678240740741743*Y*Y*Y-0.0020833333333324378*Y*Y+0.059392416225749874*Y-0.03195767195767472;
+                    xPower = +0.001583333333333336*X*X*X-0.09158333333333334*X;
                     //rPower = -0.000036630036630037064*R*R*R-1.734723475976807e-18*R*R+0.03366300366300366*R;
 
                     ceshi2 = yPower;
@@ -342,7 +357,7 @@ public class fantastic extends TurningEchoHardware {
                     moveVar(yPower, xPower, 0, 1);
                     telemetry.addData("blankY", ceshi);
                     telemetry.addData("yPower", ceshi2);
-                    telemetry.addData("Battery",Battery);
+                    telemetry.addData("Battery", Battery);
                     telemetry.update();
 
 
@@ -353,10 +368,11 @@ public class fantastic extends TurningEchoHardware {
                 }
             }
 
+            telemetry.addData("distance",sensorDistance.getDistance(DistanceUnit.CM));
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("heading",formatAngle(angles.angleUnit, angles.firstAngle));
-            telemetry.addData("roll",formatAngle(angles.angleUnit, angles.secondAngle));
-            telemetry.addData("pitch",formatAngle(angles.angleUnit, angles.thirdAngle));
+            telemetry.addData("heading", formatAngle(angles.angleUnit, angles.firstAngle));
+            telemetry.addData("roll", formatAngle(angles.angleUnit, angles.secondAngle));
+            telemetry.addData("pitch", formatAngle(angles.angleUnit, angles.thirdAngle));
             telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
             telemetry.update();
         }
