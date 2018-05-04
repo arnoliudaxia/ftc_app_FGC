@@ -43,14 +43,14 @@ public class JewelDetector extends OpenCVPipeline {
     }
 
 
-    public JewelDetectionMode  detectionMode    = JewelDetectionMode.MAX_AREA;
-    public double              downScaleFactor  = 0.4;
+    public JewelDetectionMode  detectionMode    = JewelDetectionMode.MAX_AREA;//检测模式
+    public double              downScaleFactor  = 0.4;//比例因子
     public double              perfectRatio     = 1;
     public boolean             rotateMat        = false;
     public JewelDetectionSpeed speed            = JewelDetectionSpeed.BALANCED;
-    public double              perfectArea      = 6500;
+    public double              perfectArea      = 6500;//最优范围
     public double              areaWeight       = 0.05; // Since we're dealing with 100's of pixels
-    public double              minArea          = 700;
+    public double              minArea          = 700;//最小范围
     public double              ratioWeight      = 15; // Since most of the time the area diffrence is a decimal place
     public double              maxDiffrence     = 10; // Since most of the time the area diffrence is a decimal place
     public boolean             debugContours    = false;
@@ -58,7 +58,7 @@ public class JewelDetector extends OpenCVPipeline {
     public DogeCVColorFilter   colorFilterBlue  = new LeviColorFilter(LeviColorFilter.ColorPreset.BLUE);
 
 
-    private JewelOrder currentOrder = JewelOrder.UNKNOWN;
+    private JewelOrder currentOrder = JewelOrder.UNKNOWN;//初始化Order
     private JewelOrder lastOrder    = JewelOrder.UNKNOWN;
 
 
@@ -288,11 +288,11 @@ public class JewelDetector extends OpenCVPipeline {
     }
 
 
-    public JewelOrder getCurrentOrder() {
+    public JewelOrder getCurrentOrder() {//返回当前宝石顺序
         return currentOrder;
     }
 
-    public JewelOrder getLastOrder() {
+    public JewelOrder getLastOrder() {//返回上次的宝石顺序
         return lastOrder;
     }
 }

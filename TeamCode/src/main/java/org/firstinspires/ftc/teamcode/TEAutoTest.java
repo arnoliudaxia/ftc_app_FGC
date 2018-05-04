@@ -42,6 +42,7 @@ import com.disnodeteam.dogecv.detectors.*;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorColor;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -183,23 +184,24 @@ public class TEAutoTest extends TurningEchoHardware {
 
 
 
-        tripodHeadPosition = 0.3;
+        tripodHeadPosition = 0.3;//手机云台舵机角度
         tripodHead.setPosition(tripodHeadPosition);
-        jewelDetector.enable();
+        jewelDetector.enable();//启动宝石检测
         sleep(500);
-        count = 0;
-        while (jewelDetector.getCurrentOrder() == UNKNOWN){
+        count = 0;//计数
+        while (jewelDetector.getCurrentOrder() == UNKNOWN){//当宝石顺序是未知时循环
             tripodHead.setPosition(tripodHeadPosition);
-            tripodHeadPosition = tripodHeadPosition + 0.05;
+            tripodHeadPosition = tripodHeadPosition + 0.05;//循环转动手机云台以扫到宝石
             sleep(400);
             count++;
             if (tripodHeadPosition > 0.7){
                 tripodHeadPosition = 0.3;
             }
-            if (count > 14){
+            if (count > 14){//14*400=5.6秒，5.6秒后还未检测到小球则跳出循环
                 break;
             }
         }
+
 
 
 
@@ -222,41 +224,41 @@ public class TEAutoTest extends TurningEchoHardware {
         lift(0);//卡住滑轨
 
         sleep(500);
-        if (jewelDetector.getCurrentOrder().toString().equals("RED_BLUE")){
-            servoKickBall(0.84,0.70);
+        if (jewelDetector.getCurrentOrder() == JewelDetector.JewelOrder.RED_BLUE){//如果扫到的宝石顺序是红_蓝
+            servoKickBall(0.84,0.70);//击宝石杆子降下
 
             sleep(400);
 
-            servoKickBall(0.15,0.51);
+            servoKickBall(0.15,0.51);//击宝石
         }
-        else if (jewelDetector.getCurrentOrder().toString().equals("BLUE_RED")){
-            servoKickBall(0.84,0.25);
+        else if (jewelDetector.getCurrentOrder() == JewelDetector.JewelOrder.BLUE_RED){//如果扫到的宝石顺序是蓝_红
+            servoKickBall(0.84,0.25);//击宝石杆子降下
 
             sleep(400);
 
-            servoKickBall(0.15,0.51);
+            servoKickBall(0.15,0.51);//击宝石
         }
 
-        else {
-            moveFix(0.3,moveStatus.rR);
-            sleep(200);
+        else {//如果没扫到，什么也不做
+            idle();
         }
-        jewelDetector.disable();
-        sleep(1000);
+        jewelDetector.disable();//关闭宝石检测程序
+        sleep(100);
 
 
-        VuforiaLocalizer.Parameters parameters2 = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        VuforiaLocalizer.Parameters parameters2 = new VuforiaLocalizer.Parameters(cameraMonitorViewId);//定义新参数
 
+        //KEY
         parameters2.vuforiaLicenseKey = "AVBZ8J//////AAAAmUh1NI3160yckxL9jxR0wQcUr8yieqkZdNjB+5YalDuty4KXzCOkSolr6sHq3/fpV/RIj6mOgl8bULILxJBdKOoGjAMVic54WUzwQk0Le88nb3sV20pEMonnqTnWvKp/pmpe5PPJJQE2gjs58sJSX7ROIBRMsDjVhu09ep3cmmyVhdIBLjkgvKafXDVtjpzAJJ/3HDenn2ocZ10F66ZHgSg7muIuMsobb30shiby9l9E30KN8Hy6GXu8BQlaBMzy4sRclYcCApVw/hFUUNN25tCFc0ex2Zn71AWr/1DyPwEWiva0M+75k8L3Nz2NTqv2bEruKLahBbjmT2haZ0cfOhiUuDwA4bfpfTyg0iRv0hHV";
 
-        parameters2.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters2.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;//使用后置摄像头
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters2);
 
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
-        relicTrackables.activate();
+        relicTrackables.activate();//启动壁画识别
 
         while (opModeIsActive()) {
             /**
@@ -265,29 +267,29 @@ public class TEAutoTest extends TurningEchoHardware {
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
-            tripodHeadPosition = 0.5;
+            tripodHeadPosition = 0.5;//云台舵机角度
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
             while (RelicRecoveryVuMark.from(relicTemplate) == RelicRecoveryVuMark.UNKNOWN){
-                if (RelicRecoveryVuMark.from(relicTemplate) != RelicRecoveryVuMark.UNKNOWN){
+                if (RelicRecoveryVuMark.from(relicTemplate) != RelicRecoveryVuMark.UNKNOWN){//如果扫到了壁画，则vuMark=壁画，
                     vuMark = RelicRecoveryVuMark.from(relicTemplate);
                 }
-                telemetry.addData("VuMark", "%s visible", vuMark);
+                telemetry.addData("VuMark", "%s visible", vuMark);//打印数据
                 telemetry.update();
-                tripodHead.setPosition(tripodHeadPosition);
-                tripodHeadPosition = tripodHeadPosition + 0.05;
+                tripodHead.setPosition(tripodHeadPosition);//设定云台角度
+                tripodHeadPosition = tripodHeadPosition + 0.05;//每次云台转动0.05角度
                 sleep(700);
                 count++;
-                if (tripodHeadPosition > 0.7) {
+                if (tripodHeadPosition > 0.7) {//让云台在0.5-0.7角度范围内转动
                     tripodHeadPosition = 0.5;
                 }
-                if (count > 10){
+                if (count > 8){//8*700=5.6秒，5.6秒后还未扫到壁画则跳出循环
                     break;
                 }
             }
-            telemetry.addData("VuMark", "%s visible", vuMark);
+            telemetry.addData("VuMark", "%s visible", vuMark);//打印壁画值
             telemetry.update();
 
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {//如果壁画密码被破译
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {//如果壁画被破译
                 relicTrackables.deactivate();
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 telemetry.update();
@@ -328,6 +330,35 @@ public class TEAutoTest extends TurningEchoHardware {
                 frameStop();
 
                 sleep(400);
+
+                /////////////////////////
+                int c=0;
+                d = sensorDistance.getDistance(DistanceUnit.CM);
+                while (d >10 || Double.toString(d).equals("NaN")){//当d（距离）> 10cm或 未知 时
+                    moveFix(0.3,moveStatus.xL);//左平移
+                    d = sensorDistance.getDistance(DistanceUnit.CM);//获取距离传感器数值
+
+                    if (d<=10 && sensorColour.blue()>(sensorColour.red()+50)){//当颜色传感器蓝色色值 > 红色色值时
+                        c++;//计数器+1
+                        moveFix(0.3,moveStatus.xL);//左平移一点以偏移该密码箱列
+                        sleep(200);
+                    }
+                    if (vuMark == RIGHT && c==2){//壁画为右且计数为2
+                        break;
+                    }
+                    else if (vuMark == CENTER && c==3){//壁画为中且计数为3
+                        break;
+                    }
+                    else if (vuMark == LEFT && c==4){//壁画为左且计数为4
+                        break;
+                    }
+                    autoTurnLocation(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)));//自动对位
+                    moveFix(0.3,moveStatus.xR);//右平移一点
+                    sleep(100);
+                }
+
+
+                /////////////////////////
 
                 if (vuMark == LEFT){
                     moveFix(1,moveStatus.xL);//左平移

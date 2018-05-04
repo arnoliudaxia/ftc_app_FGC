@@ -61,7 +61,8 @@ public class SensorREVColorDistance extends LinearOpMode {
      * It has a light/distance (range) sensor.  It also has an RGB color sensor.
      * The light/distance sensor saturates at around 2" (5cm).  This means that targets that are 2"
      * or closer will display the same value for distance/light detected.
-     *
+     *注意我们将REV机器人颜色-距离传感器集成在了一个设备上，它有着光/距离传感器，也有RGB颜色传感器
+     * 距离传感器在5cm左右饱和，也就是说当目标在5cm及以下时会显示出相同的检测数据。
      * Although you configure a single REV Robotics Color-Distance sensor in your configuration file,
      * you can treat the sensor as two separate sensors that share the same name in your op mode.
      *

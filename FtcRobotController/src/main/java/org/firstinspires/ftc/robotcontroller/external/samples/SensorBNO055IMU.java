@@ -89,6 +89,8 @@ public class SensorBNO055IMU extends LinearOpMode
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
+        //初始化IMU，我们希望IMU能与在主控I2C端口相连接，配置为一个类别是AdaFruit IMU的传感器
+        //并命名为“imu”
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
@@ -99,6 +101,7 @@ public class SensorBNO055IMU extends LinearOpMode
         waitForStart();
 
         // Start the logging of measured acceleration
+        //开始加载加速度计
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
         // Loop and update the dashboard
@@ -174,11 +177,11 @@ public class SensorBNO055IMU extends LinearOpMode
     // Formatting
     //----------------------------------------------------------------------------------------------
 
-    String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
+    String formatAngle(AngleUnit angleUnit, double angle) {//格式化角度单位（是度数还是弧度值）和角（xyz哪个轴）
+        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));//字符串返回值，返回值的方法是下面这个
     }
 
-    String formatDegrees(double degrees){
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
+    String formatDegrees(double degrees){//格式化度数
+        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));//DEGREES，度数
     }
 }

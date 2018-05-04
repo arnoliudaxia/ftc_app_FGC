@@ -22,6 +22,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import java.util.Locale;
@@ -110,6 +112,26 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         sensorDistance = hardwareMap.get(DistanceSensor.class, "sensorColourDistance");
 
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // Set up the parameters with which we will use our IMU. Note that integration
+        // algorithm here just reports accelerations to the logcat log; it doesn't actually
+        // provide positional information.
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+
+        // Set up our telemetry dashboard
+        //composeTelemetry();
     }
 
     public double getBatteryVoltage() {
@@ -144,6 +166,38 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
     double servoBlockPosition_1 = 0;
     double servoBlockPosition_2 = 0;
+
+    BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+    public void initIMU() {
+        imu.initialize(parameters);//初始化IMU参数
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);//初始化IMU的陀螺仪角度
+    }
+
+    public void autoTurnLocation(double degree) {
+        runtime.reset();
+        double R;//自转角度
+        double rPower;//自转功率
+        double target;//目标旋转角度
+        while (true) {
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//获得IMU角度
+            gravity = imu.getGravity();//获得IMU重力传感器
+            R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));//
+            target = R - degree;//目标旋转角度为此时IMU所测角减去设定角度数
+            rPower = Range.clip(Math.abs(target / 45), 0.15, 1);//自转功率取绝对值，最低为0.15（太慢转不动），最高为1
+            telemetry.addData("rPower = ", rPower);//打印rPower的值
+            telemetry.update();
+            if (target >= -0.7 && target <= 0.7) {//在+-0.7的角度内停止自转，已足够精确
+                break;
+            } else if (target < -0.7) {
+                moveFix(rPower, moveStatus.rL);//向左旋转
+            } else if (target > 0.7) {
+                moveFix(rPower, moveStatus.rR);//向右旋转
+            } else if (getRuntime()>=2){
+                break;
+            }
+        }
+    }
 
     enum moveStatus {
         yF, yB, xR, xL, rL, rR, S
@@ -253,19 +307,19 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     public void servoCatchBaby_2(double servoBabyPosition_2) {//夹小人末节舵机函数
         servoCatchBaby_2.setPosition(servoBabyPosition_2);
     }
-    
-    public void servoKickBall(double servoBallPosition_1,double servoBallPosition_2){
+
+    public void servoKickBall(double servoBallPosition_1, double servoBallPosition_2) {
         servoKickBall_1.setPosition(servoBallPosition_1);
         servoKickBall_2.setPosition(servoBallPosition_2);
     }
 
-    public void catchBlock(){
+    public void catchBlock() {
         servoBlockPosition_1 = 0.78;
         servoBlockPosition_2 = 0.02;
         servoCatchBlock(servoBlockPosition_1, servoBlockPosition_2);
     }
 
-    public void releaseBlock(){
+    public void releaseBlock() {
         servoBlockPosition_1 = 0.38;
         servoBlockPosition_2 = 0.38;
         servoCatchBlock(servoBlockPosition_1, servoBlockPosition_2);
@@ -276,8 +330,8 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     }
 
     public double switchPowerMode() {//切换低/高速模式函数
-        if (gamepad1.right_stick_button){
-            powerMode = Range.clip(0.75*gamepad1.right_stick_y+1.75,POWER_MODE_FAST,POWER_MODE_SLOW);
+        if (gamepad1.right_stick_y != 0) {
+            powerMode = Range.clip(0.75 * gamepad1.right_stick_y + 1.75, POWER_MODE_FAST, POWER_MODE_SLOW);
         }
         return powerMode;
 
@@ -290,11 +344,11 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 //        }
     }
 
-    public void shakeHead(double range){
+    public void shakeHead(double range) {
         tripodHeadPosition = tripodHeadPosition + range;
         tripodHead.setPosition(tripodHeadPosition);
         sleep(500);
-        tripodHeadPosition = tripodHeadPosition - 2*range;
+        tripodHeadPosition = tripodHeadPosition - 2 * range;
         tripodHead.setPosition(tripodHeadPosition);
         sleep(500);
     }
@@ -440,14 +494,13 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
             return false;
         } else if (key.equals("left_stick_button")) {
             int count = 0;
-            while (gamepad1.left_stick_button && count<=5) {
+            while (gamepad1.left_stick_button && count <= 5) {
                 count++;
                 sleep(100);
-                }
-                if (count > 4){
+            }
+            if (count > 4) {
                 return true;
-                }
-                else return false;
+            } else return false;
         } else if (key.equals("right_stick_button")) {
             if (gamepad1.right_stick_button) {
                 runtime.reset();

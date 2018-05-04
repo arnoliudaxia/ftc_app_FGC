@@ -112,28 +112,28 @@ public class Auto_Blue_Back_R extends LinearOpMode {
     DistanceSensor sensorDistance;
 
 
-    public void qianjin(double power){
+    public void qianjin(double power){//前进
         motor_zuoqian.setPower(-power);
         motor_youqian.setPower(power);
         motor_zuohou.setPower(power);
         motor_youhou.setPower(power);
     }
 
-    public void houtui(double power){
+    public void houtui(double power){//后退
         motor_zuoqian.setPower(power);
         motor_youqian.setPower(-power);
         motor_zuohou.setPower(-power);
         motor_youhou.setPower(-power);
     }
 
-    public void zuopingyi(double power){
+    public void zuopingyi(double power){//左平移
         motor_zuoqian.setPower(power);
         motor_youqian.setPower(power);
         motor_zuohou.setPower(power);
         motor_youhou.setPower(-power);
     }
 
-    public void youpingyi(double power){
+    public void youpingyi(double power){//右平移
         motor_zuoqian.setPower(-power);
         motor_youqian.setPower(-power);
         motor_zuohou.setPower(-power);
