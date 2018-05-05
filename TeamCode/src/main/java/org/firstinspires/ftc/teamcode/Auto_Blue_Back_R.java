@@ -32,6 +32,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -72,7 +73,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryV
  */
 
 @Autonomous(name="Auto_Blue_Back_R", group ="Concept")
-//@Disabled
+@Disabled
 public class Auto_Blue_Back_R extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";

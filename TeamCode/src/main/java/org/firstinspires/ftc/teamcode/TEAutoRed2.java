@@ -32,17 +32,17 @@ package org.firstinspires.ftc.teamcode;
 import android.app.Activity;
 import android.view.View;
 
+import com.disnodeteam.dogecv.CameraViewDisplay;
+import com.disnodeteam.dogecv.detectors.CryptoboxDetector;
+import com.disnodeteam.dogecv.detectors.GlyphDetector;
+import com.disnodeteam.dogecv.detectors.JewelDetector;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import com.disnodeteam.dogecv.CameraViewDisplay;
-import com.disnodeteam.dogecv.detectors.*;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
-import org.firstinspires.ftc.robotcontroller.external.samples.SensorColor;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -58,8 +58,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.UNKNOWN;
-import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.BLUE_RED;
-import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.RED_BLUE;
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.CENTER;
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.LEFT;
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.RIGHT;
@@ -97,9 +95,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryV
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@Autonomous(name = "TEAutoTest", group = "Linear Opmode")
+@Autonomous(name = "TEAutoRed2", group = "Linear Opmode")
 //@Disabled
-public class TEAutoTest extends TurningEchoHardware {
+public class TEAutoRed2 extends TurningEchoHardware {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -328,28 +326,28 @@ public class TEAutoTest extends TurningEchoHardware {
                 sleep(400);
 
                 /////////////////////////
-                int c = 0;
-                d = sensorDistance.getDistance(DistanceUnit.CM);
-                while (d > 10 || Double.toString(d).equals("NaN")) {//当d（距离）> 10cm或 未知 时
-                    moveFix(0.3, moveStatus.xL);//左平移
-                    d = sensorDistance.getDistance(DistanceUnit.CM);//获取距离传感器数值
-
-                    if (d <= 10 && sensorColour.blue() > (sensorColour.red() + 50)) {//当颜色传感器蓝色色值 > 红色色值时
-                        c++;//计数器+1
-                        moveFix(0.3, moveStatus.xL);//左平移一点以偏移该密码箱列
-                        sleep(200);
-                    }
-                    if (vuMark == RIGHT && c == 2) {//壁画为右且计数为2
-                        break;
-                    } else if (vuMark == CENTER && c == 3) {//壁画为中且计数为3
-                        break;
-                    } else if (vuMark == LEFT && c == 4) {//壁画为左且计数为4
-                        break;
-                    }
-                    autoTurnLocation(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)));//自动对位
-                    moveFix(0.3, moveStatus.xR);//右平移一点
-                    sleep(100);
-                }
+//                int c = 0;
+//                d = sensorDistance.getDistance(DistanceUnit.CM);
+//                while (d > 10 || Double.toString(d).equals("NaN")) {//当d（距离）> 10cm或 未知 时
+//                    moveFix(0.3, moveStatus.xL);//左平移
+//                    d = sensorDistance.getDistance(DistanceUnit.CM);//获取距离传感器数值
+//
+//                    if (d <= 10 && sensorColour.blue() > (sensorColour.red() + 50)) {//当颜色传感器蓝色色值 > 红色色值时
+//                        c++;//计数器+1
+//                        moveFix(0.3, moveStatus.xL);//左平移一点以偏移该密码箱列
+//                        sleep(200);
+//                    }
+//                    if (vuMark == RIGHT && c == 2) {//壁画为右且计数为2
+//                        break;
+//                    } else if (vuMark == CENTER && c == 3) {//壁画为中且计数为3
+//                        break;
+//                    } else if (vuMark == LEFT && c == 4) {//壁画为左且计数为4
+//                        break;
+//                    }
+//                    autoTurnLocation(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)));//自动对位
+//                    moveFix(0.3, moveStatus.xR);//右平移一点
+//                    sleep(100);
+//                }
 
 
                 /////////////////////////
@@ -365,7 +363,7 @@ public class TEAutoTest extends TurningEchoHardware {
                 } else if (vuMark == RIGHT) {
                     moveFix(1, moveStatus.xL);//左平移
 
-                    sleep(3200);
+                    sleep(320);
                 }
 
                 frameStop();
@@ -417,63 +415,61 @@ public class TEAutoTest extends TurningEchoHardware {
 
                 sleep(380);
 
-                moveFix(0.5, moveStatus.yB);
-
-                sleep(300);
-
                 frameStop();
 
-                sleep(500);
+                sleep(100);
 
-                while (Math.abs(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle))) >= 0.6) {
-                    while (true) {
-                        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                        gravity = imu.getGravity();
-                        R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
-                        rPower = Range.clip(Math.abs(R / 45), 0.14, 1);
-                        telemetry.addData("rPower = ", rPower);
-                        telemetry.update();
-                        if (R >= -0.6 && R <= 0.6) {
-                            break;
-                        } else if (R < -0.6) {
-                            moveVar(0, 0, -rPower, 1);
-                        } else if (R > 0.6) {
-                            moveVar(0, 0, rPower, 1);
-                        } else break;
-                    }
-                }
+                moveFix(0.4, moveStatus.yB);
 
-                frameStop();
+                sleep(250);
 
-                sleep(500);
-
-                moveFix(0.7, moveStatus.rL);
-
-                sleep(850);
-
-                frameStop();
-
-                sleep(200);
-
-                imu.initialize(parameters);
-                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-
-
-                runtime.reset();
-                d = sensorDistance.getDistance(DistanceUnit.CM);
-
-                while ((d > 10 && getRuntime() <= 3) || Double.toString(d).equals("NaN")) {
-                    d = sensorDistance.getDistance(DistanceUnit.CM);
-                    moveFix(0.5, moveStatus.yF);
-                }
-                frameStop();
-                sleep(300);
-
-                if (d <= 10) {
-                    catchBlock();
-                }
-
-
+//                while (Math.abs(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle))) >= 0.6) {
+//                    while (true) {
+//                        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//                        gravity = imu.getGravity();
+//                        R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
+//                        rPower = Range.clip(Math.abs(R / 45), 0.14, 1);
+//                        telemetry.addData("rPower = ", rPower);
+//                        telemetry.update();
+//                        if (R >= -0.6 && R <= 0.6) {
+//                            break;
+//                        } else if (R < -0.6) {
+//                            moveVar(0, 0, -rPower, 1);
+//                        } else if (R > 0.6) {
+//                            moveVar(0, 0, rPower, 1);
+//                        } else break;
+//                    }
+//                }
+//
+//                frameStop();
+//
+//                sleep(500);
+//
+//                moveFix(0.7, moveStatus.rL);
+//
+//                sleep(850);
+//
+//                frameStop();
+//
+//                sleep(200);
+//
+//                imu.initialize(parameters);
+//                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+//
+//
+//                runtime.reset();
+//                d = sensorDistance.getDistance(DistanceUnit.CM);
+//
+//                while ((d > 10 && getRuntime() <= 3) || Double.toString(d).equals("NaN")) {
+//                    d = sensorDistance.getDistance(DistanceUnit.CM);
+//                    moveFix(0.5, moveStatus.yF);
+//                }
+//                frameStop();
+//                sleep(300);
+//
+//                if (d <= 10) {
+//                    catchBlock();
+//                }
                 frameStop();
                 break;
             } else {

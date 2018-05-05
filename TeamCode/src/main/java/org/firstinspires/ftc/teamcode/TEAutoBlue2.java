@@ -32,23 +32,21 @@ package org.firstinspires.ftc.teamcode;
 import android.app.Activity;
 import android.view.View;
 
+import com.disnodeteam.dogecv.CameraViewDisplay;
+import com.disnodeteam.dogecv.detectors.CryptoboxDetector;
+import com.disnodeteam.dogecv.detectors.GlyphDetector;
+import com.disnodeteam.dogecv.detectors.JewelDetector;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import com.disnodeteam.dogecv.CameraViewDisplay;
-import com.disnodeteam.dogecv.detectors.*;
-import com.qualcomm.robotcore.util.Range;
-
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
-import org.firstinspires.ftc.robotcontroller.external.samples.SensorColor;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
@@ -58,8 +56,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.UNKNOWN;
-import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.BLUE_RED;
-import static com.disnodeteam.dogecv.detectors.JewelDetector.JewelOrder.RED_BLUE;
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.CENTER;
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.LEFT;
 import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.RIGHT;
@@ -97,9 +93,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryV
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@Autonomous(name = "TEAutoTest", group = "Linear Opmode")
+@Autonomous(name = "TEAutoBlue2", group = "Linear Opmode")
 //@Disabled
-public class TEAutoTest extends TurningEchoHardware {
+public class TEAutoBlue2 extends TurningEchoHardware {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -223,13 +219,13 @@ public class TEAutoTest extends TurningEchoHardware {
         lift(0);//卡住滑轨
 
         sleep(500);
-        if (jewelDetector.getCurrentOrder() == JewelDetector.JewelOrder.RED_BLUE) {//如果扫到的宝石顺序是红_蓝
+        if (jewelDetector.getCurrentOrder() == JewelDetector.JewelOrder.BLUE_RED) {//如果扫到的宝石顺序是红_蓝
             servoKickBall(0.84, 0.70);//击宝石杆子降下
 
             sleep(400);
 
             servoKickBall(0.15, 0.51);//击宝石
-        } else if (jewelDetector.getCurrentOrder() == JewelDetector.JewelOrder.BLUE_RED) {//如果扫到的宝石顺序是蓝_红
+        } else if (jewelDetector.getCurrentOrder() == JewelDetector.JewelOrder.RED_BLUE) {//如果扫到的宝石顺序是蓝_红
             servoKickBall(0.84, 0.25);//击宝石杆子降下
 
             sleep(400);
@@ -245,7 +241,7 @@ public class TEAutoTest extends TurningEchoHardware {
         VuforiaLocalizer.Parameters parameters2 = new VuforiaLocalizer.Parameters(cameraMonitorViewId);//定义新参数
 
         //KEY
-        parameters2.vuforiaLicenseKey = "AVBZ8J//////AAAAmUh1NI3160yckxL9jxR0wQcUr8yieqkZdNjB+5YalDuty4KXzCOkSolr6sHq3/fpV/RIj6mOgl8bULILxJBdKOoGjAMVic54WUzwQk0Le88nb3sV20pEMonnqTnWvKp/pmpe5PPJJQE2gjs58sJSX7ROIBRMsDjVhu09ep3cmmyVhdIBLjkgvKafXDVtjpzAJJ/3HDenn2ocZ10F66ZHgSg7muIuMsobb30shiby9l9E30KN8Hy6GXu8BQlaBMzy4sRclYcCApVw/hFUUNN25tCFc0ex2Zn71AWr/1DyPwEWiva0M+75k8L3Nz2NTqv2bEruKLahBbjmT2haZ0cfOhiUuDwA4bfpfTyg0iRv0hHV";
+        parameters2.vuforiaLicenseKey = "AVBZ8J//////AAAAmUh1NI3160yckxL9jrR0wQcUr8yieqkZdNjB+5YalDuty4KXzCOkSolr6sHq3/fpV/RIj6mOgl8bULILxJBdKOoGjAMVic54WUzwQk0Le88nb3sV20pEMonnqTnWvKp/pmpe5PPJJQE2gjs58sJSX7ROIBRMsDjVhu09ep3cmmyVhdIBLjkgvKafXDVtjpzAJJ/3HDenn2ocZ10F66ZHgSg7muIuMsobb30shiby9l9E30KN8Hy6GXu8BQlaBMzy4sRclYcCApVw/hFUUNN25tCFc0ex2Zn71AWr/1DyPwEWiva0M+75k8L3Nz2NTqv2bEruKLahBbjmT2haZ0cfOhiUuDwA4bfpfTyg0iRv0hHV";
 
         parameters2.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;//使用后置摄像头
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters2);
@@ -293,96 +289,85 @@ public class TEAutoTest extends TurningEchoHardware {
 //                telemetry.addData("Pose", format(pose));
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 gravity = imu.getGravity();
-
-                moveFix(0.4, moveStatus.yF);//前进
-
-                sleep(750);
-
-                moveFix(0.2, moveStatus.yF);//缓停
-
-                sleep(320);
-
-                frameStop();
-
-                sleep(300);
-
-                moveFix(0.35, moveStatus.yB);//轻怼平衡板定位
-
-                sleep(500);
-
+///////////////////////////////////////////////////////////////////////////////////////////
                 frameStop();
 
                 sleep(200);
 
-                imu.initialize(parameters);
-                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+                moveFix(0.3,moveStatus.yB);//轻怼平衡板定位
 
-                sleep(400);
-
-                moveFix(0.5, moveStatus.yF);
-
-                sleep(300);
+                sleep(1080);
 
                 frameStop();
 
                 sleep(400);
 
-                /////////////////////////
-                int c = 0;
-                d = sensorDistance.getDistance(DistanceUnit.CM);
-                while (d > 10 || Double.toString(d).equals("NaN")) {//当d（距离）> 10cm或 未知 时
-                    moveFix(0.3, moveStatus.xL);//左平移
-                    d = sensorDistance.getDistance(DistanceUnit.CM);//获取距离传感器数值
+                moveFix(0.3,moveStatus.yF);
 
-                    if (d <= 10 && sensorColour.blue() > (sensorColour.red() + 50)) {//当颜色传感器蓝色色值 > 红色色值时
-                        c++;//计数器+1
-                        moveFix(0.3, moveStatus.xL);//左平移一点以偏移该密码箱列
-                        sleep(200);
-                    }
-                    if (vuMark == RIGHT && c == 2) {//壁画为右且计数为2
-                        break;
-                    } else if (vuMark == CENTER && c == 3) {//壁画为中且计数为3
-                        break;
-                    } else if (vuMark == LEFT && c == 4) {//壁画为左且计数为4
-                        break;
-                    }
-                    autoTurnLocation(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)));//自动对位
-                    moveFix(0.3, moveStatus.xR);//右平移一点
-                    sleep(100);
+                sleep(540);
+
+                frameStop();
+
+                sleep(400);
+
+                moveFix(0.5,moveStatus.yB);
+
+                sleep(360);
+
+                frameStop();
+
+                sleep(400);
+
+                moveFix(0.6,moveStatus.rR);
+
+                sleep(1500);
+
+                frameStop();
+
+                sleep(400);
+
+                /*moveFix(0.3);
+
+                sleep(60);*/
+
+
+                moveFix(0.5,moveStatus.yB);
+
+                sleep(60);
+
+                frameStop();
+
+                sleep(300);
+
+                if (vuMark == RIGHT){
+                    moveFix(1,moveStatus.xR);//you平移
+
+                    sleep(950);
                 }
 
+                else if (vuMark == CENTER){//done
+                    moveFix(1,moveStatus.xR);//you平移
 
-                /////////////////////////
+                    sleep(560);
+                }
 
-                if (vuMark == LEFT) {
-                    moveFix(1, moveStatus.xL);//左平移
+                else if (vuMark == LEFT){
+                    moveFix(1,moveStatus.xR);//you平移
 
-                    sleep(920);
-                } else if (vuMark == CENTER) {//done
-                    moveFix(1, moveStatus.xL);//左平移
-
-                    sleep(525);
-                } else if (vuMark == RIGHT) {
-                    moveFix(1, moveStatus.xL);//左平移
-
-                    sleep(3200);
+                    sleep(280);
                 }
 
                 frameStop();
 
                 sleep(500);
 
-                moveFix(0.3, moveStatus.rR);
+        /*youzhuan(0.3);
 
-                sleep(170);
+        sleep(200);
 
-                frameStop();
+        qianjin(0);
 
-                sleep(250);
-
-                moveFix(0.4, moveStatus.yF);//前进一点点
-
-                sleep(200);
+        sleep(250);*/
 
                 frameStop();
 
@@ -392,88 +377,39 @@ public class TEAutoTest extends TurningEchoHardware {
 
                 lift(0);//停止滑轨
 
-                servoCatchBlock(0.35, 0.15);//松开方块夹子
+                releaseBlock();//松开方块夹子
 
                 sleep(300);
 
-                moveFix(0.4, moveStatus.yF);//往前怼
+                moveFix(0.4,moveStatus.yF);//往前怼
 
-                sleep(900);
+                sleep(750);
 
                 //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
-                moveFix(0.3, moveStatus.yB);//后退一点点
+                moveFix(0.3,moveStatus.yB);//后退一点点
 
                 sleep(120);
 
-                moveFix(0.4, moveStatus.rR);//右转
+                moveFix(0.4,moveStatus.rL);//左转
 
                 sleep(600);
 
-                moveFix(0.4, moveStatus.rL);//左转
+                moveFix(0.4,moveStatus.rR);//右转
 
                 sleep(600);
 
-                moveFix(0.3, moveStatus.yF);//往前推一点点
+                moveFix(0.3,moveStatus.yF);//往前推一点点
 
                 sleep(380);
 
-                moveFix(0.5, moveStatus.yB);
-
-                sleep(300);
-
                 frameStop();
 
-                sleep(500);
-
-                while (Math.abs(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle))) >= 0.6) {
-                    while (true) {
-                        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                        gravity = imu.getGravity();
-                        R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
-                        rPower = Range.clip(Math.abs(R / 45), 0.14, 1);
-                        telemetry.addData("rPower = ", rPower);
-                        telemetry.update();
-                        if (R >= -0.6 && R <= 0.6) {
-                            break;
-                        } else if (R < -0.6) {
-                            moveVar(0, 0, -rPower, 1);
-                        } else if (R > 0.6) {
-                            moveVar(0, 0, rPower, 1);
-                        } else break;
-                    }
-                }
-
-                frameStop();
-
-                sleep(500);
-
-                moveFix(0.7, moveStatus.rL);
-
-                sleep(850);
-
-                frameStop();
-
+                sleep(100);
+                
+                moveFix(0.4,moveStatus.yB);
+                
                 sleep(200);
-
-                imu.initialize(parameters);
-                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-
-
-                runtime.reset();
-                d = sensorDistance.getDistance(DistanceUnit.CM);
-
-                while ((d > 10 && getRuntime() <= 3) || Double.toString(d).equals("NaN")) {
-                    d = sensorDistance.getDistance(DistanceUnit.CM);
-                    moveFix(0.5, moveStatus.yF);
-                }
-                frameStop();
-                sleep(300);
-
-                if (d <= 10) {
-                    catchBlock();
-                }
-
-
+                
                 frameStop();
                 break;
             } else {
@@ -486,7 +422,7 @@ public class TEAutoTest extends TurningEchoHardware {
 //            telemetry.addData("isColumnDetected ",  cryptoboxDetector.isColumnDetected());
 //            telemetry.addData("Column Left ",  cryptoboxDetector.getCryptoBoxLeftPosition());
 //            telemetry.addData("Column Center ",  cryptoboxDetector.getCryptoBoxCenterPosition());
-//            telemetry.addData("Column Right ",  cryptoboxDetector.getCryptoBoxRightPosition());
+//            telemetry.addData("Column Right ",  cryptoboxDetector.getCryptoBorRightPosition());
 
             //telemetry.addData("Glyph Pos X", glyphDetector.getChosenGlyphOffset());
             //telemetry.addData("Glyph Pos Offest", glyphDetector.getChosenGlyphPosition().toString());

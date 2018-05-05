@@ -277,9 +277,9 @@ public class fantasticTETeleop extends TurningEchoHardware {
                     if (R >= -0.7 && R <= 0.7) {//在+-0.7的角度内停止自转，已足够精确
                         break;
                     } else if (R < -0.7) {
-                        moveFix(rPower,moveStatus.rL);//向左旋转
+                        moveFix(rPower, moveStatus.rL);//向左旋转
                     } else if (R > 0.7) {
-                        moveFix(rPower,moveStatus.rR);//向右旋转
+                        moveFix(rPower, moveStatus.rR);//向右旋转
                     } else idle();
 
                     if (!gamepad1.start) {//一操start键松开
@@ -311,8 +311,8 @@ public class fantasticTETeleop extends TurningEchoHardware {
                         X = -5;
                     }
                     //x、y轴功率与x、y轴姿态角函数关系式
-                    yPower = -5.511463844802554e-8*Y*Y*Y*Y*Y*Y*Y+2.0667989418056136e-7*Y*Y*Y*Y*Y*Y+0.000017650462962969592*Y*Y*Y*Y*Y+0.000017361111111058314*Y*Y*Y*Y-0.0011678240740741743*Y*Y*Y-0.0020833333333324378*Y*Y+0.059392416225749874*Y-0.03195767195767472;
-                    xPower = +0.001583333333333336*X*X*X-0.09158333333333334*X;
+                    yPower = -5.511463844802554e-8 * Y * Y * Y * Y * Y * Y * Y + 2.0667989418056136e-7 * Y * Y * Y * Y * Y * Y + 0.000017650462962969592 * Y * Y * Y * Y * Y + 0.000017361111111058314 * Y * Y * Y * Y - 0.0011678240740741743 * Y * Y * Y - 0.0020833333333324378 * Y * Y + 0.059392416225749874 * Y - 0.03195767195767472;
+                    xPower = +0.001583333333333336 * X * X * X - 0.09158333333333334 * X;
                     moveVar(yPower, xPower, 0, 1);//移动函数，输入x、y轴功率值
                     telemetry.addData("blankY", Y);//打印y轴姿态角数据
                     telemetry.addData("yPower", yPower);//打印y轴功率值
@@ -330,7 +330,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 }
             }
 
-            telemetry.addData("distance",sensorDistance.getDistance(DistanceUnit.CM));
+            telemetry.addData("distance", sensorDistance.getDistance(DistanceUnit.CM));
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("heading", formatAngle(angles.angleUnit, angles.firstAngle));
             telemetry.addData("roll", formatAngle(angles.angleUnit, angles.secondAngle));

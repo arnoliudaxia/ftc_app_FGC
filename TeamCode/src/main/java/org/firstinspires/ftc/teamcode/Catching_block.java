@@ -65,7 +65,7 @@ public class Catching_block extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        servo_test = hardwareMap.get(Servo.class,"servo_test");
+        servo_test = hardwareMap.get(Servo.class,"servoCatchBlock_2");
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
