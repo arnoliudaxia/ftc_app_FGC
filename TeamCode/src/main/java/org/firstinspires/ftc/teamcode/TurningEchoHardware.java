@@ -175,26 +175,25 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     }
 
     public void autoTurnLocation(double degree) {
-        runtime.reset();
         double R;//自转角度
         double rPower;//自转功率
         double target;//目标旋转角度
         while (true) {
+            telemetry.update();
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//获得IMU角度
             gravity = imu.getGravity();//获得IMU重力传感器
             R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));//
             target = R - degree;//目标旋转角度为此时IMU所测角减去设定角度数
-            rPower = Range.clip(Math.abs(target / 45), 0.15, 1);//自转功率取绝对值，最低为0.15（太慢转不动），最高为1
+            rPower = Range.clip(Math.abs(target / 45), 0.13, 1);//自转功率取绝对值，最低为0.15（太慢转不动），最高为1
             telemetry.addData("rPower = ", rPower);//打印rPower的值
             telemetry.update();
-            if (target >= -0.7 && target <= 0.7) {//在+-0.7的角度内停止自转，已足够精确
+            if (target >= -0.8 && target <= 0.8) {//在+-0.7的角度内停止自转，已足够精确
                 break;
-            } else if (target < -0.7) {
+            }
+            if (target < -0.8) {
                 moveFix(rPower, moveStatus.rL);//向左旋转
-            } else if (target > 0.7) {
+            } else if (target > 0.8) {
                 moveFix(rPower, moveStatus.rR);//向右旋转
-            } else if (getRuntime()>=2){
-                break;
             }
         }
     }
@@ -330,10 +329,14 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     }
 
     public double switchPowerMode() {//切换低/高速模式函数
-        if (gamepad1.right_stick_y != 0) {
-            powerMode = Range.clip(0.75 * gamepad1.right_stick_y + 1.75, POWER_MODE_FAST, POWER_MODE_SLOW);
+        if (gamepad1.guide){
+            return 2.5;
         }
-        return powerMode;
+        else return 1;
+//        if (gamepad1.right_stick_y != 0) {
+//            powerMode = Range.clip(0.75 * gamepad1.right_stick_y + 1.75, POWER_MODE_FAST, POWER_MODE_SLOW);
+//        }
+//        return powerMode;
 
 //        if (gamepad1.right_stick_y > 0.4) {
 //            return (POWER_MODE_SLOW);

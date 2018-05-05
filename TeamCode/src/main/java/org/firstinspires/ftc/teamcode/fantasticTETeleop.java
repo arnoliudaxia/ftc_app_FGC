@@ -311,8 +311,8 @@ public class fantasticTETeleop extends TurningEchoHardware {
                         X = -5;
                     }
                     //x、y轴功率与x、y轴姿态角函数关系式
-                    yPower = -5.511463844802554e-8 * Y * Y * Y * Y * Y * Y * Y + 2.0667989418056136e-7 * Y * Y * Y * Y * Y * Y + 0.000017650462962969592 * Y * Y * Y * Y * Y + 0.000017361111111058314 * Y * Y * Y * Y - 0.0011678240740741743 * Y * Y * Y - 0.0020833333333324378 * Y * Y + 0.059392416225749874 * Y - 0.03195767195767472;
-                    xPower = +0.001583333333333336 * X * X * X - 0.09158333333333334 * X;
+                    yPower = +0.000002652391975309918*Y*Y*Y*Y*Y-0.000002411265432094396*Y*Y*Y*Y-0.00033661265432107044*Y*Y*Y+0.0005806327160490544*Y*Y+0.05630401234567932*Y-0.042283950617282684;
+                    xPower = +0.0016666666666666741*X*X*X+1.850371707708594e-17*X*X-0.10166666666666667*X-1.850371707708594e-17;
                     moveVar(yPower, xPower, 0, 1);//移动函数，输入x、y轴功率值
                     telemetry.addData("blankY", Y);//打印y轴姿态角数据
                     telemetry.addData("yPower", yPower);//打印y轴功率值
@@ -323,7 +323,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
                     telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
                     telemetry.update();
 
-                    if (!gamepad1.right_stick_button) {//如果一操右摇杆按钮被松开
+                    if (!gamepad1.right_stick_button || gamepad1.start) {//如果一操右摇杆按钮被松开
                         frameStop();//停车
                         break;//退出循环
                     }

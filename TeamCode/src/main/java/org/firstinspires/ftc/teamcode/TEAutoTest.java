@@ -35,6 +35,7 @@ import android.view.View;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
@@ -89,16 +90,16 @@ import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryV
  * @see VuforiaLocalizer
  * @see VuforiaTrackableDefaultListener
  * see  ftc_app/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
- *
+ * <p>
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
- *
+ * <p>
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
 @Autonomous(name = "TEAutoTest", group = "Linear Opmode")
-//@Disabled
+//22@Disabled
 public class TEAutoTest extends TurningEchoHardware {
 
     // Declare OpMode members.
@@ -346,39 +347,14 @@ public class TEAutoTest extends TurningEchoHardware {
                     } else if (vuMark == LEFT && c == 4) {//壁画为左且计数为4
                         break;
                     }
-                    autoTurnLocation(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)));//自动对位
-                    moveFix(0.3, moveStatus.xR);//右平移一点
                     sleep(100);
                 }
 
+                autoTurnLocation(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)));//自动对位
+                moveFix(0.3, moveStatus.xR);//右平移一点
+
 
                 /////////////////////////
-
-                if (vuMark == LEFT) {
-                    moveFix(1, moveStatus.xL);//左平移
-
-                    sleep(920);
-                } else if (vuMark == CENTER) {//done
-                    moveFix(1, moveStatus.xL);//左平移
-
-                    sleep(525);
-                } else if (vuMark == RIGHT) {
-                    moveFix(1, moveStatus.xL);//左平移
-
-                    sleep(3200);
-                }
-
-                frameStop();
-
-                sleep(500);
-
-                moveFix(0.3, moveStatus.rR);
-
-                sleep(170);
-
-                frameStop();
-
-                sleep(250);
 
                 moveFix(0.4, moveStatus.yF);//前进一点点
 
@@ -392,7 +368,7 @@ public class TEAutoTest extends TurningEchoHardware {
 
                 lift(0);//停止滑轨
 
-                servoCatchBlock(0.35, 0.15);//松开方块夹子
+                releaseBlock();//松开方块夹子
 
                 sleep(300);
 
@@ -425,53 +401,29 @@ public class TEAutoTest extends TurningEchoHardware {
 
                 sleep(500);
 
-                while (Math.abs(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle))) >= 0.6) {
-                    while (true) {
-                        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                        gravity = imu.getGravity();
-                        R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
-                        rPower = Range.clip(Math.abs(R / 45), 0.14, 1);
-                        telemetry.addData("rPower = ", rPower);
-                        telemetry.update();
-                        if (R >= -0.6 && R <= 0.6) {
-                            break;
-                        } else if (R < -0.6) {
-                            moveVar(0, 0, -rPower, 1);
-                        } else if (R > 0.6) {
-                            moveVar(0, 0, rPower, 1);
-                        } else break;
-                    }
-                }
+                autoTurnLocation(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)));
 
                 frameStop();
 
                 sleep(500);
 
-                moveFix(0.7, moveStatus.rL);
-
-                sleep(850);
-
-                frameStop();
-
-                sleep(200);
-
                 imu.initialize(parameters);
                 imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
 
-                runtime.reset();
-                d = sensorDistance.getDistance(DistanceUnit.CM);
-
-                while ((d > 10 && getRuntime() <= 3) || Double.toString(d).equals("NaN")) {
-                    d = sensorDistance.getDistance(DistanceUnit.CM);
-                    moveFix(0.5, moveStatus.yF);
-                }
-                frameStop();
-                sleep(300);
-
-                if (d <= 10) {
-                    catchBlock();
-                }
+//                runtime.reset();
+//                d = sensorDistance.getDistance(DistanceUnit.CM);
+//
+//                while ((d > 10 && getRuntime() <= 3) || Double.toString(d).equals("NaN")) {
+//                    d = sensorDistance.getDistance(DistanceUnit.CM);
+//                    moveFix(0.5, moveStatus.yF);
+//                }
+//                frameStop();
+//                sleep(300);
+//
+//                if (d <= 10) {
+//                    catchBlock();
+//                }
 
 
                 frameStop();

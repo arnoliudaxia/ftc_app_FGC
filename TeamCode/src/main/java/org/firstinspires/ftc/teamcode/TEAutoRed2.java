@@ -39,8 +39,9 @@ import com.disnodeteam.dogecv.detectors.JewelDetector;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -48,7 +49,6 @@ import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
@@ -112,6 +112,9 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
     double d;
 
+    ColorSensor sensorColor;
+    DistanceSensor sensorDistance;
+
     @Override
 
     public void runOpMode() {
@@ -137,6 +140,10 @@ public class TEAutoRed2 extends TurningEchoHardware {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
+        sensorColor = hardwareMap.get(ColorSensor.class, "sensorColourDistance");
+
+        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensorColourDistance");
+
         // Set up our telemetry dashboard
         //composeTelemetry();
 
@@ -154,17 +161,17 @@ public class TEAutoRed2 extends TurningEchoHardware {
         glyphDetector.enable();*/
 
 
-        jewelDetector = new JewelDetector();
-        jewelDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
-        //Jewel Detector Settings
-        jewelDetector.areaWeight = 0.02;
-        jewelDetector.detectionMode = JewelDetector.JewelDetectionMode.MAX_AREA; // PERFECT_AREA
-        //jewelDetector.perfectArea = 6500; <- Needed for PERFECT_AREA
-        jewelDetector.debugContours = true;
-        jewelDetector.maxDiffrence = 15;
-        jewelDetector.ratioWeight = 15;
-        jewelDetector.minArea = 700;
-        //jewelDetector.enable();
+//        jewelDetector = new JewelDetector();
+//        jewelDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
+//        //Jewel Detector Settings
+//        jewelDetector.areaWeight = 0.02;
+//        jewelDetector.detectionMode = JewelDetector.JewelDetectionMode.MAX_AREA; // PERFECT_AREA
+//        //jewelDetector.perfectArea = 6500; <- Needed for PERFECT_AREA
+//        jewelDetector.debugContours = true;
+//        jewelDetector.maxDiffrence = 15;
+//        jewelDetector.ratioWeight = 15;
+//        jewelDetector.minArea = 700;
+//        //jewelDetector.enable();
 
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -183,26 +190,26 @@ public class TEAutoRed2 extends TurningEchoHardware {
         int count = 0;
 
 
-        tripodHeadPosition = 0.3;//手机云台舵机角度
-        tripodHead.setPosition(tripodHeadPosition);
-        jewelDetector.enable();//启动宝石检测
-        sleep(500);
-        count = 0;//计数
-        while (jewelDetector.getCurrentOrder() == UNKNOWN) {//当宝石顺序是未知时循环
-            tripodHead.setPosition(tripodHeadPosition);
-            tripodHeadPosition = tripodHeadPosition + 0.05;//循环转动手机云台以扫到宝石
-            sleep(400);
-            count++;
-            if (tripodHeadPosition > 0.7) {
-                tripodHeadPosition = 0.3;
-            }
-            if (count > 14) {//14*400=5.6秒，5.6秒后还未检测到小球则跳出循环
-                break;
-            }
-        }
+//        tripodHeadPosition = 0.3;//手机云台舵机角度
+//        tripodHead.setPosition(tripodHeadPosition);
+//        //jewelDetector.enable();//启动宝石检测
+//        sleep(500);
+//        count = 0;//计数
+//        while (jewelDetector.getCurrentOrder() == UNKNOWN) {//当宝石顺序是未知时循环
+//            tripodHead.setPosition(tripodHeadPosition);
+//            tripodHeadPosition = tripodHeadPosition + 0.05;//循环转动手机云台以扫到宝石
+//            sleep(400);
+//            count++;
+//            if (tripodHeadPosition > 0.7) {
+//                tripodHeadPosition = 0.3;
+//            }
+//            if (count > 14) {//14*400=5.6秒，5.6秒后还未检测到小球则跳出循环
+//                break;
+//            }
+//        }
 
 
-        servoCatchBlock(0.78, 0.0);
+        catchBlock();
 
         sleep(300);
 
@@ -221,23 +228,22 @@ public class TEAutoRed2 extends TurningEchoHardware {
         lift(0);//卡住滑轨
 
         sleep(500);
-        if (jewelDetector.getCurrentOrder() == JewelDetector.JewelOrder.RED_BLUE) {//如果扫到的宝石顺序是红_蓝
-            servoKickBall(0.84, 0.70);//击宝石杆子降下
 
-            sleep(400);
+        if (sensorColor.blue() > sensorColor.red()) {//判断为 蓝色宝石
+            servoKickBall(0.84,0.7);
 
-            servoKickBall(0.15, 0.51);//击宝石
-        } else if (jewelDetector.getCurrentOrder() == JewelDetector.JewelOrder.BLUE_RED) {//如果扫到的宝石顺序是蓝_红
-            servoKickBall(0.84, 0.25);//击宝石杆子降下
+            sleep(300);
 
-            sleep(400);
-
-            servoKickBall(0.15, 0.51);//击宝石
-        } else {//如果没扫到，什么也不做
-            idle();
+            servoKickBall(0.15,0.54);
         }
-        jewelDetector.disable();//关闭宝石检测程序
-        sleep(100);
+
+        else if (sensorColor.blue() < sensorColor.red()) {//判断为 红色宝石
+            servoKickBall(0.84,0.25);
+
+            sleep(300);
+
+            servoKickBall(0.15,0.54);
+        }
 
 
         VuforiaLocalizer.Parameters parameters2 = new VuforiaLocalizer.Parameters(cameraMonitorViewId);//定义新参数
@@ -271,12 +277,12 @@ public class TEAutoRed2 extends TurningEchoHardware {
                 telemetry.update();
                 tripodHead.setPosition(tripodHeadPosition);//设定云台角度
                 tripodHeadPosition = tripodHeadPosition + 0.05;//每次云台转动0.05角度
-                sleep(700);
+                sleep(550);
                 count++;
-                if (tripodHeadPosition > 0.7) {//让云台在0.5-0.7角度范围内转动
-                    tripodHeadPosition = 0.5;
+                if (tripodHeadPosition > 0.75) {//让云台在0.5-0.7角度范围内转动
+                    tripodHeadPosition = 0.45;
                 }
-                if (count > 8) {//8*700=5.6秒，5.6秒后还未扫到壁画则跳出循环
+                if (count > 14) {//8*700=5.6秒，5.6秒后还未扫到壁画则跳出循环
                     break;
                 }
             }
@@ -291,8 +297,8 @@ public class TEAutoRed2 extends TurningEchoHardware {
 //                telemetry.addData("Pose", format(pose));
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 gravity = imu.getGravity();
-
-                moveFix(0.4, moveStatus.yF);//前进
+///////////////////////////////////////////////////////////////////////////////////////////
+                moveFix(0.4,moveStatus.yF);//前进
 
                 sleep(750);
 
@@ -421,7 +427,7 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
                 moveFix(0.4, moveStatus.yB);
 
-                sleep(250);
+                sleep(220);
 
 //                while (Math.abs(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle))) >= 0.6) {
 //                    while (true) {

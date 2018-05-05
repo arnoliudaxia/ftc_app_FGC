@@ -92,6 +92,8 @@ public class Auto_Blue_Forward extends LinearOpMode {
 
     DcMotor motor_raising;
 
+    public Servo tripodHead = null;
+
     double servo_position_block_1 = 0.78;
     double servo_position_block_2 = 0.00;
     double power_raising = 0.50;
@@ -102,6 +104,8 @@ public class Auto_Blue_Forward extends LinearOpMode {
     double power_youqian;
     double power_zuohou;
     double power_youhou;
+
+    double tripodHeadPosition ;
 
     int count = 0;
 
@@ -330,22 +334,24 @@ public class Auto_Blue_Forward extends LinearOpMode {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
-        sensorColor = hardwareMap.get(ColorSensor.class, "Ball");
+        sensorColor = hardwareMap.get(ColorSensor.class, "sensorColourDistance");
 
-        sensorDistance = hardwareMap.get(DistanceSensor.class, "Ball");
+        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensorColourDistance");
 
-        servo_catching_block_1 = hardwareMap.servo.get("servo_catching_block_1");
-        servo_catching_block_2 = hardwareMap.servo.get("servo_catching_block_2");
+        servo_catching_block_1 = hardwareMap.servo.get("servoCatchBlock_1");
+        servo_catching_block_2 = hardwareMap.servo.get("servoCatchBlock_2");
 
-        motor_raising = hardwareMap.dcMotor.get("motor_raising");
+        motor_raising = hardwareMap.dcMotor.get("motorLift");
 
-        motor_zuoqian  = hardwareMap.get(DcMotor.class, "motor_zuoqian");
-        motor_youqian = hardwareMap.get(DcMotor.class, "motor_youqian");
-        motor_zuohou = hardwareMap.get(DcMotor.class, "motor_zuohou");
-        motor_youhou = hardwareMap.get(DcMotor.class, "motor_youhou");
+        motor_zuoqian  = hardwareMap.get(DcMotor.class, "motorFL");
+        motor_youqian = hardwareMap.get(DcMotor.class, "motorFR");
+        motor_zuohou = hardwareMap.get(DcMotor.class, "motorBL");
+        motor_youhou = hardwareMap.get(DcMotor.class, "motorBR");
 
-        servo_kicking_ball = hardwareMap.get(Servo.class, "servo_kicking_ball");
-        servo_kicking_ball_2 = hardwareMap.get(Servo.class,"servo_kicking_ball_2");
+        servo_kicking_ball = hardwareMap.get(Servo.class, "servoKickBall_1");
+        servo_kicking_ball_2 = hardwareMap.get(Servo.class,"servoKickBall_2");
+
+        tripodHead = hardwareMap.get(Servo.class, "tripodHead");
 
         motor_zuoqian.setDirection(DcMotor.Direction.FORWARD);
         motor_zuohou.setDirection(DcMotor.Direction.FORWARD);
@@ -374,6 +380,26 @@ public class Auto_Blue_Forward extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
+
+        tripodHeadPosition = 0.5;//云台舵机角度
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
+        while (RelicRecoveryVuMark.from(relicTemplate) == RelicRecoveryVuMark.UNKNOWN) {
+            if (RelicRecoveryVuMark.from(relicTemplate) != RelicRecoveryVuMark.UNKNOWN) {//如果扫到了壁画，则vuMark=壁画，
+                vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            }
+            telemetry.addData("VuMark", "%s visible", vuMark);//打印数据
+            telemetry.update();
+            tripodHead.setPosition(tripodHeadPosition);//设定云台角度
+            tripodHeadPosition = tripodHeadPosition + 0.05;//每次云台转动0.05角度
+            sleep(700);
+            count++;
+            if (tripodHeadPosition > 0.7) {//让云台在0.5-0.7角度范围内转动
+                tripodHeadPosition = 0.5;
+            }
+            if (count > 8) {//8*700=5.6秒，5.6秒后还未扫到壁画则跳出循环
+                break;
+            }
+        }
 
         catching_block(0.78, 0.0);
 
@@ -422,7 +448,6 @@ public class Auto_Blue_Forward extends LinearOpMode {
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {//如果壁画密码被破译
 
                 /* Found an instance of the template. In the actual game, you will probably
