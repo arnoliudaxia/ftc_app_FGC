@@ -113,6 +113,9 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        telemetry.addData("Hardware","Initialized");
+        telemetry.update();
+
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
@@ -124,11 +127,20 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
+        telemetry.addData("Hardware","Initialized");
+        telemetry.addData("parameters","Initialized");
+        telemetry.update();
+
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+
+        telemetry.addData("Hardware","Initialized");
+        telemetry.addData("parameters","Initialized");
+        telemetry.addData("IMU","Initialized");
+        telemetry.update();
 
         // Set up our telemetry dashboard
         //composeTelemetry();

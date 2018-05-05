@@ -72,8 +72,14 @@ public class fantasticTETeleop extends TurningEchoHardware {
 
     int count = 0;
 
+    double yError = 0;
+    double xError = 0;
+
     public void runOpMode() {
         TurningEchoHardwareConfigure();
+        telemetry.addData("Hardware","Initialized");
+        telemetry.addData("parameters","Initialized");
+        telemetry.addData("IMU","Initialized");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -260,6 +266,10 @@ public class fantasticTETeleop extends TurningEchoHardware {
             if (gamepad1.left_stick_button) {
                 imu.initialize(parameters);//初始化IMU参数
                 imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);//初始化IMU的陀螺仪角度
+                //sleep();
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                yError = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle));
+                xError = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));
             }
 
             if (gamepad1.start) {//当一操start被按下
@@ -269,7 +279,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 double rPower;//自转功率
                 while (true) {
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//获得IMU角度
-                    gravity = imu.getGravity();//获得IMU重力传感器
+                    gravity = imu.getGravity();//获得IMU重力传感器数据
                     R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));//
                     rPower = Range.clip(Math.abs(R / 45), 0.15, 1);//自转功率取绝对值，最低为0.15（太慢转不动），最高为1
                     telemetry.addData("rPower = ", rPower);//打印rPower的值
@@ -298,8 +308,10 @@ public class fantasticTETeleop extends TurningEchoHardware {
                     double Battery = getBatteryVoltage();//获得电池电量
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//当前陀螺仪（三轴姿态角）数据赋给angles
                     gravity = imu.getGravity();//当前加速度数据赋给gravity
-                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) + 1.6;//Y轴姿态角（车体平放时y轴姿态角是-1.6左右）
-                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));//x轴姿态角
+//                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) + 1.6;//Y轴姿态角（车体平放时y轴姿态角是-1.6左右）
+//                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));//x轴姿态角
+                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) - yError;
+                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle)) - xError;
                     if (Y > 10) {//Y轴角度控制在-10到10之间（上板和下板的最大倾斜角）
                         Y = 10;
                     } else if (Y < -10) {
@@ -311,8 +323,8 @@ public class fantasticTETeleop extends TurningEchoHardware {
                         X = -5;
                     }
                     //x、y轴功率与x、y轴姿态角函数关系式
-                    yPower = +0.000002652391975309918*Y*Y*Y*Y*Y-0.000002411265432094396*Y*Y*Y*Y-0.00033661265432107044*Y*Y*Y+0.0005806327160490544*Y*Y+0.05630401234567932*Y-0.042283950617282684;
-                    xPower = +0.0016666666666666741*X*X*X+1.850371707708594e-17*X*X-0.10166666666666667*X-1.850371707708594e-17;
+                    yPower = +0.000002652391975309918 * Y * Y * Y * Y * Y - 0.000002411265432094396 * Y * Y * Y * Y - 0.00033661265432107044 * Y * Y * Y + 0.0005806327160490544 * Y * Y + 0.05630401234567932 * Y - 0.042283950617282684;
+                    xPower = +0.0016666666666666741 * X * X * X + 1.850371707708594e-17 * X * X - 0.10166666666666667 * X - 1.850371707708594e-17;
                     moveVar(yPower, xPower, 0, 1);//移动函数，输入x、y轴功率值
                     telemetry.addData("blankY", Y);//打印y轴姿态角数据
                     telemetry.addData("yPower", yPower);//打印y轴功率值
