@@ -326,13 +326,13 @@ public class TEAutoBlue2 extends TurningEchoHardware {
 
                 frameStop();
 
-                sleep(300);
+                moveFix(0.6,moveStatus.rL);
 
-                autoTurnLocation(180);
+                sleep(1400);
 
                 frameStop();
 
-                sleep(200);
+                sleep(400);
 
                 /*moveFix(0.3);
 

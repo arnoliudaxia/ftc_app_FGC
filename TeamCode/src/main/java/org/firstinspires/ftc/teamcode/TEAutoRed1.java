@@ -324,7 +324,7 @@ public class TEAutoRed1 extends TurningEchoHardware {
 
                 sleep(400);
 
-                autoTurnLocation(90);
+                autoTurnLocation(-90);
 
                 frameStop();
 

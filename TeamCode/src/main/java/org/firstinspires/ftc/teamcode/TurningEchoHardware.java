@@ -79,6 +79,34 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
     public Servo tripodHead = null;
 
+
+    double servoBabyPosition_1 = 0;
+    double servoBabyPosition_2 = 0.8;//定义机械臂舵机position
+
+    double servoBallPosition_2 = 0.59;
+
+    double tripodHeadPosition = Range.clip(0.5, 0, 1);
+
+    boolean armIns = true;
+    boolean babyIns = false;//机械臂安全锁
+    boolean autoBlankBalance = false;
+    //boolean robot_case_1 = false;
+    //boolean robot_case_2 = false;
+
+    double powerMode = 1;//切换快/慢速模式
+    final double POWER_MODE_SLOW = 2.5;
+    final double POWER_MODE_FAST = 1;
+
+    final double errorIMU = 0.8;
+
+    double servoBlockPosition_1 = 0;
+    double servoBlockPosition_2 = 0;
+
+    double PowerFL = motorFL.getPower();
+    double PowerFR = motorFR.getPower();
+    double PowerBL = motorBL.getPower();
+    double PowerBR = motorBR.getPower();
+
     public void TurningEchoHardwareConfigure() {
         motorFL = hardwareMap.get(DcMotor.class, "motorFL");
         motorFR = hardwareMap.get(DcMotor.class, "motorFR");
@@ -156,28 +184,6 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         }
         return result;
     }
-
-    double servoBabyPosition_1 = 0;
-    double servoBabyPosition_2 = 0.8;//定义机械臂舵机position
-
-    double servoBallPosition_2 = 0.59;
-
-    double tripodHeadPosition = Range.clip(0.5, 0, 1);
-
-    boolean armIns = true;
-    boolean babyIns = false;//机械臂安全锁
-    boolean autoBlankBalance = false;
-    //boolean robot_case_1 = false;
-    //boolean robot_case_2 = false;
-
-    double powerMode = 1;//切换快/慢速模式
-    final double POWER_MODE_SLOW = 2.5;
-    final double POWER_MODE_FAST = 1;
-
-    final double errorIMU = 0.8;
-
-    double servoBlockPosition_1 = 0;
-    double servoBlockPosition_2 = 0;
 
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -326,7 +332,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
     public void catchBlock() {
         servoBlockPosition_1 = 0.78;
-        servoBlockPosition_2 = 0.02;
+        servoBlockPosition_2 = 0;
         servoCatchBlock(servoBlockPosition_1, servoBlockPosition_2);
     }
 

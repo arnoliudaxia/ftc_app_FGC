@@ -77,9 +77,9 @@ public class fantasticTETeleop extends TurningEchoHardware {
 
     public void runOpMode() {
         TurningEchoHardwareConfigure();
-        telemetry.addData("Hardware","Initialized");
-        telemetry.addData("parameters","Initialized");
-        telemetry.addData("IMU","Initialized");
+        telemetry.addData("Hardware", "Initialized");
+        telemetry.addData("parameters", "Initialized");
+        telemetry.addData("IMU", "Initialized");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -100,11 +100,6 @@ public class fantasticTETeleop extends TurningEchoHardware {
         while (opModeIsActive()) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             gravity = imu.getGravity();
-
-            double PowerFL = motorFL.getPower();
-            double PowerFR = motorFR.getPower();
-            double PowerBL = motorBL.getPower();
-            double PowerBR = motorBR.getPower();
 
             powerMode = switchPowerMode();//powerMode变量——SwitchpowerMode方法，powerMode变量将有1（正常速度）、2.5（慢速）的返回值
 
@@ -266,7 +261,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
             if (gamepad1.left_stick_button) {
                 imu.initialize(parameters);//初始化IMU参数
                 imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);//初始化IMU的陀螺仪角度
-                //sleep();
+                sleep(600);
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 yError = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle));
                 xError = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));
@@ -310,7 +305,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
                     gravity = imu.getGravity();//当前加速度数据赋给gravity
 //                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) + 1.6;//Y轴姿态角（车体平放时y轴姿态角是-1.6左右）
 //                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));//x轴姿态角
-                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) - yError;
+                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) - yError + 0.2;
                     X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle)) - xError;
                     if (Y > 10) {//Y轴角度控制在-10到10之间（上板和下板的最大倾斜角）
                         Y = 10;
@@ -340,6 +335,47 @@ public class fantasticTETeleop extends TurningEchoHardware {
                         break;//退出循环
                     }
                 }
+            } else if (gamepad1.right_bumper && gamepad1.left_bumper) {
+                double Y;//y轴姿态角
+                double X;//x轴姿态角
+                double yPower;//y轴功率
+                double xPower;
+                while (true) {
+                    double Battery = getBatteryVoltage();//获得电池电量
+                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//当前陀螺仪（三轴姿态角）数据赋给angles
+                    gravity = imu.getGravity();//当前加速度数据赋给gravity
+//                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) + 1.6;//Y轴姿态角（车体平放时y轴姿态角是-1.6左右）
+//                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));//x轴姿态角
+                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) - yError;
+                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle)) - xError;
+                    if (Y > 10) {//Y轴角度控制在-10到10之间（上板和下板的最大倾斜角）
+                        Y = 10;
+                    } else if (Y < -10) {
+                        Y = -10;
+                    }
+                    if (X > 5) {//X轴角度控制在-5°到5°之间
+                        X = 5;
+                    } else if (X < -5) {
+                        X = -5;
+                    }
+                    //x、y轴功率与x、y轴姿态角函数关系式
+                    yPower = -5.511463844802554e-8 * Y * Y * Y * Y * Y * Y * Y + 2.0667989418056136e-7 * Y * Y * Y * Y * Y * Y + 0.000017650462962969592 * Y * Y * Y * Y * Y + 0.000017361111111058314 * Y * Y * Y * Y - 0.0011678240740741743 * Y * Y * Y - 0.0020833333333324378 * Y * Y + 0.059392416225749874 * Y - 0.03195767195767472;
+                    xPower = +0.001583333333333336 * X * X * X - 0.09158333333333334 * X;
+                    moveVar(yPower, xPower, 0, 1);//移动函数，输入x、y轴功率值
+                    telemetry.addData("blankY", Y);//打印y轴姿态角数据
+                    telemetry.addData("yPower", yPower);//打印y轴功率值
+                    telemetry.addData("blankX", X);//打印x轴姿态角数据
+                    telemetry.addData("xPower", xPower);//打印x轴功率值
+                    telemetry.addData("Battery", Battery);//打印电池电量
+                    //打印底盘四个电机功率
+                    telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
+                    telemetry.update();
+
+                    if (!gamepad1.right_stick_button || gamepad1.start) {//如果一操右摇杆按钮被松开
+                        frameStop();//停车
+                        break;//退出循环
+                    }
+                }
             }
 
             telemetry.addData("distance", sensorDistance.getDistance(DistanceUnit.CM));
@@ -347,6 +383,9 @@ public class fantasticTETeleop extends TurningEchoHardware {
             telemetry.addData("heading", formatAngle(angles.angleUnit, angles.firstAngle));
             telemetry.addData("roll", formatAngle(angles.angleUnit, angles.secondAngle));
             telemetry.addData("pitch", formatAngle(angles.angleUnit, angles.thirdAngle));
+            telemetry.addData("gravityX",gravity.xAccel);
+            telemetry.addData("gravityY",gravity.yAccel);
+            telemetry.addData("gravityZ",gravity.zAccel);
             telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
             telemetry.update();
         }
