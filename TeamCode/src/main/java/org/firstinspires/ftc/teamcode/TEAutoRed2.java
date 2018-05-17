@@ -396,7 +396,7 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
                 lift(0);//停止滑轨
 
-                servoCatchBlock(0.35, 0.15);//松开方块夹子
+                catchBlock();//松开方块夹子
 
                 sleep(300);
 

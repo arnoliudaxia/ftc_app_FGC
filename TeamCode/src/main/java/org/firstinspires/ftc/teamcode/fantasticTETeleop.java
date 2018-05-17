@@ -83,7 +83,8 @@ public class fantasticTETeleop extends TurningEchoHardware {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        servoCatchBlock(0.35, 0.38);
+        releaseBlock12();
+        releaseBlock34();
 
         servoKickBall_2.setPosition(0.44);
 
@@ -97,7 +98,13 @@ public class fantasticTETeleop extends TurningEchoHardware {
 
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
+//        PowerFL = 0;
+//        PowerFR = 0;
+//        PowerBL = 0;
+//        PowerBR = 0;
+
         while (opModeIsActive()) {
+
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             gravity = imu.getGravity();
 
@@ -135,96 +142,66 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 }
             }
 
-            if (gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1) {//机械臂安全锁
-                armIns = false;
-                servoBabyPosition_2 = 0.8;
-                servoCatchBaby_2.setPosition(servoBabyPosition_2);
-
-                servoBallPosition_2 = 0.44;
-                servoKickBall_2.setPosition(servoBallPosition_2);
+            if (gamepad2.y){
+                if (!shiftReversed){
+                    if (!block12Catched){
+                        catchBlock12();
+                        block12Catched = true;
+                    }
+                    else if (block12Catched){
+                        releaseBlock12();
+                        block12Catched = false;
+                    }
+                }
+                else if (shiftReversed){
+                    if (!block34Catched){
+                        catchBlock34();
+                        block34Catched = true;
+                    }
+                    else if (block34Catched){
+                        releaseBlock34();
+                        block34Catched = false;
+                    }
+                }
+                while (gamepad2.y){
+                    idle();
+                }
             }
 
-            if (gamepad2.right_stick_button) {//初始化机械臂
-                armIns = true;
-                motorCatchBaby(0, 0);
+            else if (gamepad2.a){
+                if (shiftReversed){
+                    if (!block12Catched){
+                        catchBlock12();
+                        block12Catched = true;
+                    }
+                    else if (block12Catched){
+                        releaseBlock12();
+                        block12Catched = false;
+                    }
+                }
+                else if (!shiftReversed){
+                    if (!block34Catched){
+                        catchBlock34();
+                        block34Catched = true;
+                    }
+                    else if (block34Catched){
+                        releaseBlock34();
+                        block34Catched = false;
+                    }
+                }
+                while (gamepad2.a){
+                    idle();
+                }
             }
 
-            if (gamepad1.x) {//夹持方块
-                catchBlock();
-                catchBlockCase = true;
-            } else if (gamepad1.b) {//松开方块
-                releaseBlock();
-                catchBlockCase = false;
+            if (gamepad2.left_stick_y!=0){
+                lift(-gamepad2.left_stick_y);
             }
 
-            if (gamepad1.y) {//抬升滑轨
-                lift(1);
-            } else if (gamepad1.a) {//下降滑轨
-                lift(-1);
-            } else {//卡住滑轨
-                lift(0);
+            if (gamepad2.left_stick_x<-0.5||gamepad2.left_stick_x>0.5){
+                shift(gamepad2.right_stick_x/5);
             }
             //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
-            if (gamepad2.right_trigger != 0) {
-                if (servoBabyPosition_1 < 1) {
-                    if (gamepad2.right_trigger >= 0.9) {//快速降机械臂第三节
-                        servoBabyPosition_1 = servoBabyPosition_1 + 0.02;
-                    } else {
-                        servoBabyPosition_1 = servoBabyPosition_1 + 0.01;//慢速降机械臂第三节
-                    }
-                }
-                sleep(25);
-            }
-
-            if (gamepad2.left_trigger != 0) {
-                if (servoBabyPosition_1 > 0) {
-                    if (gamepad2.left_trigger >= 0.9) {//快速升机械臂第三节
-                        servoBabyPosition_1 = servoBabyPosition_1 - 0.02;
-                    } else {
-                        servoBabyPosition_1 = servoBabyPosition_1 - 0.01;//慢速升机械臂第三节
-                    }
-                }
-                sleep(25);
-            }
-
-            servoCatchBaby_1(servoBabyPosition_1);
-
-            if (gamepad2.right_bumper && !babyIns) {//机械臂末节夹持小人
-                servoCatchBaby_2(0.13);
-                servoBabyPosition_2 = 0.13;
-                while (gamepad2.right_bumper) {
-                    babyIns = true;
-                }
-            }
-            if (gamepad2.right_bumper && babyIns) {//机械臂末节松开小人
-                servoCatchBaby_2(0.8);
-                servoBabyPosition_2 = 0.8;
-                while (gamepad2.right_bumper) {
-                    babyIns = false;
-                    idle();
-                }
-            }
-            if (gamepad2.left_bumper) {
-                if (servoBabyPosition_2 < 1) {
-                    servoBabyPosition_2 = servoBabyPosition_2 + 0.03;//慢速松末节机械臂夹子
-                    servoCatchBaby_2(servoBabyPosition_2);
-                }
-
-                while (gamepad2.left_bumper) {
-                    idle();
-                    babyIns = false;
-                }
-            }
-
-            if (gamepad2.dpad_up && !armIns) {
-                motorCatchBaby(0.8, -0.56);
-            } else {
-                motorCatchBaby_1.setPower(0);
-            }
-
-            if (gamepad2.dpad_down && !armIns) {
-                motorCatchBaby(-0.8, 0.2);
-            }
             if (gamepad1.dpad_up) {
                 servoKickBall_1.setPosition(0.15);
             }
@@ -327,48 +304,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
                     telemetry.addData("xPower", xPower);//打印x轴功率值
                     telemetry.addData("Battery", Battery);//打印电池电量
                     //打印底盘四个电机功率
-                    telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
-                    telemetry.update();
-
-                    if (!gamepad1.right_stick_button || gamepad1.start) {//如果一操右摇杆按钮被松开
-                        frameStop();//停车
-                        break;//退出循环
-                    }
-                }
-            } else if (gamepad1.right_bumper && gamepad1.left_bumper) {
-                double Y;//y轴姿态角
-                double X;//x轴姿态角
-                double yPower;//y轴功率
-                double xPower;
-                while (true) {
-                    double Battery = getBatteryVoltage();//获得电池电量
-                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//当前陀螺仪（三轴姿态角）数据赋给angles
-                    gravity = imu.getGravity();//当前加速度数据赋给gravity
-//                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) + 1.6;//Y轴姿态角（车体平放时y轴姿态角是-1.6左右）
-//                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));//x轴姿态角
-                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) - yError;
-                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle)) - xError;
-                    if (Y > 10) {//Y轴角度控制在-10到10之间（上板和下板的最大倾斜角）
-                        Y = 10;
-                    } else if (Y < -10) {
-                        Y = -10;
-                    }
-                    if (X > 5) {//X轴角度控制在-5°到5°之间
-                        X = 5;
-                    } else if (X < -5) {
-                        X = -5;
-                    }
-                    //x、y轴功率与x、y轴姿态角函数关系式
-                    yPower = -5.511463844802554e-8 * Y * Y * Y * Y * Y * Y * Y + 2.0667989418056136e-7 * Y * Y * Y * Y * Y * Y + 0.000017650462962969592 * Y * Y * Y * Y * Y + 0.000017361111111058314 * Y * Y * Y * Y - 0.0011678240740741743 * Y * Y * Y - 0.0020833333333324378 * Y * Y + 0.059392416225749874 * Y - 0.03195767195767472;
-                    xPower = +0.001583333333333336 * X * X * X - 0.09158333333333334 * X;
-                    moveVar(yPower, xPower, 0, 1);//移动函数，输入x、y轴功率值
-                    telemetry.addData("blankY", Y);//打印y轴姿态角数据
-                    telemetry.addData("yPower", yPower);//打印y轴功率值
-                    telemetry.addData("blankX", X);//打印x轴姿态角数据
-                    telemetry.addData("xPower", xPower);//打印x轴功率值
-                    telemetry.addData("Battery", Battery);//打印电池电量
-                    //打印底盘四个电机功率
-                    telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
+                    //telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
                     telemetry.update();
 
                     if (!gamepad1.right_stick_button || gamepad1.start) {//如果一操右摇杆按钮被松开
@@ -378,15 +314,33 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 }
             }
 
-            telemetry.addData("distance", sensorDistance.getDistance(DistanceUnit.CM));
+//            if (gamepad1.b) {
+//                double Y;
+//                double X;
+//                double yPower;
+//                double xPower;
+//                while (true) {
+//                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//获得IMU角度
+//                    gravity = imu.getGravity();
+//                    Y = gravity.yAccel;
+//                    X = gravity.xAccel;
+//                }
+//
+//            }
+//            PowerFL = motorFL.getPower();
+//            PowerFR = motorFR.getPower();
+//            PowerBL = motorBL.getPower();
+//            PowerBR = motorBR.getPower();
+
             telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("distance", sensorDistance.getDistance(DistanceUnit.CM));
             telemetry.addData("heading", formatAngle(angles.angleUnit, angles.firstAngle));
             telemetry.addData("roll", formatAngle(angles.angleUnit, angles.secondAngle));
             telemetry.addData("pitch", formatAngle(angles.angleUnit, angles.thirdAngle));
-            telemetry.addData("gravityX",gravity.xAccel);
-            telemetry.addData("gravityY",gravity.yAccel);
-            telemetry.addData("gravityZ",gravity.zAccel);
-            telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
+            telemetry.addData("gravityX", gravity.xAccel);
+            telemetry.addData("gravityY", gravity.yAccel);
+            telemetry.addData("gravityZ", gravity.zAccel);
+            //telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
             telemetry.update();
         }
     }

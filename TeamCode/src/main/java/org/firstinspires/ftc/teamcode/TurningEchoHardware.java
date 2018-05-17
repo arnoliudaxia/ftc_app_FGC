@@ -7,6 +7,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -63,49 +64,51 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     //motorBL 左后电机
     //motorBR 右后电机
 
-    public DcMotor motorCatchBaby_1 = null;
-    public DcMotor motorCatchBaby_2 = null;//定义机械臂电机
+    public DcMotor motorShift = null;
 
     public Servo servoKickBall_1 = null;
     public Servo servoKickBall_2 = null;
 
-    public Servo servoCatchBaby_1 = null;
-    public Servo servoCatchBaby_2 = null;//定义机械臂舵机
-
     public Servo servoCatchBlock_1 = null;
-    public Servo servoCatchBlock_2 = null;//定义夹持方块的舵机
+    public Servo servoCatchBlock_2 = null;
+    public Servo servoCatchBlock_3 = null;
+    public Servo servoCatchBlock_4 = null;//定义夹持方块的舵机
 
     public DcMotor motorLift = null;//定义抬升滑轨的电机
 
     public Servo tripodHead = null;
 
-
-    double servoBabyPosition_1 = 0;
-    double servoBabyPosition_2 = 0.8;//定义机械臂舵机position
-
     double servoBallPosition_2 = 0.59;
 
     double tripodHeadPosition = Range.clip(0.5, 0, 1);
 
-    boolean armIns = true;
-    boolean babyIns = false;//机械臂安全锁
     boolean autoBlankBalance = false;
     //boolean robot_case_1 = false;
     //boolean robot_case_2 = false;
-
-    double powerMode = 1;//切换快/慢速模式
     final double POWER_MODE_SLOW = 2.5;
     final double POWER_MODE_FAST = 1;
+    double powerMode = Range.clip(1,POWER_MODE_SLOW,POWER_MODE_FAST);//切换快/慢速模式
+
+    public boolean shiftReversed = false;
+
+    public boolean block12Catched = false;
+    public boolean block34Catched = false;
+
+    public double servoBlockPosition_1_tight = 0;
+    public double servoBlockPosition_2_tight = 0;
+    public double servoBlockPosition_3_tight = 0;
+    public double servoBlockPosition_4_tight = 0;
+    public double servoBlockPosition_1_release = 0;
+    public double servoBlockPosition_2_release = 0;
+    public double servoBlockPosition_3_release = 0;
+    public double servoBlockPosition_4_release = 0;
 
     final double errorIMU = 0.8;
 
-    double servoBlockPosition_1 = 0;
-    double servoBlockPosition_2 = 0;
-
-    double PowerFL = motorFL.getPower();
-    double PowerFR = motorFR.getPower();
-    double PowerBL = motorBL.getPower();
-    double PowerBR = motorBR.getPower();
+//    double PowerFL = motorFL.getPower();
+//    double PowerFR = motorFR.getPower();
+//    double PowerBL = motorBL.getPower();
+//    double PowerBR = motorBR.getPower();
 
     public void TurningEchoHardwareConfigure() {
         motorFL = hardwareMap.get(DcMotor.class, "motorFL");
@@ -114,21 +117,19 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         motorBR = hardwareMap.get(DcMotor.class, "motorBR");
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        motorFL.setDirection(DcMotor.Direction.REVERSE);
+        motorFL.setDirection(DcMotor.Direction.FORWARD);
         motorBL.setDirection(DcMotor.Direction.FORWARD);
         motorFR.setDirection(DcMotor.Direction.REVERSE);
         motorBR.setDirection(DcMotor.Direction.REVERSE);
 
         servoCatchBlock_1 = hardwareMap.servo.get("servoCatchBlock_1");
         servoCatchBlock_2 = hardwareMap.servo.get("servoCatchBlock_2");
+        servoCatchBlock_3 = hardwareMap.servo.get("servoCatchBlock_3");
+        servoCatchBlock_4 = hardwareMap.servo.get("servoCatchBlock_4");
 
         motorLift = hardwareMap.dcMotor.get("motorLift");
 
-        motorCatchBaby_1 = hardwareMap.get(DcMotor.class, "motorCatchBaby_1");
-        motorCatchBaby_2 = hardwareMap.get(DcMotor.class, "motorCatchBaby_2");
-
-        servoCatchBaby_1 = hardwareMap.get(Servo.class, "servoCatchBaby_1");
-        servoCatchBaby_2 = hardwareMap.get(Servo.class, "servoCatchBaby_2");
+        motorShift = hardwareMap.dcMotor.get("motorShift");
 
         servoKickBall_1 = hardwareMap.get(Servo.class, "servoKickBall_1");
         servoKickBall_2 = hardwareMap.get(Servo.class, "servoKickBall_2");
@@ -306,51 +307,57 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         moveFix(0, moveStatus.yF);
     }
 
-    public void servoCatchBlock(double servoBlockPosition_1, double servoBlockPosition_2) {//夹持方块函数
-        servoCatchBlock_1.setPosition(servoBlockPosition_1);
-        servoCatchBlock_2.setPosition(servoBlockPosition_2);
-
-    }
-
-    public void motorCatchBaby(double powerBaby_1, double powerBaby_2) {//机械臂电机函数
-        motorCatchBaby_1.setPower(powerBaby_1);
-        motorCatchBaby_2.setPower(powerBaby_2);
-    }
-
-    public void servoCatchBaby_1(double servoBabyPosition_1) {//夹小人第三节舵机函数
-        servoCatchBaby_1.setPosition(servoBabyPosition_1);
-    }
-
-    public void servoCatchBaby_2(double servoBabyPosition_2) {//夹小人末节舵机函数
-        servoCatchBaby_2.setPosition(servoBabyPosition_2);
-    }
-
     public void servoKickBall(double servoBallPosition_1, double servoBallPosition_2) {
         servoKickBall_1.setPosition(servoBallPosition_1);
         servoKickBall_2.setPosition(servoBallPosition_2);
     }
 
-    public void catchBlock() {
-        servoBlockPosition_1 = 0.78;
-        servoBlockPosition_2 = 0;
-        servoCatchBlock(servoBlockPosition_1, servoBlockPosition_2);
+    public void catchBlock12(){
+        servoCatchBlock_1.setPosition(servoBlockPosition_1_tight);
+        servoCatchBlock_2.setPosition(servoBlockPosition_2_tight);
     }
 
-    public void releaseBlock() {
-        servoBlockPosition_1 = 0.38;
-        servoBlockPosition_2 = 0.38;
-        servoCatchBlock(servoBlockPosition_1, servoBlockPosition_2);
+    public void releaseBlock12(){
+        servoCatchBlock_1.setPosition(servoBlockPosition_1_release);
+        servoCatchBlock_2.setPosition(servoBlockPosition_2_release);
     }
+
+    public void catchBlock34(){
+        servoCatchBlock_3.setPosition(servoBlockPosition_3_tight);
+        servoCatchBlock_4.setPosition(servoBlockPosition_4_tight);
+    }
+
+    public void releaseBlock34() {
+        servoCatchBlock_3.setPosition(servoBlockPosition_3_release);
+        servoCatchBlock_4.setPosition(servoBlockPosition_4_release);
+    }
+
+
 
     public void lift(double powerLift) {//滑轨抬升函数
         motorLift.setPower(powerLift);
     }
 
-    public double switchPowerMode() {//切换低/高速模式函数
-        if (gamepad1.guide){
-            return 2.5;
+    public void shift(double powerShift) {//滑轨抬升函数
+        motorLift.setPower(powerShift);
+    }
+
+    public double switchPowerMode() {//切换低/高速模式
+        if (gamepad1.y){
+            powerMode = powerMode -0.5;
+            while (gamepad1.y){
+                idle();
+            }
         }
-        else return 1;
+
+        else if (gamepad1.a){
+            powerMode = powerMode + 0.5;
+            while (gamepad1.a){
+                idle();
+            }
+        }
+
+        return powerMode;
 //        if (gamepad1.right_stick_y != 0) {
 //            powerMode = Range.clip(0.75 * gamepad1.right_stick_y + 1.75, POWER_MODE_FAST, POWER_MODE_SLOW);
 //        }
@@ -365,6 +372,14 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 //        }
     }
 
+    ////////////////////////////////////////////////////////////
+    public void catchBlock(){
+        idle();
+    }
+    public void releaseBlock(){
+        idle();
+    }
+////////////////////////////////////////////////////////////////
     public void shakeHead(double range) {
         tripodHeadPosition = tripodHeadPosition + range;
         tripodHead.setPosition(tripodHeadPosition);

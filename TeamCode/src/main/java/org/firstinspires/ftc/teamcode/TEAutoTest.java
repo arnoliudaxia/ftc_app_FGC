@@ -205,7 +205,7 @@ public class TEAutoTest extends TurningEchoHardware {
         }
 
 
-        servoCatchBlock(0.78, 0.0);
+        catchBlock();
 
         sleep(300);
 

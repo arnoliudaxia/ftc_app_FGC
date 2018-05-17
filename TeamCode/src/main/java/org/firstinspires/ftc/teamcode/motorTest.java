@@ -29,13 +29,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -51,22 +49,22 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Catching_block", group="Linear Opmode")
+@TeleOp(name="motorTest", group="Linear Opmode")
 //@Disabled
-public class Catching_block extends LinearOpMode {
+public class motorTest extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    Servo servoTest;
+    DcMotor motorTest = null;
 
-    double servo_test_position = Range.clip(0,0,1);
+    double testPosition = 0;
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        servoTest = hardwareMap.get(Servo.class,"servoTest");
+        motorTest = hardwareMap.get(DcMotor.class,"motorTest");
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
@@ -77,44 +75,34 @@ public class Catching_block extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
 
-        servo_test_position = 0.5;
-        servoTest.setPosition(servo_test_position);
-
+        motorTest.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         waitForStart();
         runtime.reset();
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
             if (gamepad1.y){
-                servo_test_position = servo_test_position +0.05;
-                while (gamepad1.y){
-                    idle();
-                }
+                int test =motorTest.getCurrentPosition();
+                test = test + 100;
+                motorTest.setTargetPosition(test);
+                motorTest.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
-            else if (gamepad1.a){
-                servo_test_position = servo_test_position -0.05;
-                while (gamepad1.a){
-                    idle();
-                }
+            if (gamepad1.b){
+                int test =motorTest.getCurrentPosition();
+                test = test - 100;
+                motorTest.setTargetPosition(test);
+                motorTest.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
-            else if (gamepad1.x){
-                servo_test_position = servo_test_position - 0.01;
-                while (gamepad1.x){
-                    idle();
-                }
+            if (gamepad1.start){
+                motorTest.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
 
-            else if (gamepad1.b){
-                servo_test_position = servo_test_position + 0.01;
-                while (gamepad1.b){
-                    idle();
-                }
+            if (gamepad1.left_stick_y != 0){
+                motorTest.setPower(-gamepad1.left_stick_y/2);
             }
 
-            servoTest.setPosition(servo_test_position);
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -125,7 +113,8 @@ public class Catching_block extends LinearOpMode {
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("position", servo_test_position);
+            telemetry.addData("currentPosition", motorTest.getCurrentPosition());
+            telemetry.addData("targetPosition", motorTest.getTargetPosition());
             //telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",power_raising);
             telemetry.update();
         }
