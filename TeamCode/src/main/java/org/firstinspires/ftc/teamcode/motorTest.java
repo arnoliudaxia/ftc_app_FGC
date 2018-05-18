@@ -29,11 +29,27 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import android.graphics.YuvImage;
+
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcontroller.external.samples.ConceptTelemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.opencv.core.Mat;
+
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 
 /**
@@ -48,16 +64,31 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
+/**
+ * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
+ * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
+ * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
+ * class is instantiated on the Robot Controller and executed.
+ * <p>
+ * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
+ * It includes all the skeletal structure that all linear OpModes contain.
+ * <p>
+ * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ */
 
 @TeleOp(name="motorTest", group="Linear Opmode")
 //@Disabled
-public class motorTest extends LinearOpMode {
+public class motorTest extends TurningEchoHardware {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    DcMotor motorTest = null;
 
     double testPosition = 0;
+
+    boolean ccc = false;
+
+    DcMotor motorTest = null;
 
     @Override
     public void runOpMode() {
@@ -75,33 +106,77 @@ public class motorTest extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
 
-        motorTest.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //motorTest.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        motorTest.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorTest.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        motorTest.setTargetPosition(0);
 
         waitForStart();
         runtime.reset();
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if (gamepad1.y){
-                int test =motorTest.getCurrentPosition();
-                test = test + 100;
-                motorTest.setTargetPosition(test);
-                motorTest.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
-
-            if (gamepad1.b){
-                int test =motorTest.getCurrentPosition();
-                test = test - 100;
-                motorTest.setTargetPosition(test);
-                motorTest.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
-
+            double a = motorTest.getCurrentPosition();
             if (gamepad1.start){
                 motorTest.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
-
-            if (gamepad1.left_stick_y != 0){
-                motorTest.setPower(-gamepad1.left_stick_y/2);
+//
+//            if (gamepad2.right_stick_button){
+//                motorTest.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                shiftPosition = motorTest.getCurrentPosition();
+//                if (!shiftReversed){
+//                    motorTest.setPower(0.35);
+//                }
+//                else if (shiftReversed){
+//                    motorTest.setPower(-0.35);
+//                }
+//                while (gamepad2.right_stick_button){
+//                    idle();
+//                }
+//            }
+//
+//            if (Math.abs(shiftPosition - motorTest.getCurrentPosition()) > 450){
+//                if (shiftReversed){
+//                    motorTest.setPower(0.2);
+//                }
+//                else if (!shiftReversed){
+//                    motorTest.setPower(-0.2);
+//                }
+//            }
+//
+//            if (Math.abs(shiftPosition - motorTest.getCurrentPosition()) > 600){
+//                if (shiftReversed){
+//                    motorTest.setPower(0.1);
+//                }
+//                else if (!shiftReversed){
+//                    motorTest.setPower(-0.1);
+//                }
+//            }
+            if (Math.abs(a-motorTest.getTargetPosition()) < 250){
+                if (!shiftReversed){
+                    motorTest.setPower(0.1);
+                }
+                else if (shiftReversed){
+                    motorTest.setPower(-0.1);
+                }
             }
+
+            if (gamepad1.left_stick_button){
+                if (!shiftReversed){
+                    motorTest.setPower(0.3);
+                }
+                else if (shiftReversed){
+                    motorTest.setPower(-0.3);
+                }
+            }
+
+            if (a == motorTest.getCurrentPosition()) {
+                motorTest.setPower(0);
+                shiftReversed = !shiftReversed;
+            }
+
 
 
             // Tank Mode uses one stick to control each wheel.
@@ -114,7 +189,8 @@ public class motorTest extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("currentPosition", motorTest.getCurrentPosition());
-            telemetry.addData("targetPosition", motorTest.getTargetPosition());
+            //telemetry.addData("targetPosition", motorTest.getTargetPosition());
+            telemetry.addData("power", motorTest.getPower());
             //telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)",power_raising);
             telemetry.update();
         }

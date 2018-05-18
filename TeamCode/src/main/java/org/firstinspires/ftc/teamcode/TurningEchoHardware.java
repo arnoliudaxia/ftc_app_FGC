@@ -105,6 +105,8 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
     final double errorIMU = 0.8;
 
+    double shiftPosition = 0;
+
 //    double PowerFL = motorFL.getPower();
 //    double PowerFR = motorFR.getPower();
 //    double PowerBL = motorBL.getPower();
@@ -141,6 +143,9 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         sensorDistance = hardwareMap.get(DistanceSensor.class, "sensorColourDistance");
 
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorShift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorShift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         telemetry.addData("Hardware","Initialized");
         telemetry.update();

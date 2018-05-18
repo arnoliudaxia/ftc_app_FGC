@@ -142,6 +142,16 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 }
             }
 
+//            if (gamepad2.start){
+//                motorShift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            }
+
+            if (gamepad2.left_stick_button||gamepad2.right_stick_button){
+                shiftReversed=!shiftReversed;
+            }
+            motorShift.setPower(gamepad2.left_stick_x/5.5);
+
+
             if (gamepad2.y){
                 if (!shiftReversed){
                     if (!block12Catched){
@@ -340,6 +350,9 @@ public class fantasticTETeleop extends TurningEchoHardware {
             telemetry.addData("gravityX", gravity.xAccel);
             telemetry.addData("gravityY", gravity.yAccel);
             telemetry.addData("gravityZ", gravity.zAccel);
+            telemetry.addData("shiftCurrentPosition",motorShift.getCurrentPosition());
+            telemetry.addData("shiftTargetPosition",motorShift.getTargetPosition());
+            telemetry.addData("shiftPower",motorShift.getPower());
             //telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
             telemetry.update();
         }
