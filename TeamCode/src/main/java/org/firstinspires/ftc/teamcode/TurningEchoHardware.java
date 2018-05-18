@@ -94,14 +94,14 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     public boolean block12Catched = false;
     public boolean block34Catched = false;
 
-    public double servoBlockPosition_1_tight = 0;
+    public double servoBlockPosition_1_tight = 0.68;
     public double servoBlockPosition_2_tight = 0;
-    public double servoBlockPosition_3_tight = 0;
-    public double servoBlockPosition_4_tight = 0;
-    public double servoBlockPosition_1_release = 0;
-    public double servoBlockPosition_2_release = 0;
-    public double servoBlockPosition_3_release = 0;
-    public double servoBlockPosition_4_release = 0;
+    public double servoBlockPosition_3_tight = 0.3;
+    public double servoBlockPosition_4_tight = 0.97;
+    public double servoBlockPosition_1_release = 0.35;
+    public double servoBlockPosition_2_release = 0.33;
+    public double servoBlockPosition_3_release = 0.65;
+    public double servoBlockPosition_4_release = 0.6;
 
     final double errorIMU = 0.8;
 
