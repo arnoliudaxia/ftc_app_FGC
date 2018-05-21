@@ -77,6 +77,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
 
     public void runOpMode() {
         TurningEchoHardwareConfigure();
+        Thread1 shift = new Thread1("shift");
         telemetry.addData("Hardware", "Initialized");
         telemetry.addData("parameters", "Initialized");
         telemetry.addData("IMU", "Initialized");
@@ -104,7 +105,6 @@ public class fantasticTETeleop extends TurningEchoHardware {
 //        PowerBR = 0;
 
         while (opModeIsActive()) {
-
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             gravity = imu.getGravity();
 
@@ -146,11 +146,12 @@ public class fantasticTETeleop extends TurningEchoHardware {
 //                motorShift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //            }
 
-            if (gamepad2.left_stick_button||gamepad2.right_stick_button){
-                shiftReversed=!shiftReversed;
+            if (gamepad2.right_stick_button){
+                shift.start();
+                while (gamepad2.right_stick_button){
+                    idle();
+                }
             }
-            motorShift.setPower(gamepad2.left_stick_x/5.5);
-
 
             if (gamepad2.y){
                 if (!shiftReversed){
@@ -350,8 +351,8 @@ public class fantasticTETeleop extends TurningEchoHardware {
             telemetry.addData("gravityX", gravity.xAccel);
             telemetry.addData("gravityY", gravity.yAccel);
             telemetry.addData("gravityZ", gravity.zAccel);
-            telemetry.addData("shiftCurrentPosition",motorShift.getCurrentPosition());
-            telemetry.addData("shiftTargetPosition",motorShift.getTargetPosition());
+//            telemetry.addData("shiftCurrentPosition",motorShift.getCurrentPosition());
+//            telemetry.addData("shiftTargetPosition",motorShift.getTargetPosition());
             telemetry.addData("shiftPower",motorShift.getPower());
             //telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
             telemetry.update();

@@ -87,7 +87,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     //boolean robot_case_2 = false;
     final double POWER_MODE_SLOW = 2.5;
     final double POWER_MODE_FAST = 1;
-    double powerMode = Range.clip(1,POWER_MODE_SLOW,POWER_MODE_FAST);//切换快/慢速模式
+    double powerMode = Range.clip(1, POWER_MODE_SLOW, POWER_MODE_FAST);//切换快/慢速模式
 
     public boolean shiftReversed = false;
 
@@ -144,10 +144,8 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorShift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorShift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-
-        telemetry.addData("Hardware","Initialized");
+        telemetry.addData("Hardware", "Initialized");
         telemetry.update();
 
         // Set up the parameters with which we will use our IMU. Note that integration
@@ -161,8 +159,8 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-        telemetry.addData("Hardware","Initialized");
-        telemetry.addData("parameters","Initialized");
+        telemetry.addData("Hardware", "Initialized");
+        telemetry.addData("parameters", "Initialized");
         telemetry.update();
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
@@ -171,13 +169,43 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        telemetry.addData("Hardware","Initialized");
-        telemetry.addData("parameters","Initialized");
-        telemetry.addData("IMU","Initialized");
+        telemetry.addData("Hardware", "Initialized");
+        telemetry.addData("parameters", "Initialized");
+        telemetry.addData("IMU", "Initialized");
         telemetry.update();
 
         // Set up our telemetry dashboard
         //composeTelemetry();
+    }
+
+    public class Thread1 extends Thread {
+        public Thread1(String name) {
+            this.setName(name);
+        }
+
+        public void run() {
+            telemetry.addData("Thread1", "started");
+            telemetry.update();
+            try {
+                if (!shiftReversed) {
+                    motorShift.setPower(0.4);
+                    sleep(280, 0);
+                    motorShift.setPower(0.1);
+                    sleep(500, 0);
+                }
+
+                else {
+                    motorShift.setPower(-0.4);
+                    sleep(280, 0);
+                    motorShift.setPower(-0.1);
+                    sleep(500, 0);
+                }
+                motorShift.setPower(0);
+                shiftReversed = !shiftReversed;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public double getBatteryVoltage() {
@@ -317,17 +345,17 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         servoKickBall_2.setPosition(servoBallPosition_2);
     }
 
-    public void catchBlock12(){
+    public void catchBlock12() {
         servoCatchBlock_1.setPosition(servoBlockPosition_1_tight);
         servoCatchBlock_2.setPosition(servoBlockPosition_2_tight);
     }
 
-    public void releaseBlock12(){
+    public void releaseBlock12() {
         servoCatchBlock_1.setPosition(servoBlockPosition_1_release);
         servoCatchBlock_2.setPosition(servoBlockPosition_2_release);
     }
 
-    public void catchBlock34(){
+    public void catchBlock34() {
         servoCatchBlock_3.setPosition(servoBlockPosition_3_tight);
         servoCatchBlock_4.setPosition(servoBlockPosition_4_tight);
     }
@@ -336,7 +364,6 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         servoCatchBlock_3.setPosition(servoBlockPosition_3_release);
         servoCatchBlock_4.setPosition(servoBlockPosition_4_release);
     }
-
 
 
     public void lift(double powerLift) {//滑轨抬升函数
@@ -348,16 +375,14 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     }
 
     public double switchPowerMode() {//切换低/高速模式
-        if (gamepad1.y){
-            powerMode = powerMode -0.5;
-            while (gamepad1.y){
+        if (gamepad1.y) {
+            powerMode = powerMode - 0.5;
+            while (gamepad1.y) {
                 idle();
             }
-        }
-
-        else if (gamepad1.a){
+        } else if (gamepad1.a) {
             powerMode = powerMode + 0.5;
-            while (gamepad1.a){
+            while (gamepad1.a) {
                 idle();
             }
         }
@@ -378,13 +403,15 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     }
 
     ////////////////////////////////////////////////////////////
-    public void catchBlock(){
+    public void catchBlock() {
         idle();
     }
-    public void releaseBlock(){
+
+    public void releaseBlock() {
         idle();
     }
-////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////
     public void shakeHead(double range) {
         tripodHeadPosition = tripodHeadPosition + range;
         tripodHead.setPosition(tripodHeadPosition);
