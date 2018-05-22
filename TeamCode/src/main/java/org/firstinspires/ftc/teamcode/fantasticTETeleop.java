@@ -146,71 +146,59 @@ public class fantasticTETeleop extends TurningEchoHardware {
 //                motorShift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //            }
 
-            if (gamepad2.right_stick_button){
+            if (gamepad2.right_stick_button) {
                 shift.start();
-                while (gamepad2.right_stick_button){
+                while (gamepad2.right_stick_button) {
                     idle();
                 }
             }
 
-            if (gamepad2.y){
-                if (!shiftReversed){
-                    if (!block12Catched){
+            if (gamepad2.right_stick_y<=-0.5) {
+                if (!shiftReversed) {
+                    if (!block12Catched) {
                         catchBlock12();
                         block12Catched = true;
-                    }
-                    else if (block12Catched){
+                    } else if (block12Catched) {
                         releaseBlock12();
                         block12Catched = false;
                     }
-                }
-                else if (shiftReversed){
-                    if (!block34Catched){
+                } else if (shiftReversed) {
+                    if (!block34Catched) {
                         catchBlock34();
                         block34Catched = true;
-                    }
-                    else if (block34Catched){
+                    } else if (block34Catched) {
                         releaseBlock34();
                         block34Catched = false;
                     }
                 }
-                while (gamepad2.y){
+                while (gamepad2.right_stick_y<=-0.5) {
                     idle();
                 }
-            }
-
-            else if (gamepad2.a){
-                if (shiftReversed){
-                    if (!block12Catched){
+            } else if (gamepad2.right_stick_y>=0.5) {
+                if (shiftReversed) {
+                    if (!block12Catched) {
                         catchBlock12();
                         block12Catched = true;
-                    }
-                    else if (block12Catched){
+                    } else if (block12Catched) {
                         releaseBlock12();
                         block12Catched = false;
                     }
-                }
-                else if (!shiftReversed){
-                    if (!block34Catched){
+                } else if (!shiftReversed) {
+                    if (!block34Catched) {
                         catchBlock34();
                         block34Catched = true;
-                    }
-                    else if (block34Catched){
+                    } else if (block34Catched) {
                         releaseBlock34();
                         block34Catched = false;
                     }
                 }
-                while (gamepad2.a){
+                while (gamepad2.right_stick_y>=0.5) {
                     idle();
                 }
             }
 
-            if (gamepad2.left_stick_y!=0){
+            if (gamepad2.left_stick_y != 0) {
                 lift(-gamepad2.left_stick_y);
-            }
-
-            if (gamepad2.left_stick_x<-0.5||gamepad2.left_stick_x>0.5){
-                shift(gamepad2.right_stick_x/5);
             }
             //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
             if (gamepad1.dpad_up) {
@@ -232,15 +220,15 @@ public class fantasticTETeleop extends TurningEchoHardware {
 
             servoKickBall_2.setPosition(servoBallPosition_2);
 
-            if (gamepad1.right_stick_x > 0.4) {
-                tripodHeadPosition = tripodHeadPosition + 0.02;
-                tripodHead.setPosition(tripodHeadPosition);
-                sleep(15);
-            } else if (gamepad1.right_stick_x < -0.4) {
-                tripodHeadPosition = tripodHeadPosition - 0.02;
-                tripodHead.setPosition(tripodHeadPosition);
-                sleep(15);
-            }
+//            if (gamepad1.right_stick_x > 0.4) {
+//                tripodHeadPosition = tripodHeadPosition + 0.02;
+//                tripodHead.setPosition(tripodHeadPosition);
+//                sleep(15);
+//            } else if (gamepad1.right_stick_x < -0.4) {
+//                tripodHeadPosition = tripodHeadPosition - 0.02;
+//                tripodHead.setPosition(tripodHeadPosition);
+//                sleep(15);
+//            }
 
             if (gamepad1.x && gamepad1.y && gamepad1.a && gamepad1.b) {
                 break;

@@ -85,7 +85,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     boolean autoBlankBalance = false;
     //boolean robot_case_1 = false;
     //boolean robot_case_2 = false;
-    final double POWER_MODE_SLOW = 2.5;
+    final double POWER_MODE_SLOW = 3;
     final double POWER_MODE_FAST = 1;
     double powerMode = Range.clip(1, POWER_MODE_SLOW, POWER_MODE_FAST);//切换快/慢速模式
 
@@ -375,14 +375,14 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     }
 
     public double switchPowerMode() {//切换低/高速模式
-        if (gamepad1.y) {
-            powerMode = powerMode - 0.5;
-            while (gamepad1.y) {
+        if (gamepad1.right_stick_y<=-0.5) {
+            powerMode = powerMode - 1;
+            while (gamepad1.right_stick_y<=-0.5) {
                 idle();
             }
-        } else if (gamepad1.a) {
-            powerMode = powerMode + 0.5;
-            while (gamepad1.a) {
+        } else if (gamepad1.right_stick_y>=0.5) {
+            powerMode = powerMode + 1;
+            while (gamepad1.right_stick_y>=0.5) {
                 idle();
             }
         }
@@ -429,162 +429,162 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         }
     }
 
-    public boolean isDoubleClick(String key) {
-        if (key.equals("dpad_up")) {
-            if (gamepad1.dpad_up) {
-                runtime.reset();
-                while (gamepad1.dpad_up) {
-                    idle();
-                }
-                while (getRuntime() < 0.8) {
-                    if (gamepad1.dpad_up) {
-                        return true;
-                    } else idle();
-                }
-            }
-            return false;
-        } else if (key.equals("dpad_down")) {
-            if (gamepad1.dpad_down) {
-                runtime.reset();
-                while (gamepad1.dpad_down) {
-                    idle();
-                }
-                while (getRuntime() < 0.8) {
-                    if (gamepad1.dpad_down) {
-                        return true;
-                    } else idle();
-                }
-            }
-            return false;
-        } else if (key.equals("dpad_right")) {
-            if (gamepad1.dpad_right) {
-                runtime.reset();
-                while (gamepad1.dpad_right) {
-                    idle();
-                }
-                while (getRuntime() < 0.8) {
-                    if (gamepad1.dpad_right) {
-                        return true;
-                    } else idle();
-                }
-            }
-            return false;
-        } else if (key.equals("dpad_left")) {
-            if (gamepad1.dpad_left) {
-                runtime.reset();
-                while (gamepad1.dpad_left) {
-                    idle();
-                }
-                while (getRuntime() < 0.8) {
-                    if (gamepad1.dpad_left) {
-                        return true;
-                    } else idle();
-                }
-            }
-            return false;
-        } else if (key.equals("a")) {
-            if (gamepad1.a) {
-                runtime.reset();
-                while (gamepad1.a) {
-                    idle();
-                }
-                while (getRuntime() < 0.8) {
-                    if (gamepad1.a) {
-                        return true;
-                    } else idle();
-                }
-            }
-            return false;
-        } else if (key.equals("b")) {
-            if (gamepad1.b) {
-                runtime.reset();
-                while (gamepad1.b) {
-                    idle();
-                }
-                while (getRuntime() < 0.8) {
-                    if (gamepad1.b) {
-                        return true;
-                    } else idle();
-                }
-            }
-            return false;
-        } else if (key.equals("x")) {
-            if (gamepad1.x) {
-                runtime.reset();
-                while (gamepad1.x) {
-                    idle();
-                }
-                while (getRuntime() < 0.8) {
-                    if (gamepad1.x) {
-                        return true;
-                    } else idle();
-                }
-            }
-            return false;
-        } else if (key.equals("y")) {
-            if (gamepad1.y) {
-                runtime.reset();
-                while (gamepad1.y) {
-                    idle();
-                }
-                while (getRuntime() < 0.8) {
-                    if (gamepad1.y) {
-                        return true;
-                    } else idle();
-                }
-            }
-            return false;
-        } else if (key.equals("right_bumper")) {
-            if (gamepad1.right_bumper) {
-                runtime.reset();
-                while (gamepad1.right_bumper) {
-                    idle();
-                }
-                while (getRuntime() < 0.8) {
-                    if (gamepad1.right_bumper) {
-                        return true;
-                    } else idle();
-                }
-            }
-            return false;
-        } else if (key.equals("left_bumper")) {
-            if (gamepad1.left_bumper) {
-                runtime.reset();
-                while (gamepad1.left_bumper) {
-                    idle();
-                }
-                while (getRuntime() < 0.8) {
-                    if (gamepad1.left_bumper) {
-                        return true;
-                    } else idle();
-                }
-            }
-            return false;
-        } else if (key.equals("left_stick_button")) {
-            int count = 0;
-            while (gamepad1.left_stick_button && count <= 5) {
-                count++;
-                sleep(100);
-            }
-            if (count > 4) {
-                return true;
-            } else return false;
-        } else if (key.equals("right_stick_button")) {
-            if (gamepad1.right_stick_button) {
-                runtime.reset();
-                while (gamepad1.right_stick_button) {
-                    idle();
-                }
-                while (getRuntime() < 0.8) {
-                    if (gamepad1.right_stick_button) {
-                        return true;
-                    } else idle();
-                }
-            }
-            return false;
-        }
-        return false;
-    }
+//    public boolean isDoubleClick(String key) {
+//        if (key.equals("dpad_up")) {
+//            if (gamepad1.dpad_up) {
+//                runtime.reset();
+//                while (gamepad1.dpad_up) {
+//                    idle();
+//                }
+//                while (getRuntime() < 0.8) {
+//                    if (gamepad1.dpad_up) {
+//                        return true;
+//                    } else idle();
+//                }
+//            }
+//            return false;
+//        } else if (key.equals("dpad_down")) {
+//            if (gamepad1.dpad_down) {
+//                runtime.reset();
+//                while (gamepad1.dpad_down) {
+//                    idle();
+//                }
+//                while (getRuntime() < 0.8) {
+//                    if (gamepad1.dpad_down) {
+//                        return true;
+//                    } else idle();
+//                }
+//            }
+//            return false;
+//        } else if (key.equals("dpad_right")) {
+//            if (gamepad1.dpad_right) {
+//                runtime.reset();
+//                while (gamepad1.dpad_right) {
+//                    idle();
+//                }
+//                while (getRuntime() < 0.8) {
+//                    if (gamepad1.dpad_right) {
+//                        return true;
+//                    } else idle();
+//                }
+//            }
+//            return false;
+//        } else if (key.equals("dpad_left")) {
+//            if (gamepad1.dpad_left) {
+//                runtime.reset();
+//                while (gamepad1.dpad_left) {
+//                    idle();
+//                }
+//                while (getRuntime() < 0.8) {
+//                    if (gamepad1.dpad_left) {
+//                        return true;
+//                    } else idle();
+//                }
+//            }
+//            return false;
+//        } else if (key.equals("a")) {
+//            if (gamepad1.a) {
+//                runtime.reset();
+//                while (gamepad1.a) {
+//                    idle();
+//                }
+//                while (getRuntime() < 0.8) {
+//                    if (gamepad1.a) {
+//                        return true;
+//                    } else idle();
+//                }
+//            }
+//            return false;
+//        } else if (key.equals("b")) {
+//            if (gamepad1.b) {
+//                runtime.reset();
+//                while (gamepad1.b) {
+//                    idle();
+//                }
+//                while (getRuntime() < 0.8) {
+//                    if (gamepad1.b) {
+//                        return true;
+//                    } else idle();
+//                }
+//            }
+//            return false;
+//        } else if (key.equals("x")) {
+//            if (gamepad1.x) {
+//                runtime.reset();
+//                while (gamepad1.x) {
+//                    idle();
+//                }
+//                while (getRuntime() < 0.8) {
+//                    if (gamepad1.x) {
+//                        return true;
+//                    } else idle();
+//                }
+//            }
+//            return false;
+//        } else if (key.equals("y")) {
+//            if (gamepad1.y) {
+//                runtime.reset();
+//                while (gamepad1.y) {
+//                    idle();
+//                }
+//                while (getRuntime() < 0.8) {
+//                    if (gamepad1.y) {
+//                        return true;
+//                    } else idle();
+//                }
+//            }
+//            return false;
+//        } else if (key.equals("right_bumper")) {
+//            if (gamepad1.right_bumper) {
+//                runtime.reset();
+//                while (gamepad1.right_bumper) {
+//                    idle();
+//                }
+//                while (getRuntime() < 0.8) {
+//                    if (gamepad1.right_bumper) {
+//                        return true;
+//                    } else idle();
+//                }
+//            }
+//            return false;
+//        } else if (key.equals("left_bumper")) {
+//            if (gamepad1.left_bumper) {
+//                runtime.reset();
+//                while (gamepad1.left_bumper) {
+//                    idle();
+//                }
+//                while (getRuntime() < 0.8) {
+//                    if (gamepad1.left_bumper) {
+//                        return true;
+//                    } else idle();
+//                }
+//            }
+//            return false;
+//        } else if (key.equals("left_stick_button")) {
+//            int count = 0;
+//            while (gamepad1.left_stick_button && count <= 5) {
+//                count++;
+//                sleep(100);
+//            }
+//            if (count > 4) {
+//                return true;
+//            } else return false;
+//        } else if (key.equals("right_stick_button")) {
+//            if (gamepad1.right_stick_button) {
+//                runtime.reset();
+//                while (gamepad1.right_stick_button) {
+//                    idle();
+//                }
+//                while (getRuntime() < 0.8) {
+//                    if (gamepad1.right_stick_button) {
+//                        return true;
+//                    } else idle();
+//                }
+//            }
+//            return false;
+//        }
+//        return false;
+//    }
 
     void composeTelemetry() {
 
