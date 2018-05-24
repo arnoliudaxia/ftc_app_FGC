@@ -94,14 +94,16 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     public boolean block12Catched = false;
     public boolean block34Catched = false;
 
-    public double servoBlockPosition_1_tight = 0.68;
+    public double servoBlockPosition_1_tight = 0.66;
     public double servoBlockPosition_2_tight = 0;
     public double servoBlockPosition_3_tight = 0.3;
-    public double servoBlockPosition_4_tight = 0.97;
+    public double servoBlockPosition_4_tight = 0.9;
     public double servoBlockPosition_1_release = 0.35;
-    public double servoBlockPosition_2_release = 0.33;
-    public double servoBlockPosition_3_release = 0.65;
-    public double servoBlockPosition_4_release = 0.6;
+    public double servoBlockPosition_2_release = 0.31;
+    public double servoBlockPosition_3_release = 0.63;
+    public double servoBlockPosition_4_release = 0.62;
+
+    boolean shiftCount = false;
 
     final double errorIMU = 0.8;
 
@@ -187,21 +189,33 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
             telemetry.addData("Thread1", "started");
             telemetry.update();
             try {
-                if (!shiftReversed) {
+                shiftReversed = !shiftReversed;
+                if (shiftReversed && shiftCount) {
+                    motorShift.setPower(0.6);
+                    sleep(150, 0);
                     motorShift.setPower(0.4);
-                    sleep(280, 0);
-                    motorShift.setPower(0.1);
-                    sleep(500, 0);
+                    sleep(350, 0);
+                    motorShift.setPower(0.2);
+                    sleep(600, 0);
+                }
+
+                else if (!shiftReversed && shiftCount){
+                    motorShift.setPower(-0.6);
+                    sleep(150, 0);
+                    motorShift.setPower(-0.4);
+                    sleep(350, 0);
+                    motorShift.setPower(-0.2);
+                    sleep(600, 0);
                 }
 
                 else {
-                    motorShift.setPower(-0.4);
-                    sleep(280, 0);
-                    motorShift.setPower(-0.1);
-                    sleep(500, 0);
+                    idle();
                 }
                 motorShift.setPower(0);
-                shiftReversed = !shiftReversed;
+
+                if (!shiftCount){
+                    shiftCount = true;
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
