@@ -66,6 +66,8 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
     public DcMotor motorShift = null;
 
+    DcMotor motorArm =null;
+
     public Servo servoKickBall_1 = null;
     public Servo servoKickBall_2 = null;
 
@@ -88,6 +90,8 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     final double POWER_MODE_SLOW = 3;
     final double POWER_MODE_FAST = 1;
     double powerMode = Range.clip(1, POWER_MODE_SLOW, POWER_MODE_FAST);//切换快/慢速模式
+
+    boolean armCase = false;
 
     public boolean shiftReversed = false;
 
@@ -134,6 +138,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         motorLift = hardwareMap.dcMotor.get("motorLift");
 
         motorShift = hardwareMap.dcMotor.get("motorShift");
+        motorArm = hardwareMap.dcMotor.get("motorArm");
 
         servoKickBall_1 = hardwareMap.get(Servo.class, "servoKickBall_1");
         servoKickBall_2 = hardwareMap.get(Servo.class, "servoKickBall_2");
@@ -146,6 +151,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorShift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         telemetry.addData("Hardware", "Initialized");
         telemetry.update();
@@ -190,7 +196,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
             telemetry.update();
             try {
                 shiftReversed = !shiftReversed;
-                if (shiftReversed && shiftCount) {
+                if (shiftReversed) {
                     motorShift.setPower(0.6);
                     sleep(150, 0);
                     motorShift.setPower(0.4);
@@ -199,7 +205,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
                     sleep(600, 0);
                 }
 
-                else if (!shiftReversed && shiftCount){
+                else {
                     motorShift.setPower(-0.6);
                     sleep(150, 0);
                     motorShift.setPower(-0.4);
@@ -208,14 +214,14 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
                     sleep(600, 0);
                 }
 
-                else {
-                    idle();
-                }
+//                else {
+//                    idle();
+//                }
                 motorShift.setPower(0);
 
-                if (!shiftCount){
-                    shiftCount = true;
-                }
+//                if (!shiftCount){
+//                    shiftCount = true;
+//                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

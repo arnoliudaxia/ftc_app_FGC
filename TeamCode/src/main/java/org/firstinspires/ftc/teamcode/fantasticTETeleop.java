@@ -93,6 +93,10 @@ public class fantasticTETeleop extends TurningEchoHardware {
 
         powerMode = 1;
 
+        motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorShift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
         waitForStart();
         runtime.reset();
@@ -219,6 +223,17 @@ public class fantasticTETeleop extends TurningEchoHardware {
             }
 
             servoKickBall_2.setPosition(servoBallPosition_2);
+
+            if (gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1){
+                armCase = true;
+                while (gamepad2.left_trigger >0 || gamepad2.right_trigger > 0){
+                    idle();
+                }
+            }
+
+            if (armCase){
+                motorArm.setPower(gamepad2.right_trigger-gamepad2.left_trigger);
+            }
 
 //            if (gamepad1.right_stick_x > 0.4) {
 //                tripodHeadPosition = tripodHeadPosition + 0.02;
