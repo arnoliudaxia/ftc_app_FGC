@@ -52,8 +52,10 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
 
-    ColorSensor sensorColour;
-    DistanceSensor sensorDistance;
+    ColorSensor sensorColour1;
+    ColorSensor sensorColour2;
+    DistanceSensor sensorDistance1;
+    DistanceSensor sensorDistance2;
 
     public DcMotor motorFL = null;
     public DcMotor motorFR = null;
@@ -80,7 +82,10 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
     public Servo tripodHead = null;
 
+    Servo watcher = null;
+
     double servoBallPosition_2 = 0.59;
+    double servoBallPosition_1 = 0;
 
     double tripodHeadPosition = Range.clip(0.5, 0, 1);
 
@@ -89,7 +94,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     //boolean robot_case_2 = false;
     final double POWER_MODE_SLOW = 3;
     final double POWER_MODE_FAST = 1;
-    double powerMode = Range.clip(1, POWER_MODE_SLOW, POWER_MODE_FAST);//切换快/慢速模式
+    double powerMode = Range.clip(1, 1,3);//切换快/慢速模式
 
     boolean armCase = false;
 
@@ -106,6 +111,9 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     public double servoBlockPosition_2_release = 0.31;
     public double servoBlockPosition_3_release = 0.63;
     public double servoBlockPosition_4_release = 0.62;
+
+    double yError = 0;
+    double xError = 0;
 
     boolean shiftCount = false;
 
@@ -144,10 +152,13 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         servoKickBall_2 = hardwareMap.get(Servo.class, "servoKickBall_2");
 
         tripodHead = hardwareMap.get(Servo.class, "tripodHead");
+        watcher = hardwareMap.get(Servo.class, "watcher");
 
-        sensorColour = hardwareMap.get(ColorSensor.class, "sensorColourDistance");
+        sensorColour1 = hardwareMap.get(ColorSensor.class, "sensorColourDistance1");
+        sensorColour2 = hardwareMap.get(ColorSensor.class, "sensorColourDistance2");
 
-        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensorColourDistance");
+        sensorDistance1 = hardwareMap.get(DistanceSensor.class, "sensorColourDistance1");
+        sensorDistance2 = hardwareMap.get(DistanceSensor.class, "sensorColourDistance2");
 
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorShift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -192,7 +203,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         }
 
         public void run() {
-            telemetry.addData("Thread1", "started");
+            telemetry.addData("shift", "started");
             telemetry.update();
             try {
                 shiftReversed = !shiftReversed;
@@ -213,15 +224,28 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
                     motorShift.setPower(-0.2);
                     sleep(600, 0);
                 }
-
-//                else {
-//                    idle();
-//                }
                 motorShift.setPower(0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-//                if (!shiftCount){
-//                    shiftCount = true;
-//                }
+    public class Thread2 extends Thread{
+        public Thread2(String name) {
+            this.setName(name);
+        }
+
+        public void run() {
+            telemetry.addData("initIMU", "started");
+            telemetry.update();
+            try {
+                imu.initialize(parameters);//初始化IMU参数
+                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);//初始化IMU的陀螺仪角度
+                sleep(800);
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                yError = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle));
+                xError = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -256,9 +280,9 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
             gravity = imu.getGravity();//获得IMU重力传感器
             R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));//
             target = R - degree;//目标旋转角度为此时IMU所测角减去设定角度数
-            rPower = Range.clip(Math.abs(target / 45), 0.13, 1);//自转功率取绝对值，最低为0.15（太慢转不动），最高为1
+            rPower = Range.clip(Math.abs(target / 60), 0.25, 1);//自转功率取绝对值，最低为0.15（太慢转不动），最高为1
             telemetry.addData("rPower = ", rPower);//打印rPower的值
-            telemetry.update();
+//            telemetry.update();
             if (target >= -0.8 && target <= 0.8) {//在+-0.7的角度内停止自转，已足够精确
                 break;
             }

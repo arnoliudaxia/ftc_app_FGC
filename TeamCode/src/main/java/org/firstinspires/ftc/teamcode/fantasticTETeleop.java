@@ -72,12 +72,10 @@ public class fantasticTETeleop extends TurningEchoHardware {
 
     int count = 0;
 
-    double yError = 0;
-    double xError = 0;
-
     public void runOpMode() {
         TurningEchoHardwareConfigure();
         Thread1 shift = new Thread1("shift");
+        Thread2 initIMU_ALL = new Thread2(("initIMU_ALL"));
         telemetry.addData("Hardware", "Initialized");
         telemetry.addData("parameters", "Initialized");
         telemetry.addData("IMU", "Initialized");
@@ -155,6 +153,19 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 while (gamepad2.right_stick_button) {
                     idle();
                 }
+            }
+
+            else if (gamepad2.left_stick_button){
+                if (shiftReversed){
+                    motorShift.setPower(0.2);
+                }
+                else {
+                    motorShift.setPower(-0.2);
+                }
+                while (gamepad2.left_stick_button){
+                    idle();
+                }
+                motorShift.setPower(0);
             }
 
             if (gamepad2.right_stick_y<=-0.5) {
@@ -250,12 +261,10 @@ public class fantasticTETeleop extends TurningEchoHardware {
             }
 
             if (gamepad1.left_stick_button) {
-                imu.initialize(parameters);//初始化IMU参数
-                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);//初始化IMU的陀螺仪角度
-                sleep(600);
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                yError = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle));
-                xError = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));
+                initIMU_ALL.start();
+                while (gamepad1.left_stick_button){
+                    idle();
+                }
             }
 
             if (gamepad1.start) {//当一操start被按下
@@ -347,13 +356,12 @@ public class fantasticTETeleop extends TurningEchoHardware {
 //            PowerBR = motorBR.getPower();
 
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("distance", sensorDistance.getDistance(DistanceUnit.CM));
             telemetry.addData("heading", formatAngle(angles.angleUnit, angles.firstAngle));
             telemetry.addData("roll", formatAngle(angles.angleUnit, angles.secondAngle));
             telemetry.addData("pitch", formatAngle(angles.angleUnit, angles.thirdAngle));
-            telemetry.addData("gravityX", gravity.xAccel);
-            telemetry.addData("gravityY", gravity.yAccel);
-            telemetry.addData("gravityZ", gravity.zAccel);
+//            telemetry.addData("gravityX", gravity.xAccel);
+//            telemetry.addData("gravityY", gravity.yAccel);
+//            telemetry.addData("gravityZ", gravity.zAccel);
 //            telemetry.addData("shiftCurrentPosition",motorShift.getCurrentPosition());
 //            telemetry.addData("shiftTargetPosition",motorShift.getTargetPosition());
             telemetry.addData("shiftPower",motorShift.getPower());

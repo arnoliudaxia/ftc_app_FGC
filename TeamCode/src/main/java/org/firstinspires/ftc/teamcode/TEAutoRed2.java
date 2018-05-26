@@ -112,9 +112,6 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
     double d;
 
-    ColorSensor sensorColor;
-    DistanceSensor sensorDistance;
-
     @Override
 
     public void runOpMode() {
@@ -139,10 +136,10 @@ public class TEAutoRed2 extends TurningEchoHardware {
         // and named "imu".
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
-        sensorColor = hardwareMap.get(ColorSensor.class, "sensorColourDistance");
-
-        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensorColourDistance");
+        releaseBlock12();
+        releaseBlock34();
 
         // Set up our telemetry dashboard
         //composeTelemetry();
@@ -184,6 +181,8 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
         waitForStart();
         runtime.reset();
+
+        imu.initialize(parameters);
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
 
@@ -209,40 +208,51 @@ public class TEAutoRed2 extends TurningEchoHardware {
 //        }
 
 
-        catchBlock();
+        catchBlock34();
 
         sleep(300);
 
-        servoKickBall(0.7, 0.54);
-
-        sleep(500);
-
-        servoKickBall(0.84, 0.54);
-
-        sleep(400);
+        while (servoKickBall_1.getPosition()<=0.89){
+            servoBallPosition_1 = servoBallPosition_1 + 0.01;
+            servoKickBall(servoBallPosition_1,0.5);
+            sleep(20);
+            telemetry.addData("Red  ", sensorColour1.red());
+            telemetry.addData("Green", sensorColour1.green());
+            telemetry.addData("Blue ", sensorColour1.blue());
+            telemetry.update();
+        }
+        telemetry.addData("Red  ", sensorColour1.red());
+        telemetry.addData("Green", sensorColour1.green());
+        telemetry.addData("Blue ", sensorColour1.blue());
+        telemetry.update();
 
         lift(1);//抬升滑轨
 
-        sleep(1200);
+        sleep(800);
 
         lift(0);//卡住滑轨
 
         sleep(500);
 
-        if (sensorColor.blue() > sensorColor.red()) {//判断为 蓝色宝石
-            servoKickBall(0.84,0.7);
+        if (sensorColour1.blue() < sensorColour1.red()) {//判断为 蓝色宝石
+            telemetry.addData("red",0);
+            telemetry.update();
+            servoKickBall(0.9,0.71);
 
             sleep(300);
 
-            servoKickBall(0.15,0.54);
+            servoKickBall(0.25,0.57);
         }
 
-        else if (sensorColor.blue() < sensorColor.red()) {//判断为 红色宝石
-            servoKickBall(0.84,0.25);
+        else if (sensorColour1.blue() > sensorColour1.red()) {//判断telemetry.addData("red",0);
+            telemetry.update();//为 红色宝石
+            telemetry.addData("blue",0);
+            telemetry.update();
+            servoKickBall(0.9,0.25);
 
             sleep(300);
 
-            servoKickBall(0.15,0.54);
+            servoKickBall(0.25,0.57);
         }
 
 
@@ -267,7 +277,7 @@ public class TEAutoRed2 extends TurningEchoHardware {
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
-            tripodHeadPosition = 0.5;//云台舵机角度
+            tripodHeadPosition = 0.19;//云台舵机角度
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
             while (RelicRecoveryVuMark.from(relicTemplate) == RelicRecoveryVuMark.UNKNOWN) {
                 if (RelicRecoveryVuMark.from(relicTemplate) != RelicRecoveryVuMark.UNKNOWN) {//如果扫到了壁画，则vuMark=壁画，
@@ -276,11 +286,11 @@ public class TEAutoRed2 extends TurningEchoHardware {
                 telemetry.addData("VuMark", "%s visible", vuMark);//打印数据
                 telemetry.update();
                 tripodHead.setPosition(tripodHeadPosition);//设定云台角度
-                tripodHeadPosition = tripodHeadPosition + 0.05;//每次云台转动0.05角度
-                sleep(550);
+                tripodHeadPosition = tripodHeadPosition + 0.04;//每次云台转动0.05角度
+                sleep(600);
                 count++;
-                if (tripodHeadPosition > 0.75) {//让云台在0.5-0.7角度范围内转动
-                    tripodHeadPosition = 0.45;
+                if (tripodHeadPosition > 0.4) {//让云台在0.5-0.7角度范围内转动
+                    tripodHeadPosition = 0.19;
                 }
                 if (count > 14) {//8*700=5.6秒，5.6秒后还未扫到壁画则跳出循环
                     break;
@@ -316,11 +326,6 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
                 frameStop();
 
-                sleep(200);
-
-                imu.initialize(parameters);
-                imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-
                 sleep(400);
 
                 moveFix(0.5, moveStatus.yF);
@@ -330,6 +335,24 @@ public class TEAutoRed2 extends TurningEchoHardware {
                 frameStop();
 
                 sleep(400);
+
+                moveFix(1,moveStatus.xL);
+
+                sleep(1100);
+
+                while (watcher.getPosition()>=0.21){
+                    watcher.setPosition(watcher.getPosition()-0.01);
+                    sleep(10);
+                }
+
+                while (sensorColour2.red()<=150){
+                    moveFix(0.2,moveStatus.xR);
+                }
+                frameStop();
+
+
+
+
 
                 /////////////////////////
 //                int c = 0;
@@ -358,76 +381,76 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
                 /////////////////////////
 
-                if (vuMark == LEFT) {
-                    moveFix(1, moveStatus.xL);//左平移
-
-                    sleep(920);
-                } else if (vuMark == CENTER) {//done
-                    moveFix(1, moveStatus.xL);//左平移
-
-                    sleep(525);
-                } else if (vuMark == RIGHT) {
-                    moveFix(1, moveStatus.xL);//左平移
-
-                    sleep(320);
-                }
-
-                frameStop();
-
-                sleep(500);
-
-                moveFix(0.3, moveStatus.rR);
-
-                sleep(170);
-
-                frameStop();
-
-                sleep(250);
-
-                moveFix(0.4, moveStatus.yF);//前进一点点
-
-                sleep(200);
-
-                frameStop();
-
-                lift(-1);//下降滑轨
-
-                sleep(950);
-
-                lift(0);//停止滑轨
-
-                catchBlock();//松开方块夹子
-
-                sleep(300);
-
-                moveFix(0.4, moveStatus.yF);//往前怼
-
-                sleep(900);
-
-                //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
-                moveFix(0.3, moveStatus.yB);//后退一点点
-
-                sleep(120);
-
-                moveFix(0.4, moveStatus.rR);//右转
-
-                sleep(600);
-
-                moveFix(0.4, moveStatus.rL);//左转
-
-                sleep(600);
-
-                moveFix(0.3, moveStatus.yF);//往前推一点点
-
-                sleep(380);
-
-                frameStop();
-
-                sleep(100);
-
-                moveFix(0.4, moveStatus.yB);
-
-                sleep(220);
+//                if (vuMark == LEFT) {
+//                    moveFix(1, moveStatus.xL);//左平移
+//
+//                    sleep(920);
+//                } else if (vuMark == CENTER) {//done
+//                    moveFix(1, moveStatus.xL);//左平移
+//
+//                    sleep(525);
+//                } else if (vuMark == RIGHT) {
+//                    moveFix(1, moveStatus.xL);//左平移
+//
+//                    sleep(320);
+//                }
+//
+//                frameStop();
+//
+//                sleep(500);
+//
+//                moveFix(0.3, moveStatus.rR);
+//
+//                sleep(170);
+//
+//                frameStop();
+//
+//                sleep(250);
+//
+//                moveFix(0.4, moveStatus.yF);//前进一点点
+//
+//                sleep(200);
+//
+//                frameStop();
+//
+//                lift(-1);//下降滑轨
+//
+//                sleep(600);
+//
+//                lift(0);//停止滑轨
+//
+//                catchBlock();//松开方块夹子
+//
+//                sleep(300);
+//
+//                moveFix(0.4, moveStatus.yF);//往前怼
+//
+//                sleep(900);
+//
+//                //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
+//                moveFix(0.3, moveStatus.yB);//后退一点点
+//
+//                sleep(120);
+//
+//                moveFix(0.4, moveStatus.rR);//右转
+//
+//                sleep(600);
+//
+//                moveFix(0.4, moveStatus.rL);//左转
+//
+//                sleep(600);
+//
+//                moveFix(0.3, moveStatus.yF);//往前推一点点
+//
+//                sleep(380);
+//
+//                frameStop();
+//
+//                sleep(100);
+//
+//                moveFix(0.4, moveStatus.yB);
+//
+//                sleep(220);
 
 //                while (Math.abs(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle))) >= 0.6) {
 //                    while (true) {

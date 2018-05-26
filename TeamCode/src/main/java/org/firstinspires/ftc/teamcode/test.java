@@ -37,6 +37,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -53,7 +58,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="test", group="Linear Opmode")
 //@Disabled
-public class test extends GlobalEchoHardware {
+public class test extends TurningEchoHardware {
 
     private ElapsedTime runtime = new ElapsedTime();//计时
 
@@ -62,19 +67,46 @@ public class test extends GlobalEchoHardware {
         telemetry.addData("Status", "Initialized");//直到waitForStart之前是初始化
         telemetry.update();
 
-        GlobalEchoHardwareConfigure();//获取GlobalEcho硬件配置方法
+        TurningEchoHardwareConfigure();
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        gravity = imu.getGravity();
 
         waitForStart();//当开始键按下后
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {//循环主函数
+            powerMode =1;
 
-            frameControl();//控制底盘移动方法
 
-                telemetry.addData("Status", "Run Time: " + runtime.toString());
-                telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
-                telemetry.update();
+            if (gamepad1.a){
+                initIMU();
+            }
+
+            if (gamepad1.x){
+                autoTurnLocation(180);
+            }
+
+            if (gamepad1.b){
+                autoTurnLocation(90);
+            }
+
+            if (gamepad1.y){
+                autoTurnLocation(-180);
+            }
+
+            frameStop();
+
+            telemetry.addData("heading", formatAngle(angles.angleUnit, angles.firstAngle));
+            telemetry.addData("distance", sensorDistance1.getDistance(DistanceUnit.CM));
+            telemetry.addData("Red  ", sensorColour1.red());
+            telemetry.addData("Green", sensorColour1.green());
+            telemetry.addData("Blue ", sensorColour1.blue());
+            telemetry.update();
+//                telemetry.addData("Status", "Run Time: " + runtime.toString());
+//                telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
+//                telemetry.update();
         }
     }
 }
