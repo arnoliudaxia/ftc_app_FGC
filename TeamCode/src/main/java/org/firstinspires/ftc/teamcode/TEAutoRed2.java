@@ -112,6 +112,39 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
     double d;
 
+    public void cryptoBoxCount(RelicRecoveryVuMark vuMark){
+        int a = 0;
+        int b = 0;
+        switch (vuMark){
+            case LEFT:
+                a=1;
+                break;
+            case CENTER:
+                a=2;
+                break;
+            case RIGHT:
+                a=3;
+                break;
+        }
+        telemetry.addData("a",a);
+        telemetry.update();
+        while (b<a){
+            while (watcher.getPosition()>=0.85){
+                watcher.setPosition(watcher.getPosition()+0.01);
+                sleep(10);
+            }
+            while (sensorColour2.red()<=150){
+                moveFix(0.2,moveStatus.xR);
+            }
+            while (watcher.getPosition()<=0.45){
+                watcher.setPosition(watcher.getPosition()-0.01);
+                sleep(10);
+            }
+            b++;
+            autoTurnLocation(0);
+        }
+    }
+
     @Override
 
     public void runOpMode() {
@@ -310,7 +343,7 @@ public class TEAutoRed2 extends TurningEchoHardware {
 ///////////////////////////////////////////////////////////////////////////////////////////
                 moveFix(0.4,moveStatus.yF);//前进
 
-                sleep(750);
+                sleep(600);
 
                 moveFix(0.2, moveStatus.yF);//缓停
 
@@ -330,29 +363,27 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
                 moveFix(0.5, moveStatus.yF);
 
-                sleep(300);
+                sleep(250);
 
                 frameStop();
 
-                sleep(400);
+                sleep(300);
+
+                autoTurnLocation(0);
+
+                frameStop();
+
+                sleep(300);
 
                 moveFix(1,moveStatus.xL);
 
-                sleep(1100);
+                sleep(1200);
 
-                while (watcher.getPosition()>=0.21){
-                    watcher.setPosition(watcher.getPosition()-0.01);
-                    sleep(10);
-                }
+                autoTurnLocation(0);
 
-                while (sensorColour2.red()<=150){
-                    moveFix(0.2,moveStatus.xR);
-                }
                 frameStop();
 
-
-
-
+                cryptoBoxCount(vuMark);
 
                 /////////////////////////
 //                int c = 0;

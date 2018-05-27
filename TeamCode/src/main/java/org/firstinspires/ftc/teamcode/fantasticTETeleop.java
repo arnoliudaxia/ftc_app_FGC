@@ -246,6 +246,32 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 motorArm.setPower(gamepad2.right_trigger-gamepad2.left_trigger);
             }
 
+            if (gamepad2.left_bumper){
+                if (!servoBaby_1_case){
+                    servoBaby_1.setPosition(servoBabyPosition_1_up);
+                }
+                else {
+                    servoBaby_1.setPosition(servoBabyPosition_1_down);
+                }
+                while (gamepad2.left_bumper){
+                    idle();
+                }
+                servoBaby_1_case = !servoBaby_1_case;
+            }
+
+            if (gamepad2.right_bumper){
+                if (!servoBaby_2_case){
+                    servoBaby_2.setPosition(servoBabyPosition_2_tight);
+                }
+                else {
+                    servoBaby_2.setPosition(servoBabyPosition_2_release);
+                }
+                while (gamepad2.right_bumper){
+                    idle();
+                }
+                servoBaby_2_case = !servoBaby_2_case;
+            }
+
 //            if (gamepad1.right_stick_x > 0.4) {
 //                tripodHeadPosition = tripodHeadPosition + 0.02;
 //                tripodHead.setPosition(tripodHeadPosition);

@@ -84,6 +84,9 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
     Servo watcher = null;
 
+    Servo servoBaby_1 = null;
+    Servo servoBaby_2 = null;
+
     double servoBallPosition_2 = 0.59;
     double servoBallPosition_1 = 0;
 
@@ -94,7 +97,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     //boolean robot_case_2 = false;
     final double POWER_MODE_SLOW = 3;
     final double POWER_MODE_FAST = 1;
-    double powerMode = Range.clip(1, 1,3);//切换快/慢速模式
+    double powerMode = Range.clip(1, 1,2);//切换快/慢速模式
 
     boolean armCase = false;
 
@@ -103,17 +106,25 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     public boolean block12Catched = false;
     public boolean block34Catched = false;
 
-    public double servoBlockPosition_1_tight = 0.66;
+    public double servoBlockPosition_1_tight = 0.69;
     public double servoBlockPosition_2_tight = 0;
     public double servoBlockPosition_3_tight = 0.3;
     public double servoBlockPosition_4_tight = 0.9;
     public double servoBlockPosition_1_release = 0.35;
     public double servoBlockPosition_2_release = 0.31;
-    public double servoBlockPosition_3_release = 0.63;
-    public double servoBlockPosition_4_release = 0.62;
+    public double servoBlockPosition_3_release = 0.61;
+    public double servoBlockPosition_4_release = 0.64;
+
+    double servoBabyPosition_1_down = 1;
+    double servoBabyPosition_1_up = 0;
+    double servoBabyPosition_2_tight = 0.3;
+    double servoBabyPosition_2_release = 0;
 
     double yError = 0;
     double xError = 0;
+
+    boolean servoBaby_1_case = false;
+    boolean servoBaby_2_case = false;
 
     boolean shiftCount = false;
 
@@ -153,6 +164,9 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
 
         tripodHead = hardwareMap.get(Servo.class, "tripodHead");
         watcher = hardwareMap.get(Servo.class, "watcher");
+
+        servoBaby_1 = hardwareMap.servo.get("servoBaby_1");
+        servoBaby_2 = hardwareMap.servo.get("servoBaby_2");
 
         sensorColour1 = hardwareMap.get(ColorSensor.class, "sensorColourDistance1");
         sensorColour2 = hardwareMap.get(ColorSensor.class, "sensorColourDistance2");
@@ -419,14 +433,14 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     }
 
     public double switchPowerMode() {//切换低/高速模式
-        if (gamepad1.right_stick_y<=-0.5) {
-            powerMode = powerMode - 1;
-            while (gamepad1.right_stick_y<=-0.5) {
+        if (gamepad1.right_stick_y<=-0.8) {
+            powerMode = powerMode - 0.5;
+            while (gamepad1.right_stick_y<=-0.8) {
                 idle();
             }
-        } else if (gamepad1.right_stick_y>=0.5) {
-            powerMode = powerMode + 1;
-            while (gamepad1.right_stick_y>=0.5) {
+        } else if (gamepad1.right_stick_y>=0.8) {
+            powerMode = powerMode + 0.5;
+            while (gamepad1.right_stick_y>=0.8) {
                 idle();
             }
         }
