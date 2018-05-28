@@ -261,7 +261,7 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
         lift(1);//抬升滑轨
 
-        sleep(800);
+        sleep(500);
 
         lift(0);//卡住滑轨
 
@@ -375,15 +375,7 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
                 sleep(300);
 
-                moveFix(1,moveStatus.xL);
 
-                sleep(1200);
-
-                autoTurnLocation(0);
-
-                frameStop();
-
-                cryptoBoxCount(vuMark);
 
                 /////////////////////////
 //                int c = 0;
@@ -412,76 +404,80 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
                 /////////////////////////
 
-//                if (vuMark == LEFT) {
-//                    moveFix(1, moveStatus.xL);//左平移
-//
-//                    sleep(920);
-//                } else if (vuMark == CENTER) {//done
-//                    moveFix(1, moveStatus.xL);//左平移
-//
-//                    sleep(525);
-//                } else if (vuMark == RIGHT) {
-//                    moveFix(1, moveStatus.xL);//左平移
-//
-//                    sleep(320);
-//                }
-//
-//                frameStop();
-//
-//                sleep(500);
-//
-//                moveFix(0.3, moveStatus.rR);
-//
-//                sleep(170);
-//
-//                frameStop();
-//
-//                sleep(250);
-//
-//                moveFix(0.4, moveStatus.yF);//前进一点点
-//
-//                sleep(200);
-//
-//                frameStop();
-//
-//                lift(-1);//下降滑轨
-//
-//                sleep(600);
-//
-//                lift(0);//停止滑轨
-//
-//                catchBlock();//松开方块夹子
-//
-//                sleep(300);
-//
-//                moveFix(0.4, moveStatus.yF);//往前怼
-//
-//                sleep(900);
-//
-//                //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
-//                moveFix(0.3, moveStatus.yB);//后退一点点
-//
-//                sleep(120);
-//
-//                moveFix(0.4, moveStatus.rR);//右转
-//
-//                sleep(600);
-//
-//                moveFix(0.4, moveStatus.rL);//左转
-//
-//                sleep(600);
-//
-//                moveFix(0.3, moveStatus.yF);//往前推一点点
-//
-//                sleep(380);
-//
-//                frameStop();
-//
-//                sleep(100);
-//
-//                moveFix(0.4, moveStatus.yB);
-//
-//                sleep(220);
+                if (vuMark == LEFT) {
+                    moveFix(1, moveStatus.xL);//左平移
+
+                    sleep(920);
+                } else if (vuMark == CENTER) {//done
+                    moveFix(1, moveStatus.xL);//左平移
+
+                    sleep(525);
+                } else if (vuMark == RIGHT) {
+                    moveFix(1, moveStatus.xL);//左平移
+
+                    sleep(320);
+                }
+
+                frameStop();
+
+                sleep(500);
+
+                moveFix(0.3, moveStatus.rR);
+
+                sleep(170);
+
+                frameStop();
+
+                sleep(250);
+
+                moveFix(0.4, moveStatus.yF);//前进一点点
+
+                sleep(200);
+
+                frameStop();
+
+                motorShift.setPower(0.2);
+
+                sleep(300);
+
+                lift(-1);//下降滑轨
+
+                sleep(500);
+
+                lift(0);//停止滑轨
+
+                releaseBlock34();
+
+                sleep(300);
+
+                moveFix(0.4, moveStatus.yF);//往前怼
+
+                sleep(900);
+
+                //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
+                moveFix(0.3, moveStatus.yB);//后退一点点
+
+                sleep(120);
+
+                moveFix(0.4, moveStatus.rR);//右转
+
+                sleep(600);
+
+                moveFix(0.4, moveStatus.rL);//左转
+
+                sleep(600);
+
+                moveFix(0.3, moveStatus.yF);//往前推一点点
+
+                sleep(380);
+
+                frameStop();
+
+                sleep(100);
+
+                moveFix(0.4, moveStatus.yB);
+
+                sleep(220);
 
 //                while (Math.abs(Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle))) >= 0.6) {
 //                    while (true) {
@@ -531,6 +527,9 @@ public class TEAutoRed2 extends TurningEchoHardware {
 //                    catchBlock();
 //                }
                 frameStop();
+
+                motorShift.setPower(0);
+
                 break;
             } else {
                 telemetry.addData("VuMark", "not visible");

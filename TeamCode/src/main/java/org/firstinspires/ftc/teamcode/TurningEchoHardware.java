@@ -294,15 +294,15 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
             gravity = imu.getGravity();//获得IMU重力传感器
             R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));//
             target = R - degree;//目标旋转角度为此时IMU所测角减去设定角度数
-            rPower = Range.clip(Math.abs(target / 60), 0.25, 1);//自转功率取绝对值，最低为0.15（太慢转不动），最高为1
+            rPower = Range.clip(Math.abs(target / 60), 0.2, 1);//自转功率取绝对值，最低为0.15（太慢转不动），最高为1
             telemetry.addData("rPower = ", rPower);//打印rPower的值
 //            telemetry.update();
-            if (target >= -0.8 && target <= 0.8) {//在+-0.7的角度内停止自转，已足够精确
+            if (target >= -0.6 && target <= 0.6) {//在+-0.7的角度内停止自转，已足够精确
                 break;
             }
-            if (target < -0.8) {
+            if (target < -0.6) {
                 moveFix(rPower, moveStatus.rL);//向左旋转
-            } else if (target > 0.8) {
+            } else if (target > 0.6) {
                 moveFix(rPower, moveStatus.rR);//向右旋转
             }
         }

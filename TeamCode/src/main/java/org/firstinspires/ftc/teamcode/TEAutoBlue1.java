@@ -112,9 +112,6 @@ public class TEAutoBlue1 extends TurningEchoHardware {
 
     double d;
 
-    ColorSensor sensorColor;
-    DistanceSensor sensorDistance;
-
     @Override
 
     public void runOpMode() {
@@ -138,11 +135,10 @@ public class TEAutoBlue1 extends TurningEchoHardware {
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
 
-        sensorColor = hardwareMap.get(ColorSensor.class, "sensorColourDistance");
+        sensorColour1 = hardwareMap.get(ColorSensor.class, "sensorColourDistance");
 
-        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensorColourDistance");
+        sensorDistance1 = hardwareMap.get(DistanceSensor.class, "sensorColourDistance");
 
         // Set up our telemetry dashboard
         //composeTelemetry();
@@ -184,7 +180,7 @@ public class TEAutoBlue1 extends TurningEchoHardware {
 
         waitForStart();
         runtime.reset();
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        initIMU();
 
 
         int count = 0;
@@ -209,7 +205,7 @@ public class TEAutoBlue1 extends TurningEchoHardware {
 //        }
 
 
-        catchBlock();
+        catchBlock34();
 
         sleep(300);
 
@@ -223,13 +219,13 @@ public class TEAutoBlue1 extends TurningEchoHardware {
 
         lift(1);//抬升滑轨
 
-        sleep(1200);
+        sleep(500);
 
         lift(0);//卡住滑轨
 
         sleep(500);
 
-        if (sensorColor.blue() < sensorColor.red()) {//判断为 蓝色宝石
+        if (sensorColour1.blue() < sensorColour1.red()) {//判断为 蓝色宝石
             servoKickBall(0.84,0.7);
 
             sleep(300);
@@ -237,7 +233,7 @@ public class TEAutoBlue1 extends TurningEchoHardware {
             servoKickBall(0.15,0.54);
         }
 
-        else if (sensorColor.blue() > sensorColor.red()) {//判断为 红色宝石
+        else if (sensorColour1.blue() > sensorColour1.red()) {//判断为 红色宝石
             servoKickBall(0.84,0.25);
 
             sleep(300);
@@ -310,13 +306,13 @@ public class TEAutoBlue1 extends TurningEchoHardware {
 
                 sleep(300);
 
-                moveFix(0.3,moveStatus.rL);//unnecessary
-
-                sleep(10);
-
-                frameStop();
-
-                sleep(400);
+//                moveFix(0.3,moveStatus.rL);//unnecessary
+//
+//                sleep(10);
+//
+//                frameStop();
+//
+//                sleep(400);
 
                 moveFix(0.3,moveStatus.yF);
 
@@ -324,9 +320,7 @@ public class TEAutoBlue1 extends TurningEchoHardware {
 
                 frameStop();
 
-                initIMU();
-
-                sleep(400);
+                sleep(300);
 
                 moveFix(0.5,moveStatus.yB);
 
@@ -356,7 +350,9 @@ public class TEAutoBlue1 extends TurningEchoHardware {
                 }
 
                 else if (vuMark == CENTER){//done
+                    moveFix(0.6,moveStatus.xR);
 
+                    sleep(100);
                 }
 
                 else if (vuMark == RIGHT){
@@ -369,13 +365,19 @@ public class TEAutoBlue1 extends TurningEchoHardware {
 
                 sleep(400);
 
+                autoTurnLocation(-90);
+
+                frameStop();
+
+                motorShift.setPower(0.2);
+
                 lift(-1);//下降滑轨
 
-                sleep(950);
+                sleep(500);
 
                 lift(0);//停止滑轨
 
-                releaseBlock();//松开方块夹子
+                releaseBlock34();
 
                 sleep(300);
 
@@ -424,29 +426,21 @@ public class TEAutoBlue1 extends TurningEchoHardware {
                 }
 
                 if (vuMark == CENTER) {
-                    moveFix(0.4,moveStatus.rL);
+                    moveFix(0.3,moveStatus.yB);//后退一点点
 
-                    sleep(100);
-
-                    moveFix(0.4,moveStatus.rR);
-
-                    sleep(100);
+                    sleep(120);
 
                     moveFix(0.4,moveStatus.rL);
 
-                    sleep(250);
+                    sleep(400);
 
                     moveFix(0.4,moveStatus.rR);
-
-                    sleep(250);
-
-                    frameStop();
 
                     sleep(400);
 
                     moveFix(0.3,moveStatus.yF);
 
-                    sleep(200);
+                    sleep(380);
                 }
                 
                 frameStop();
@@ -458,6 +452,9 @@ public class TEAutoBlue1 extends TurningEchoHardware {
                 sleep(220);
                 
                 frameStop();
+
+                motorShift.setPower(0);
+
                 break;
             } else {
                 telemetry.addData("VuMark", "not visible");
