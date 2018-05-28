@@ -212,9 +212,8 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 }
             }
 
-            if (gamepad2.left_stick_y != 0) {
-                lift(-gamepad2.left_stick_y);
-            }
+            lift(-gamepad2.left_stick_y);
+
             //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
             if (gamepad1.dpad_up) {
                 servoKickBall_1.setPosition(0.15);
