@@ -113,7 +113,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     public double servoBlockPosition_1_release = 0.35;
     public double servoBlockPosition_2_release = 0.31;
     public double servoBlockPosition_3_release = 0.61;
-    public double servoBlockPosition_4_release = 0.64;
+    public double servoBlockPosition_4_release = 0.61;
 
     double servoBabyPosition_1_down = 1;
     double servoBabyPosition_1_up = 0;
@@ -217,11 +217,11 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         }
 
         public void run() {
-            telemetry.addData("shift", "started");
+            telemetry.addData("shift", "started");//名为“shift”的线程
             telemetry.update();
             try {
                 shiftReversed = !shiftReversed;
-                if (shiftReversed) {
+                if (shiftReversed) {//如果电机（shift）已反转
                     motorShift.setPower(0.6);
                     sleep(150, 0);
                     motorShift.setPower(0.4);
@@ -297,12 +297,15 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
             rPower = Range.clip(Math.abs(target / 60), 0.2, 1);//自转功率取绝对值，最低为0.15（太慢转不动），最高为1
             telemetry.addData("rPower = ", rPower);//打印rPower的值
 //            telemetry.update();
-            if (target >= -0.6 && target <= 0.6) {//在+-0.7的角度内停止自转，已足够精确
+            if (rPower<0.2){
+                rPower=0.2;
+            }
+            if (target >= -0.4 && target <= 0.4) {//在+-0.7的角度内停止自转，已足够精确
                 break;
             }
-            if (target < -0.6) {
+            if (target < -0.4) {
                 moveFix(rPower, moveStatus.rL);//向左旋转
-            } else if (target > 0.6) {
+            } else if (target > 0.4) {
                 moveFix(rPower, moveStatus.rR);//向右旋转
             }
         }

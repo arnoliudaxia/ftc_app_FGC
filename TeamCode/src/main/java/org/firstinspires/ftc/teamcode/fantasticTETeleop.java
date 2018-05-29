@@ -85,7 +85,10 @@ public class fantasticTETeleop extends TurningEchoHardware {
         releaseBlock12();
         releaseBlock34();
 
-        servoKickBall_2.setPosition(0.44);
+        servoKickBall_1.setPosition(0.3);
+        servoKickBall_2.setPosition(0.5);
+
+        watcher.setPosition(0.2);
 
         tripodHead.setPosition(tripodHeadPosition);
 
@@ -169,7 +172,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
             }
 
             if (gamepad2.right_stick_y<=-0.5) {
-                if (!shiftReversed) {
+                if (!shiftReversed) {//如果已反转
                     if (!block12Catched) {
                         catchBlock12();
                         block12Catched = true;

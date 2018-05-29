@@ -436,7 +436,7 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
                 frameStop();
 
-                motorShift.setPower(0.2);
+                motorShift.setPower(-0.15);
 
                 sleep(300);
 
