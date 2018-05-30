@@ -135,10 +135,11 @@ public class TEAutoBlue2 extends TurningEchoHardware {
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
         imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
-        sensorColour1 = hardwareMap.get(ColorSensor.class, "sensorColourDistance");
-
-        sensorDistance1 = hardwareMap.get(DistanceSensor.class, "sensorColourDistance");
+        releaseBlock12();
+        releaseBlock34();
 
         // Set up our telemetry dashboard
         //composeTelemetry();
@@ -207,15 +208,23 @@ public class TEAutoBlue2 extends TurningEchoHardware {
 
         catchBlock34();
 
-        sleep(300);
+        servoKickBall_1.setPosition(0.35);
 
-        servoKickBall(0.7, 0.54);
+        sleep(100);
 
-        sleep(500);
-
-        servoKickBall(0.84, 0.54);
-
-        sleep(400);
+        while (servoKickBall_1.getPosition()<=0.89){
+            servoBallPosition_1 = servoBallPosition_1 + 0.01;
+            servoKickBall(servoBallPosition_1,0.5);
+            sleep(8);
+            telemetry.addData("Red  ", sensorColour1.red());
+            telemetry.addData("Green", sensorColour1.green());
+            telemetry.addData("Blue ", sensorColour1.blue());
+            telemetry.update();
+        }
+        telemetry.addData("Red  ", sensorColour1.red());
+        telemetry.addData("Green", sensorColour1.green());
+        telemetry.addData("Blue ", sensorColour1.blue());
+        telemetry.update();
 
         lift(1);//抬升滑轨
 
@@ -225,20 +234,25 @@ public class TEAutoBlue2 extends TurningEchoHardware {
 
         sleep(500);
 
-        if (sensorColour1.blue() < sensorColour1.red()) {//判断为 蓝色宝石
-            servoKickBall(0.84,0.7);
+        if (sensorColour1.blue() > sensorColour1.red()) {//判断为 蓝色宝石
+            telemetry.addData("red",0);
+            telemetry.update();
+            servoKickBall(0.9,0.71);
 
             sleep(300);
 
-            servoKickBall(0.15,0.54);
+            servoKickBall(0.25,0.57);
         }
 
-        else if (sensorColour1.blue() > sensorColour1.red()) {//判断为 红色宝石
-            servoKickBall(0.84,0.25);
+        else if (sensorColour1.blue() < sensorColour1.red()) {//判断telemetry.addData("red",0);
+            telemetry.update();//为 红色宝石
+            telemetry.addData("blue",0);
+            telemetry.update();
+            servoKickBall(0.9,0.25);
 
             sleep(300);
 
-            servoKickBall(0.15,0.54);
+            servoKickBall(0.25,0.57);
         }
 
 
@@ -263,7 +277,7 @@ public class TEAutoBlue2 extends TurningEchoHardware {
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
-            tripodHeadPosition = 0.5;//云台舵机角度
+            tripodHeadPosition = 0.19;//云台舵机角度
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
             while (RelicRecoveryVuMark.from(relicTemplate) == RelicRecoveryVuMark.UNKNOWN) {
                 if (RelicRecoveryVuMark.from(relicTemplate) != RelicRecoveryVuMark.UNKNOWN) {//如果扫到了壁画，则vuMark=壁画，
@@ -272,11 +286,11 @@ public class TEAutoBlue2 extends TurningEchoHardware {
                 telemetry.addData("VuMark", "%s visible", vuMark);//打印数据
                 telemetry.update();
                 tripodHead.setPosition(tripodHeadPosition);//设定云台角度
-                tripodHeadPosition = tripodHeadPosition + 0.05;//每次云台转动0.05角度
-                sleep(550);
+                tripodHeadPosition = tripodHeadPosition + 0.04;//每次云台转动0.05角度
+                sleep(600);
                 count++;
-                if (tripodHeadPosition > 0.75) {//让云台在0.5-0.7角度范围内转动
-                    tripodHeadPosition = 0.45;
+                if (tripodHeadPosition > 0.4) {//让云台在0.5-0.7角度范围内转动
+                    tripodHeadPosition = 0.19;
                 }
                 if (count > 14) {//8*700=5.6秒，5.6秒后还未扫到壁画则跳出循环
                     break;
@@ -320,6 +334,10 @@ public class TEAutoBlue2 extends TurningEchoHardware {
 
                 frameStop();
 
+                autoTurnLocation(0);
+
+                frameStop();
+
                 autoTurnLocation(-90);
 
                 frameStop();
@@ -354,13 +372,13 @@ public class TEAutoBlue2 extends TurningEchoHardware {
                 else if (vuMark == CENTER){//done
                     moveFix(1,moveStatus.xR);//you平移
 
-                    sleep(560);
+                    sleep(700);
                 }
 
                 else if (vuMark == LEFT){
                     moveFix(1,moveStatus.xR);//you平移
 
-                    sleep(280);
+                    sleep(500);
                 }
 
                 frameStop();
@@ -371,7 +389,7 @@ public class TEAutoBlue2 extends TurningEchoHardware {
 
                 frameStop();
 
-                motorShift.setPower(0.2);
+                motorShift.setPower(-0.15);
 
         /*youzhuan(0.3);
 

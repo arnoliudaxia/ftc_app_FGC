@@ -285,6 +285,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     }
 
     public void autoTurnLocation(double degree) {
+        runtime.reset();
         double R;//自转角度
         double rPower;//自转功率
         double target;//目标旋转角度
@@ -292,15 +293,15 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
             telemetry.update();
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//获得IMU角度
             gravity = imu.getGravity();//获得IMU重力传感器
-            R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));//
+            R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
             target = R - degree;//目标旋转角度为此时IMU所测角减去设定角度数
-            rPower = Range.clip(Math.abs(target / 60), 0.2, 1);//自转功率取绝对值，最低为0.15（太慢转不动），最高为1
+            rPower = Range.clip(Math.abs(target / 75), 0.22, 1);//自转功率取绝对值，最低为0.2（太慢无效率），最高为1
             telemetry.addData("rPower = ", rPower);//打印rPower的值
 //            telemetry.update();
-            if (rPower<0.2){
-                rPower=0.2;
+            if (rPower<0.22){
+                rPower=0.22;
             }
-            if (target >= -0.4 && target <= 0.4) {//在+-0.7的角度内停止自转，已足够精确
+            if (target >= -0.4 && target <= 0.4 && getRuntime()>=1.2) {//在+-0.4的角度内停止自转，已足够精确
                 break;
             }
             if (target < -0.4) {
@@ -446,6 +447,13 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
             while (gamepad1.right_stick_y>=0.8) {
                 idle();
             }
+        }
+
+        if (powerMode<1){
+            powerMode=1;
+        }
+        else if (powerMode>2){
+            powerMode=2;
         }
 
         return powerMode;
