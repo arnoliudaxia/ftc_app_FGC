@@ -459,15 +459,15 @@ public class TEAutoRed2 extends TurningEchoHardware {
                 //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
                 moveFix(0.3, moveStatus.yB);//后退一点点
 
-                sleep(120);
+                sleep(130);
 
                 moveFix(0.4, moveStatus.rR);//右转
 
-                sleep(600);
+                sleep(400);
 
                 moveFix(0.4, moveStatus.rL);//左转
 
-                sleep(600);
+                sleep(400);
 
                 moveFix(0.3, moveStatus.yF);//往前推一点点
 

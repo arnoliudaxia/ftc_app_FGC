@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -41,6 +42,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.CENTER;
+import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.LEFT;
+import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.RIGHT;
 
 
 /**
@@ -56,7 +61,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="test", group="Linear Opmode")
+@Autonomous(name="test", group="Linear Opmode")
 //@Disabled
 public class test extends TurningEchoHardware {
 
@@ -75,38 +80,144 @@ public class test extends TurningEchoHardware {
         waitForStart();//当开始键按下后
         runtime.reset();
 
+        catchBlock34();
+
+        lift(1);
+
+        sleep(500);
+
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {//循环主函数
-            powerMode =1;
+        moveFix(0.5,moveStatus.yB);
+
+        sleep(600);
+
+        frameStop();
 
 
-            if (gamepad1.a){
-                initIMU();
-            }
+        autoTurnLocation(-90);
 
-            if (gamepad1.x){
-                autoTurnLocation(180);
-            }
+        //frameStop();
 
-            if (gamepad1.b){
-                autoTurnLocation(90);
-            }
+//                sleep(200);
+//
+//                moveFix(0.6,moveStatus.rR);
+//
+//                sleep(700);
 
-            if (gamepad1.y){
-                autoTurnLocation(-180);
-            }
+        frameStop();
 
-            frameStop();
+        sleep(300);
 
-            telemetry.addData("heading", formatAngle(angles.angleUnit, angles.firstAngle));
-            telemetry.addData("distance", sensorDistance1.getDistance(DistanceUnit.CM));
-            telemetry.addData("Red  ", sensorColour1.red());
-            telemetry.addData("Green", sensorColour1.green());
-            telemetry.addData("Blue ", sensorColour1.blue());
-            telemetry.update();
-//                telemetry.addData("Status", "Run Time: " + runtime.toString());
-//                telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
-//                telemetry.update();
-        }
+        //if (vuMark == LEFT){
+            moveFix(0.6,moveStatus.xL);//左平移
+
+            sleep(400);
+        //}
+
+//        else if (vuMark == CENTER){//done
+//            moveFix(0.6,moveStatus.xR);
+//
+//            sleep(150);
+//        }
+//
+//        else if (vuMark == RIGHT){
+//            moveFix(0.6,moveStatus.xR);
+//
+//            sleep(420);
+//        }
+
+        frameStop();
+
+        sleep(400);
+
+        autoTurnLocation(-90);
+
+        frameStop();
+
+        motorShift.setPower(-0.15);
+
+        lift(-1);//下降滑轨
+
+        sleep(500);
+
+        lift(0);//停止滑轨
+
+        releaseBlock34();
+
+        sleep(300);
+
+        moveFix(0.4,moveStatus.yF);//往前怼
+
+        sleep(900);
+
+        frameStop();
+
+        sleep(400);
+
+//        if (vuMark == RIGHT){
+//            moveFix(0.3,moveStatus.yB);//后退一点点
+//
+//            sleep(120);
+//
+//            moveFix(0.4,moveStatus.rR);//右转
+//
+//            sleep(600);
+//
+//            moveFix(0.4,moveStatus.rL);//左转
+//
+//            sleep(600);
+//
+//            moveFix(0.3,moveStatus.yF);//往前推一点点
+//
+//            sleep(380);
+//        }
+
+        //if (vuMark == LEFT){
+            moveFix(0.3,moveStatus.yB);//后退一点点
+
+            sleep(120);
+
+            moveFix(0.4,moveStatus.rL);//左转
+
+            sleep(600);
+
+            moveFix(0.4,moveStatus.rR);//右转
+
+            sleep(600);
+
+            moveFix(0.3,moveStatus.yF);//往前推一点点
+
+            sleep(380);
+        //}
+
+//        if (vuMark == CENTER) {
+//            moveFix(0.3,moveStatus.yB);//后退一点点
+//
+//            sleep(120);
+//
+//            moveFix(0.4,moveStatus.rL);
+//
+//            sleep(400);
+//
+//            moveFix(0.4,moveStatus.rR);
+//
+//            sleep(400);
+//
+//            moveFix(0.3,moveStatus.yF);
+//
+//            sleep(380);
+//        }
+
+        frameStop();
+
+        sleep(100);
+
+        moveFix(0.4,moveStatus.yB);
+
+        sleep(220);
+
+        frameStop();
+
+        motorShift.setPower(0);
     }
 }

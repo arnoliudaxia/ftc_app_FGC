@@ -366,7 +366,7 @@ public class TEAutoBlue1 extends TurningEchoHardware {
                 else if (vuMark == CENTER){//done
                     moveFix(0.6,moveStatus.xR);
 
-                    sleep(100);
+                    sleep(150);
                 }
 
                 else if (vuMark == RIGHT){
