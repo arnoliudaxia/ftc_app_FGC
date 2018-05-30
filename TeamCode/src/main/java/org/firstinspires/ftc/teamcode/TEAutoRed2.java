@@ -243,14 +243,16 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
         catchBlock34();
 
-        servoKickBall_1.setPosition(0.35);
+        servoBallPosition_1 = 0.35;
 
-        sleep(100);
+        servoKickBall_1.setPosition(servoBallPosition_1);
 
-        while (servoKickBall_1.getPosition()<=0.89){
-            servoBallPosition_1 = servoBallPosition_1 + 0.01;
+        sleep(600);
+
+        while (servoBallPosition_1<=0.87){
+            servoBallPosition_1 = servoBallPosition_1 + 0.05;
             servoKickBall(servoBallPosition_1,0.5);
-            sleep(8);
+            sleep(10);
             telemetry.addData("Red  ", sensorColour1.red());
             telemetry.addData("Green", sensorColour1.green());
             telemetry.addData("Blue ", sensorColour1.blue());
@@ -365,7 +367,7 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
                 moveFix(0.5, moveStatus.yF);
 
-                sleep(250);
+                sleep(180);
 
                 frameStop();
 
@@ -413,20 +415,18 @@ public class TEAutoRed2 extends TurningEchoHardware {
                 } else if (vuMark == CENTER) {//done
                     moveFix(1, moveStatus.xL);//左平移
 
-                    sleep(525);
+                    sleep(675);
                 } else if (vuMark == RIGHT) {
                     moveFix(1, moveStatus.xL);//左平移
 
-                    sleep(320);
+                    sleep(450);
                 }
 
                 frameStop();
 
                 sleep(500);
 
-                moveFix(0.3, moveStatus.rR);
-
-                sleep(170);
+                autoTurnLocation(0);
 
                 frameStop();
 

@@ -208,14 +208,14 @@ public class TEAutoBlue2 extends TurningEchoHardware {
 
         catchBlock34();
 
-        servoKickBall_1.setPosition(0.35);
+        servoKickBall_1.setPosition(0.4);
 
-        sleep(100);
+        sleep(300);
 
-        while (servoKickBall_1.getPosition()<=0.89){
-            servoBallPosition_1 = servoBallPosition_1 + 0.01;
+        while (servoKickBall_1.getPosition()<=0.87){
+            servoBallPosition_1 = servoBallPosition_1 + 0.02;
             servoKickBall(servoBallPosition_1,0.5);
-            sleep(8);
+            sleep(10);
             telemetry.addData("Red  ", sensorColour1.red());
             telemetry.addData("Green", sensorColour1.green());
             telemetry.addData("Blue ", sensorColour1.blue());
