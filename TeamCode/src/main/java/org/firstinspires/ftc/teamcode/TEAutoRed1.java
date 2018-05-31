@@ -208,14 +208,16 @@ public class TEAutoRed1 extends TurningEchoHardware {
 
         catchBlock34();
 
-        servoKickBall_1.setPosition(0.4);
+        servoBallPosition_1 = 0.35;
 
-        sleep(300);
+        servoKickBall_1.setPosition(servoBallPosition_1);
 
-        while (servoKickBall_1.getPosition()<=0.87){
-            servoBallPosition_1 = servoBallPosition_1 + 0.02;
+        sleep(600);
+
+        while (servoBallPosition_1<=0.87){
+            servoBallPosition_1 = servoBallPosition_1 + 0.05;
             servoKickBall(servoBallPosition_1,0.5);
-            sleep(8);
+            sleep(10);
             telemetry.addData("Red  ", sensorColour1.red());
             telemetry.addData("Green", sensorColour1.green());
             telemetry.addData("Blue ", sensorColour1.blue());
@@ -241,6 +243,10 @@ public class TEAutoRed1 extends TurningEchoHardware {
 
             sleep(300);
 
+            servoKickBall(0.25,0.71);
+
+            sleep(200);
+
             servoKickBall(0.25,0.57);
         }
 
@@ -251,6 +257,10 @@ public class TEAutoRed1 extends TurningEchoHardware {
             servoKickBall(0.9,0.25);
 
             sleep(300);
+
+            servoKickBall(0.25,0.25);
+
+            sleep(200);
 
             servoKickBall(0.25,0.57);
         }
@@ -286,10 +296,10 @@ public class TEAutoRed1 extends TurningEchoHardware {
                 telemetry.addData("VuMark", "%s visible", vuMark);//打印数据
                 telemetry.update();
                 tripodHead.setPosition(tripodHeadPosition);//设定云台角度
-                tripodHeadPosition = tripodHeadPosition + 0.04;//每次云台转动0.05角度
-                sleep(600);
+                tripodHeadPosition = tripodHeadPosition + 0.07;//每次云台转动0.05角度
+                sleep(700);
                 count++;
-                if (tripodHeadPosition > 0.4) {//让云台在0.5-0.7角度范围内转动
+                if (tripodHeadPosition > 0.54) {//让云台在0.5-0.7角度范围内转动
                     tripodHeadPosition = 0.19;
                 }
                 if (count > 14) {//8*700=5.6秒，5.6秒后还未扫到壁画则跳出循环
@@ -307,6 +317,9 @@ public class TEAutoRed1 extends TurningEchoHardware {
 //                telemetry.addData("Pose", format(pose));
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 gravity = imu.getGravity();
+
+                telemetry.addData("heading", formatAngle(angles.angleUnit, angles.firstAngle));
+                telemetry.update();
 ///////////////////////////////////////////////////////////////////////////////////////////
                 moveFix(0.4,moveStatus.yF);//前进
 
@@ -330,7 +343,7 @@ public class TEAutoRed1 extends TurningEchoHardware {
 
                 frameStop();
 
-                sleep(400);
+                sleep(300);
 
                 autoTurnLocation(-90);
 
@@ -347,7 +360,7 @@ public class TEAutoRed1 extends TurningEchoHardware {
                 else if (vuMark == CENTER){//done
                     moveFix(0.6,moveStatus.xR);
 
-                    sleep(150);
+                    sleep(530);
                 }
 
                 else if (vuMark == RIGHT){
@@ -355,10 +368,6 @@ public class TEAutoRed1 extends TurningEchoHardware {
 
                     sleep(530);
                 }
-
-                frameStop();
-
-                autoTurnLocation(-90);
 
                 frameStop();
 
@@ -407,11 +416,11 @@ public class TEAutoRed1 extends TurningEchoHardware {
 
                     sleep(120);
 
-                    moveFix(0.4,moveStatus.rL);//左转
+                    moveFix(0.4,moveStatus.rR);//左转
 
                     sleep(400);
 
-                    moveFix(0.4,moveStatus.rR);//右转
+                    moveFix(0.4,moveStatus.rL);//右转
 
                     sleep(400);
 

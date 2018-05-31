@@ -298,15 +298,15 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
             rPower = Range.clip(Math.abs(target / 75), 0.24, 1);//自转功率取绝对值，最低为0.2（太慢无效率），最高为1
             telemetry.addData("rPower = ", rPower);//打印rPower的值
 //            telemetry.update();
-            if (rPower<0.24){
-                rPower=0.24;
+            if (rPower<0.23){
+                rPower=0.23;
             }
             if (target >= -0.4 && target <= 0.4 && getRuntime()>=1.2) {//在+-0.4的角度内停止自转，已足够精确
                 break;
             }
-            else if (getRuntime()>=4){
-                break;
-            }
+//            else if (getRuntime()>=4){
+//                break;
+//            }
             if (target < -0.4) {
                 moveFix(rPower, moveStatus.rL);//向左旋转
             } else if (target > 0.4) {

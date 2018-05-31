@@ -249,7 +249,7 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
         sleep(600);
 
-        while (servoBallPosition_1<=0.87){
+        while (servoBallPosition_1<=0.85){
             servoBallPosition_1 = servoBallPosition_1 + 0.05;
             servoKickBall(servoBallPosition_1,0.5);
             sleep(10);
@@ -278,6 +278,10 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
             sleep(300);
 
+            servoKickBall(0.25,0.71);
+
+            sleep(200);
+
             servoKickBall(0.25,0.57);
         }
 
@@ -288,6 +292,10 @@ public class TEAutoRed2 extends TurningEchoHardware {
             servoKickBall(0.9,0.25);
 
             sleep(300);
+
+            servoKickBall(0.25,0.25);
+
+            sleep(200);
 
             servoKickBall(0.25,0.57);
         }
@@ -323,10 +331,10 @@ public class TEAutoRed2 extends TurningEchoHardware {
                 telemetry.addData("VuMark", "%s visible", vuMark);//打印数据
                 telemetry.update();
                 tripodHead.setPosition(tripodHeadPosition);//设定云台角度
-                tripodHeadPosition = tripodHeadPosition + 0.04;//每次云台转动0.05角度
-                sleep(600);
+                tripodHeadPosition = tripodHeadPosition + 0.07;//每次云台转动0.05角度
+                sleep(700);
                 count++;
-                if (tripodHeadPosition > 0.4) {//让云台在0.5-0.7角度范围内转动
+                if (tripodHeadPosition > 0.54) {//让云台在0.5-0.7角度范围内转动
                     tripodHeadPosition = 0.19;
                 }
                 if (count > 14) {//8*700=5.6秒，5.6秒后还未扫到壁画则跳出循环

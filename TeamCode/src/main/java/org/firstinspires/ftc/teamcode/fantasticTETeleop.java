@@ -165,9 +165,9 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 else {
                     motorShift.setPower(-0.2);
                 }
-                while (gamepad2.left_stick_button){
-                    idle();
-                }
+            }
+
+            else if (!gamepad2.left_stick_button){
                 motorShift.setPower(0);
             }
 
@@ -387,6 +387,8 @@ public class fantasticTETeleop extends TurningEchoHardware {
             telemetry.addData("heading", formatAngle(angles.angleUnit, angles.firstAngle));
             telemetry.addData("roll", formatAngle(angles.angleUnit, angles.secondAngle));
             telemetry.addData("pitch", formatAngle(angles.angleUnit, angles.thirdAngle));
+            telemetry.addData("red", sensorColour1.red());
+            telemetry.addData("blue", sensorColour1.blue());
 //            telemetry.addData("gravityX", gravity.xAccel);
 //            telemetry.addData("gravityY", gravity.yAccel);
 //            telemetry.addData("gravityZ", gravity.zAccel);
