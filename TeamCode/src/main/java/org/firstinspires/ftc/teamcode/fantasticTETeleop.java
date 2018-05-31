@@ -77,7 +77,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
     public void runOpMode() {
         TurningEchoHardwareConfigure();
         Thread1 shift = new Thread1("shift");
-        Thread2 initIMU_ALL = new Thread2(("initIMU_ALL"));
+        //Thread2 initIMU_ALL = new Thread2(("initIMU_ALL"));
         telemetry.addData("Hardware", "Initialized");
         telemetry.addData("parameters", "Initialized");
         telemetry.addData("IMU", "Initialized");
@@ -104,7 +104,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
         waitForStart();
         runtime.reset();
 
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        //imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
 //        PowerFL = 0;
 //        PowerFR = 0;
@@ -112,8 +112,8 @@ public class fantasticTETeleop extends TurningEchoHardware {
 //        PowerBR = 0;
 
         while (opModeIsActive()) {
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            gravity = imu.getGravity();
+            //angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            //gravity = imu.getGravity();
 
             powerMode = switchPowerMode();//powerMode变量——SwitchpowerMode方法，powerMode变量将有1（正常速度）、2.5（慢速）的返回值
 
@@ -174,10 +174,10 @@ public class fantasticTETeleop extends TurningEchoHardware {
 
             else if (gamepad2.left_stick_button){
                 if (shiftReversed){
-                    motorShift.setPower(0.2);
+                    motorShift.setPower(0.5);
                 }
                 else {
-                    motorShift.setPower(-0.2);
+                    motorShift.setPower(-0.5);
                 }
             }
 
@@ -308,82 +308,82 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 break;
             }
 
-            if (gamepad1.left_stick_button) {
-                initIMU_ALL.start();
-                while (gamepad1.left_stick_button){
-                    idle();
-                }
-            }
+//            if (gamepad1.left_stick_button) {
+//                initIMU_ALL.start();
+//                while (gamepad1.left_stick_button){
+//                    idle();
+//                }
+//            }
 
-            if (gamepad1.start) {//当一操start被按下
-//                moveFix(1,moveStatus.xF);
-//                sleep(200);
-                double R;//自转角度
-                double rPower;//自转功率
-                while (true) {
-                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//获得IMU角度
-                    gravity = imu.getGravity();//获得IMU重力传感器数据
-                    R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));//
-                    rPower = Range.clip(Math.abs(R / 45), 0.15, 1);//自转功率取绝对值，最低为0.15（太慢转不动），最高为1
-                    telemetry.addData("rPower = ", rPower);//打印rPower的值
-                    telemetry.update();
-                    if (R >= -0.7 && R <= 0.7) {//在+-0.7的角度内停止自转，已足够精确
-                        break;
-                    } else if (R < -0.7) {
-                        moveFix(rPower, moveStatus.rL);//向左旋转
-                    } else if (R > 0.7) {
-                        moveFix(rPower, moveStatus.rR);//向右旋转
-                    } else idle();
-
-                    if (!gamepad1.start) {//一操start键松开
-                        frameStop();//停止
-                        break;//跳出循环
-                    }
-                }
-            }
-
-            if (gamepad1.right_stick_button) {//如果一操右摇杆按钮被按下
-                double Y;//y轴姿态角
-                double X;//x轴姿态角
-                double yPower;//y轴功率
-                double xPower;
-                while (true) {
-                    double Battery = getBatteryVoltage();//获得电池电量
-                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//当前陀螺仪（三轴姿态角）数据赋给angles
-                    gravity = imu.getGravity();//当前加速度数据赋给gravity
-//                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) + 1.6;//Y轴姿态角（车体平放时y轴姿态角是-1.6左右）
-//                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));//x轴姿态角
-                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) - yError + 0.2;
-                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle)) - xError;
-                    if (Y > 10) {//Y轴角度控制在-10到10之间（上板和下板的最大倾斜角）
-                        Y = 10;
-                    } else if (Y < -10) {
-                        Y = -10;
-                    }
-                    if (X > 5) {//X轴角度控制在-5°到5°之间
-                        X = 5;
-                    } else if (X < -5) {
-                        X = -5;
-                    }
-                    //x、y轴功率与x、y轴姿态角函数关系式
-                    yPower = +0.000002652391975309918 * Y * Y * Y * Y * Y - 0.000002411265432094396 * Y * Y * Y * Y - 0.00033661265432107044 * Y * Y * Y + 0.0005806327160490544 * Y * Y + 0.05630401234567932 * Y - 0.042283950617282684;
-                    xPower = +0.0016666666666666741 * X * X * X + 1.850371707708594e-17 * X * X - 0.10166666666666667 * X - 1.850371707708594e-17;
-                    moveVar(yPower, xPower,  1);//移动函数，输入x、y轴功率值
-                    telemetry.addData("blankY", Y);//打印y轴姿态角数据
-                    telemetry.addData("yPower", yPower);//打印y轴功率值
-                    telemetry.addData("blankX", X);//打印x轴姿态角数据
-                    telemetry.addData("xPower", xPower);//打印x轴功率值
-                    telemetry.addData("Battery", Battery);//打印电池电量
-                    //打印底盘四个电机功率
-                    //telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
-                    telemetry.update();
-
-                    if (!gamepad1.right_stick_button || gamepad1.start) {//如果一操右摇杆按钮被松开
-                        frameStop();//停车
-                        break;//退出循环
-                    }
-                }
-            }
+//            if (gamepad1.start) {//当一操start被按下
+////                moveFix(1,moveStatus.xF);
+////                sleep(200);
+//                double R;//自转角度
+//                double rPower;//自转功率
+//                while (true) {
+//                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//获得IMU角度
+//                    gravity = imu.getGravity();//获得IMU重力传感器数据
+//                    R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));//
+//                    rPower = Range.clip(Math.abs(R / 45), 0.15, 1);//自转功率取绝对值，最低为0.15（太慢转不动），最高为1
+//                    telemetry.addData("rPower = ", rPower);//打印rPower的值
+//                    telemetry.update();
+//                    if (R >= -0.7 && R <= 0.7) {//在+-0.7的角度内停止自转，已足够精确
+//                        break;
+//                    } else if (R < -0.7) {
+//                        moveFix(rPower, moveStatus.rL);//向左旋转
+//                    } else if (R > 0.7) {
+//                        moveFix(rPower, moveStatus.rR);//向右旋转
+//                    } else idle();
+//
+//                    if (!gamepad1.start) {//一操start键松开
+//                        frameStop();//停止
+//                        break;//跳出循环
+//                    }
+//                }
+//            }
+//
+//            if (gamepad1.right_stick_button) {//如果一操右摇杆按钮被按下
+//                double Y;//y轴姿态角
+//                double X;//x轴姿态角
+//                double yPower;//y轴功率
+//                double xPower;
+//                while (true) {
+//                    double Battery = getBatteryVoltage();//获得电池电量
+//                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//当前陀螺仪（三轴姿态角）数据赋给angles
+//                    gravity = imu.getGravity();//当前加速度数据赋给gravity
+////                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) + 1.6;//Y轴姿态角（车体平放时y轴姿态角是-1.6左右）
+////                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));//x轴姿态角
+//                    Y = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)) - yError + 0.2;
+//                    X = Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle)) - xError;
+//                    if (Y > 10) {//Y轴角度控制在-10到10之间（上板和下板的最大倾斜角）
+//                        Y = 10;
+//                    } else if (Y < -10) {
+//                        Y = -10;
+//                    }
+//                    if (X > 5) {//X轴角度控制在-5°到5°之间
+//                        X = 5;
+//                    } else if (X < -5) {
+//                        X = -5;
+//                    }
+//                    //x、y轴功率与x、y轴姿态角函数关系式
+//                    yPower = +0.000002652391975309918 * Y * Y * Y * Y * Y - 0.000002411265432094396 * Y * Y * Y * Y - 0.00033661265432107044 * Y * Y * Y + 0.0005806327160490544 * Y * Y + 0.05630401234567932 * Y - 0.042283950617282684;
+//                    xPower = +0.0016666666666666741 * X * X * X + 1.850371707708594e-17 * X * X - 0.10166666666666667 * X - 1.850371707708594e-17;
+//                    moveVar(yPower, xPower,  1);//移动函数，输入x、y轴功率值
+//                    telemetry.addData("blankY", Y);//打印y轴姿态角数据
+//                    telemetry.addData("yPower", yPower);//打印y轴功率值
+//                    telemetry.addData("blankX", X);//打印x轴姿态角数据
+//                    telemetry.addData("xPower", xPower);//打印x轴功率值
+//                    telemetry.addData("Battery", Battery);//打印电池电量
+//                    //打印底盘四个电机功率
+//                    //telemetry.addData("Motors", "zuoqian (%.2f), youqian (%.2f),zuohou (%.2f),youhou (%.2f)", PowerFL, PowerFR, PowerBL, PowerBR);
+//                    telemetry.update();
+//
+//                    if (!gamepad1.right_stick_button || gamepad1.start) {//如果一操右摇杆按钮被松开
+//                        frameStop();//停车
+//                        break;//退出循环
+//                    }
+//                }
+//            }
 
 //            if (gamepad1.b) {
 //                double Y;
@@ -404,9 +404,9 @@ public class fantasticTETeleop extends TurningEchoHardware {
 //            PowerBR = motorBR.getPower();
 
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("heading", formatAngle(angles.angleUnit, angles.firstAngle));
-            telemetry.addData("roll", formatAngle(angles.angleUnit, angles.secondAngle));
-            telemetry.addData("pitch", formatAngle(angles.angleUnit, angles.thirdAngle));
+//            telemetry.addData("heading", formatAngle(angles.angleUnit, angles.firstAngle));
+//            telemetry.addData("roll", formatAngle(angles.angleUnit, angles.secondAngle));
+//            telemetry.addData("pitch", formatAngle(angles.angleUnit, angles.thirdAngle));
             telemetry.addData("red", sensorColour1.red());
             telemetry.addData("blue", sensorColour1.blue());
 //            telemetry.addData("gravityX", gravity.xAccel);

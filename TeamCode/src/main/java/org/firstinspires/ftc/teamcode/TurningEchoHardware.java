@@ -222,20 +222,20 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
             try {
                 shiftReversed = !shiftReversed;
                 if (shiftReversed) {//如果电机（shift）已反转
-                    motorShift.setPower(0.6);
+                    motorShift.setPower(0.63);
                     sleep(150, 0);
-                    motorShift.setPower(0.4);
+                    motorShift.setPower(0.43);
                     sleep(350, 0);
-                    motorShift.setPower(0.2);
+                    motorShift.setPower(0.23);
                     sleep(600, 0);
                 }
 
                 else {
-                    motorShift.setPower(-0.6);
+                    motorShift.setPower(-0.63);
                     sleep(150, 0);
-                    motorShift.setPower(-0.4);
+                    motorShift.setPower(-0.43);
                     sleep(350, 0);
-                    motorShift.setPower(-0.2);
+                    motorShift.setPower(-0.23);
                     sleep(600, 0);
                 }
                 motorShift.setPower(0);
