@@ -354,7 +354,7 @@ public class TEAutoRed1 extends TurningEchoHardware {
                 if (vuMark == LEFT){
                     moveFix(0.6,moveStatus.xL);//左平移
 
-                    sleep(400);
+                    sleep(530);
                 }
 
                 else if (vuMark == CENTER){//done

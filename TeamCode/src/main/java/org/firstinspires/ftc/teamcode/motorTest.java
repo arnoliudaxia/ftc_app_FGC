@@ -122,6 +122,12 @@ public class motorTest extends TurningEchoHardware {
             if (gamepad1.start){
                 motorTest.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
+
+            if (gamepad2.dpad_up){
+                moveFix(0.32,moveStatus.rR);
+            }
+
+            else frameStop();
 //
 //            if (gamepad2.right_stick_button){
 //                motorTest.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

@@ -172,7 +172,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 }
             }
 
-            else if (gamepad2.left_stick_button){
+            else if (gamepad2.left_trigger>=0.1 || gamepad2.right_trigger>=0.1){
                 if (shiftReversed){
                     motorShift.setPower(0.5);
                 }

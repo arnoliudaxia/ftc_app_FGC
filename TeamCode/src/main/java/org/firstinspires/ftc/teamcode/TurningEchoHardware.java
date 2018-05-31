@@ -116,7 +116,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     public double servoBlockPosition_4_release = 0.61;
 
     double servoBabyPosition_1_down = 1;
-    double servoBabyPosition_1_up = 0;
+    double servoBabyPosition_1_up = 0.2;
     double servoBabyPosition_2_tight = 0.3;
     double servoBabyPosition_2_release = 0;
 
@@ -289,27 +289,30 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         double R;//自转角度
         double rPower;//自转功率
         double target;//目标旋转角度
+        powerMode=1;
         while (true) {
-            telemetry.update();
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//获得IMU角度
             gravity = imu.getGravity();//获得IMU重力传感器
             R = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
             target = R - degree;//目标旋转角度为此时IMU所测角减去设定角度数
-            rPower = Range.clip(Math.abs(target / 75), 0.24, 1);//自转功率取绝对值，最低为0.2（太慢无效率），最高为1
-            telemetry.addData("rPower = ", rPower);//打印rPower的值
+            rPower = Math.abs(target / 60);//自转功率取绝对值，最低为0.2（太慢无效率），最高为1
+
 //            telemetry.update();
-            if (rPower<0.23){
-                rPower=0.23;
+            if (rPower<0.25){
+                rPower=0.25;
             }
-            if (target >= -0.4 && target <= 0.4 && getRuntime()>=1.2) {//在+-0.4的角度内停止自转，已足够精确
+            else idle();
+            telemetry.addData("rPower = ", rPower);//打印rPower的值
+            telemetry.update();
+            if (target >= -0.5 && target <= 0.5) {//在+-0.4的角度内停止自转，已足够精确
                 break;
             }
 //            else if (getRuntime()>=4){
 //                break;
 //            }
-            if (target < -0.4) {
+            if (target < -0.5) {
                 moveFix(rPower, moveStatus.rL);//向左旋转
-            } else if (target > 0.4) {
+            } else if (target > 0.5) {
                 moveFix(rPower, moveStatus.rR);//向右旋转
             }
         }

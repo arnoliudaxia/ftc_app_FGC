@@ -370,19 +370,19 @@ public class TEAutoBlue1 extends TurningEchoHardware {
                 if (vuMark == LEFT){
                     moveFix(0.6,moveStatus.xL);//左平移
 
-                    sleep(400);
+                    sleep(540);
                 }
 
                 else if (vuMark == CENTER){//done
                     moveFix(0.6,moveStatus.xR);
 
-                    sleep(150);
+                    sleep(530);
                 }
 
                 else if (vuMark == RIGHT){
                     moveFix(0.6,moveStatus.xR);
 
-                    sleep(420);
+                    sleep(530);
                 }
 
                 frameStop();
@@ -420,11 +420,11 @@ public class TEAutoBlue1 extends TurningEchoHardware {
 
                     moveFix(0.4,moveStatus.rR);//右转
 
-                    sleep(600);
+                    sleep(400);
 
                     moveFix(0.4,moveStatus.rL);//左转
 
-                    sleep(600);
+                    sleep(400);
 
                     moveFix(0.3,moveStatus.yF);//往前推一点点
 
@@ -438,11 +438,11 @@ public class TEAutoBlue1 extends TurningEchoHardware {
 
                     moveFix(0.4,moveStatus.rL);//左转
 
-                    sleep(600);
+                    sleep(400);
 
                     moveFix(0.4,moveStatus.rR);//右转
 
-                    sleep(600);
+                    sleep(400);
 
                     moveFix(0.3,moveStatus.yF);//往前推一点点
 
@@ -454,11 +454,11 @@ public class TEAutoBlue1 extends TurningEchoHardware {
 
                     sleep(120);
 
-                    moveFix(0.4,moveStatus.rL);
+                    moveFix(0.4,moveStatus.rR);
 
                     sleep(400);
 
-                    moveFix(0.4,moveStatus.rR);
+                    moveFix(0.4,moveStatus.rL);
 
                     sleep(400);
 
