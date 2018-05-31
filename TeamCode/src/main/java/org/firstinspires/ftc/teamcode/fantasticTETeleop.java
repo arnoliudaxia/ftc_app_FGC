@@ -72,6 +72,8 @@ public class fantasticTETeleop extends TurningEchoHardware {
 
     int count = 0;
 
+    double r = 0;
+
     public void runOpMode() {
         TurningEchoHardwareConfigure();
         Thread1 shift = new Thread1("shift");
@@ -115,19 +117,27 @@ public class fantasticTETeleop extends TurningEchoHardware {
 
             powerMode = switchPowerMode();//powerMode变量——SwitchpowerMode方法，powerMode变量将有1（正常速度）、2.5（慢速）的返回值
 
+            if (gamepad1.left_trigger!=0){
+                moveFix(gamepad1.left_trigger,moveStatus.rL);
+            }
+
+            else if (gamepad1.right_trigger!=0){
+                moveFix(gamepad1.right_trigger,moveStatus.rR);
+            }
+
             frameControl();
 
-            /*if (gamepad1.dpad_up || gamepad1.dpad_left || gamepad1.dpad_right || gamepad1.dpad_down) {//dpad的底盘中速运行模式
+            if (gamepad1.dpad_up || gamepad1.dpad_left || gamepad1.dpad_right || gamepad1.dpad_down) {//dpad的底盘中速运行模式
                 if (gamepad1.dpad_up) {
-                    moveFix(0.7,moveStatus.xF);
+                    moveFix(0.7,moveStatus.yF);
                 } else if (gamepad1.dpad_down) {
-                    moveFix(0.7,moveStatus.xB);
+                    moveFix(0.7,moveStatus.yB);
                 } else if (gamepad1.dpad_left) {
-                    moveFix(1,moveStatus.rL);
+                    moveFix(1,moveStatus.xL);
                 } else if (gamepad1.dpad_right) {
-                    moveFix(1,moveStatus.rR);
+                    moveFix(1,moveStatus.xR);
                 }
-            }*/
+            }
 
 //            if (!catchBlockCase){
 //                if (count == 0){
@@ -147,13 +157,17 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 }
             }
 
+            if (gamepad1.right_trigger==0&&gamepad1.left_trigger==0&&!gamepad1.left_bumper&&!gamepad1.right_bumper&&!gamepad1.dpad_down&&!gamepad1.dpad_left&&!gamepad1.dpad_right&&!gamepad1.dpad_up&&gamepad1.left_stick_y==0&&gamepad1.left_stick_x==0){
+                frameStop();
+            }
+
 //            if (gamepad2.start){
 //                motorShift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //            }
 
-            if (gamepad2.right_stick_button) {
+            if (gamepad2.b) {
                 shift.start();
-                while (gamepad2.right_stick_button) {
+                while (gamepad2.b) {
                     idle();
                 }
             }
@@ -171,7 +185,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 motorShift.setPower(0);
             }
 
-            if (gamepad2.right_stick_y<=-0.5) {
+            if (gamepad2.y) {
                 if (!shiftReversed) {//如果已反转
                     if (!block12Catched) {
                         catchBlock12();
@@ -189,10 +203,10 @@ public class fantasticTETeleop extends TurningEchoHardware {
                         block34Catched = false;
                     }
                 }
-                while (gamepad2.right_stick_y<=-0.5) {
+                while (gamepad2.y) {
                     idle();
                 }
-            } else if (gamepad2.right_stick_y>=0.5) {
+            } else if (gamepad2.a) {
                 if (shiftReversed) {
                     if (!block12Catched) {
                         catchBlock12();
@@ -210,7 +224,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
                         block34Catched = false;
                     }
                 }
-                while (gamepad2.right_stick_y>=0.5) {
+                while (gamepad2.a) {
                     idle();
                 }
             }
@@ -218,19 +232,19 @@ public class fantasticTETeleop extends TurningEchoHardware {
             lift(-gamepad2.left_stick_y);
 
             //ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!ARM!
-            if (gamepad1.dpad_up) {
+            if (gamepad1.right_stick_y<=-0.6) {
                 servoKickBall_1.setPosition(0.15);
             }
-            if (gamepad1.dpad_down) {
-                servoKickBall_1.setPosition(0.82);
+            if (gamepad1.right_stick_y>=0.6) {
+                servoKickBall_1.setPosition(0.83);
             }
 
-            if (gamepad1.dpad_left && servoBallPosition_2 <= 1) {
+            if (gamepad1.right_stick_x<=-0.6 && servoBallPosition_2 <= 1) {
                 servoBallPosition_2 = servoBallPosition_2 + 0.02;
                 sleep(20);
             }
 
-            if (gamepad1.dpad_right && servoBallPosition_2 >= 0) {
+            if (gamepad1.right_stick_x>=0.6 && servoBallPosition_2 >= 0) {
                 servoBallPosition_2 = servoBallPosition_2 - 0.02;
                 sleep(20);
             }
@@ -244,9 +258,15 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 }
             }
 
-            if (armCase){
-                motorArm.setPower(gamepad2.right_trigger-gamepad2.left_trigger);
+            if (armCase&&gamepad2.dpad_up){
+                motorArm.setPower(1);
             }
+
+            else if (armCase&&gamepad2.dpad_down){
+                motorArm.setPower(-1);
+            }
+
+            else motorArm.setPower(0);
 
             if (gamepad2.left_bumper){
                 if (!servoBaby_1_case){
@@ -348,7 +368,7 @@ public class fantasticTETeleop extends TurningEchoHardware {
                     //x、y轴功率与x、y轴姿态角函数关系式
                     yPower = +0.000002652391975309918 * Y * Y * Y * Y * Y - 0.000002411265432094396 * Y * Y * Y * Y - 0.00033661265432107044 * Y * Y * Y + 0.0005806327160490544 * Y * Y + 0.05630401234567932 * Y - 0.042283950617282684;
                     xPower = +0.0016666666666666741 * X * X * X + 1.850371707708594e-17 * X * X - 0.10166666666666667 * X - 1.850371707708594e-17;
-                    moveVar(yPower, xPower, 0, 1);//移动函数，输入x、y轴功率值
+                    moveVar(yPower, xPower,  1);//移动函数，输入x、y轴功率值
                     telemetry.addData("blankY", Y);//打印y轴姿态角数据
                     telemetry.addData("yPower", yPower);//打印y轴功率值
                     telemetry.addData("blankX", X);//打印x轴姿态角数据

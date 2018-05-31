@@ -97,7 +97,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     //boolean robot_case_2 = false;
     final double POWER_MODE_SLOW = 3;
     final double POWER_MODE_FAST = 1;
-    double powerMode = Range.clip(1, 1,2);//切换快/慢速模式
+    double powerMode = Range.clip(1.48, 1,2);//切换快/慢速模式
 
     boolean armCase = false;
 
@@ -343,31 +343,49 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
                 break;
 
             case xL:
-                motorFL.setPower(-power / powerMode);
-                motorFR.setPower(power / powerMode);
-                motorBL.setPower(power / powerMode);
-                motorBR.setPower(-power / powerMode);
+                motorFL.setPower(-power);
+                motorFR.setPower(power);
+                motorBL.setPower(power);
+                motorBR.setPower(-power);
                 break;
 
             case xR:
-                motorFL.setPower(power / powerMode);
-                motorFR.setPower(-power / powerMode);
-                motorBL.setPower(-power / powerMode);
-                motorBR.setPower(power / powerMode);
+                motorFL.setPower(power);
+                motorFR.setPower(-power);
+                motorBL.setPower(-power);
+                motorBR.setPower(power);
                 break;
 
             case rL:
-                motorFL.setPower(-power / powerMode);
-                motorFR.setPower(power / powerMode);
-                motorBL.setPower(-power / powerMode);
-                motorBR.setPower(power / powerMode);
+                if (powerMode == 2){
+                    motorFL.setPower(-power / (powerMode+1.3));
+                    motorFR.setPower(power / (powerMode+1.3));
+                    motorBL.setPower(-power / (powerMode+1.3));
+                    motorBR.setPower(power / (powerMode+1.3));
+                }
+
+                else if (powerMode == 1.48 || powerMode == 1){
+                    motorFL.setPower(-power / powerMode);
+                    motorFR.setPower(power / powerMode);
+                    motorBL.setPower(-power / powerMode);
+                    motorBR.setPower(power / powerMode);
+                }
                 break;
 
             case rR:
-                motorFL.setPower(power / powerMode);
-                motorFR.setPower(-power / powerMode);
-                motorBL.setPower(power / powerMode);
-                motorBR.setPower(-power / powerMode);
+                if (powerMode == 2){
+                    motorFL.setPower(power / (powerMode+1.3));
+                    motorFR.setPower(-power / (powerMode+1.3));
+                    motorBL.setPower(power / (powerMode+1.3));
+                    motorBR.setPower(-power / (powerMode+1.3));
+                }
+
+                else if (powerMode == 1.48 || powerMode == 1){
+                    motorFL.setPower(power / powerMode);
+                    motorFR.setPower(-power / powerMode);
+                    motorBL.setPower(power / powerMode);
+                    motorBR.setPower(-power / powerMode);
+                }
                 break;
 
             case S:
@@ -379,14 +397,14 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         }
     }
 
-    public void moveVar(double yPower, double xPower, double rPower, double powerMode) {
+    public void moveVar(double yPower, double xPower, double powerMode) {
         //                       yPower = y轴功率（前后平移方向上的功率）
         //                                      xPower = x轴功率（左右平移方向上的功率）
         //                                                     rPower = 自转功率（左右转向的功率）
-        double FinalPower1 = Range.clip((yPower + xPower + rPower) / powerMode, -1, 1);
-        double FinalPower2 = Range.clip((yPower - xPower - rPower) / powerMode, -1, 1);
-        double FinalPower3 = Range.clip((yPower - xPower + rPower) / powerMode, -1, 1);
-        double FinalPower4 = Range.clip((yPower + xPower - rPower) / powerMode, -1, 1);
+        double FinalPower1 = Range.clip((yPower + xPower) / powerMode, -1, 1);
+        double FinalPower2 = Range.clip((yPower - xPower) / powerMode, -1, 1);
+        double FinalPower3 = Range.clip((yPower - xPower) / powerMode, -1, 1);
+        double FinalPower4 = Range.clip((yPower + xPower) / powerMode, -1, 1);
 
         motorFL.setPower(FinalPower1);
         motorFR.setPower(FinalPower2);
@@ -400,7 +418,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         motorBL.setPower(0);
         motorBR.setPower(0);
 
-        moveVar(0, 0, 0, 1);
+        moveVar(0, 0, 1);
 
         moveFix(0, moveStatus.yF);
     }
@@ -440,26 +458,19 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     }
 
     public double switchPowerMode() {//切换低/高速模式
-        if (gamepad1.right_stick_y<=-0.8) {
-            powerMode = powerMode - 0.5;
-            while (gamepad1.right_stick_y<=-0.8) {
-                idle();
-            }
-        } else if (gamepad1.right_stick_y>=0.8) {
-            powerMode = powerMode + 0.5;
-            while (gamepad1.right_stick_y>=0.8) {
-                idle();
-            }
+        if (gamepad1.b){
+            return 1;
         }
 
-        if (powerMode<1){
-            powerMode=1;
-        }
-        else if (powerMode>2){
-            powerMode=2;
+        else if (gamepad1.x){
+            return 2;
         }
 
-        return powerMode;
+        else if (gamepad1.a){
+            return 1.48;
+        }
+
+        else return powerMode;
 //        if (gamepad1.right_stick_y != 0) {
 //            powerMode = Range.clip(0.75 * gamepad1.right_stick_y + 1.75, POWER_MODE_FAST, POWER_MODE_SLOW);
 //        }
@@ -493,11 +504,17 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
         sleep(500);
     }
 
+//    public void frameControl() {
+//        if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0 || gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {//底盘平移
+//            moveVar(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_trigger - gamepad1.left_trigger, powerMode);
+//        } else {
+//            moveVar(0, 0, 0, 0);
+//        }
+//    }
+
     public void frameControl() {
-        if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0 || gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {//底盘平移
-            moveVar(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_trigger - gamepad1.left_trigger, powerMode);
-        } else {
-            moveVar(0, 0, 0, 0);
+        if (gamepad1.left_stick_y != 0 || gamepad1.left_stick_x != 0) {//底盘平移
+            moveVar(-gamepad1.left_stick_y, gamepad1.left_stick_x, powerMode);
         }
     }
 
