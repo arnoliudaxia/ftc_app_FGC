@@ -214,7 +214,7 @@ public class TEAutoBlue1 extends TurningEchoHardware {
 
         sleep(600);
 
-        while (servoBallPosition_1<=0.85){
+        while (servoBallPosition_1<=0.87){
             servoBallPosition_1 = servoBallPosition_1 + 0.05;
             servoKickBall(servoBallPosition_1,0.5);
             sleep(10);
@@ -287,7 +287,7 @@ public class TEAutoBlue1 extends TurningEchoHardware {
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
-            tripodHeadPosition = 0.19;//云台舵机角度
+            tripodHeadPosition = 0.26;//云台舵机角度
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);//VuMark
             while (RelicRecoveryVuMark.from(relicTemplate) == RelicRecoveryVuMark.UNKNOWN) {
                 if (RelicRecoveryVuMark.from(relicTemplate) != RelicRecoveryVuMark.UNKNOWN) {//如果扫到了壁画，则vuMark=壁画，
@@ -297,10 +297,10 @@ public class TEAutoBlue1 extends TurningEchoHardware {
                 telemetry.update();
                 tripodHead.setPosition(tripodHeadPosition);//设定云台角度
                 tripodHeadPosition = tripodHeadPosition + 0.07;//每次云台转动0.05角度
-                sleep(700);
+                sleep(800);
                 count++;
                 if (tripodHeadPosition > 0.54) {//让云台在0.5-0.7角度范围内转动
-                    tripodHeadPosition = 0.19;
+                    tripodHeadPosition = 0.26;
                 }
                 if (count > 14) {//8*700=5.6秒，5.6秒后还未扫到壁画则跳出循环
                     break;

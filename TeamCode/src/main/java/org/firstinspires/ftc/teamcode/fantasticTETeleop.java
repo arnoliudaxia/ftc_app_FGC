@@ -172,17 +172,11 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 }
             }
 
-            else if (gamepad2.left_trigger>=0.1 || gamepad2.right_trigger>=0.1){
-                if (shiftReversed){
-                    motorShift.setPower(0.5);
-                }
-                else {
-                    motorShift.setPower(-0.5);
-                }
+            if (shiftReversed){
+                motorShift.setPower(gamepad2.left_trigger/2);
             }
-
-            else if (!gamepad2.left_stick_button){
-                motorShift.setPower(0);
+            else {
+                motorShift.setPower(-gamepad2.right_trigger/2);
             }
 
             if (gamepad2.y) {
@@ -251,18 +245,18 @@ public class fantasticTETeleop extends TurningEchoHardware {
 
             servoKickBall_2.setPosition(servoBallPosition_2);
 
-            if (gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1){
-                armCase = true;
-                while (gamepad2.left_trigger >0 || gamepad2.right_trigger > 0){
-                    idle();
-                }
-            }
+//            if (gamepad2.left_trigger == 1 && gamepad2.right_trigger == 1){
+//                armCase = true;
+//                while (gamepad2.left_trigger >0 || gamepad2.right_trigger > 0){
+//                    idle();
+//                }
+//            }
 
-            if (armCase&&gamepad2.dpad_up){
+            if (gamepad2.dpad_up){
                 motorArm.setPower(1);
             }
 
-            else if (armCase&&gamepad2.dpad_down){
+            else if (gamepad2.dpad_down){
                 motorArm.setPower(-1);
             }
 

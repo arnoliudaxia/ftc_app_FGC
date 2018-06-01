@@ -367,11 +367,18 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
                     motorBR.setPower(power / (powerMode+1.3));
                 }
 
-                else if (powerMode == 1.48 || powerMode == 1){
-                    motorFL.setPower(-power / powerMode);
-                    motorFR.setPower(power / powerMode);
-                    motorBL.setPower(-power / powerMode);
-                    motorBR.setPower(power / powerMode);
+                else if (powerMode == 1.48){
+                    motorFL.setPower(-power / (powerMode+0.32));
+                    motorFR.setPower(power / (powerMode+0.32));
+                    motorBL.setPower(-power / (powerMode+0.32));
+                    motorBR.setPower(power / (powerMode+0.32));
+                }
+
+                else {
+                    motorFL.setPower(-power);
+                    motorFR.setPower(power);
+                    motorBL.setPower(-power);
+                    motorBR.setPower(power);
                 }
                 break;
 
@@ -383,11 +390,18 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
                     motorBR.setPower(-power / (powerMode+1.3));
                 }
 
-                else if (powerMode == 1.48 || powerMode == 1){
-                    motorFL.setPower(power / powerMode);
-                    motorFR.setPower(-power / powerMode);
-                    motorBL.setPower(power / powerMode);
-                    motorBR.setPower(-power / powerMode);
+                else if (powerMode == 1.48){
+                    motorFL.setPower(power / (powerMode+0.32));
+                    motorFR.setPower(-power / (powerMode+0.32));
+                    motorBL.setPower(power / (powerMode+0.32));
+                    motorBR.setPower(-power / (powerMode+0.32));
+                }
+
+                else {
+                    motorFL.setPower(power);
+                    motorFR.setPower(-power);
+                    motorBL.setPower(power);
+                    motorBR.setPower(-power);
                 }
                 break;
 
