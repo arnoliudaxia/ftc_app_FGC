@@ -34,8 +34,11 @@ import android.graphics.YuvImage;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -75,7 +78,48 @@ public class fantasticTETeleop extends TurningEchoHardware {
     double r = 0;
 
     public void runOpMode() {
-        TurningEchoHardwareConfigure();
+        motorFL = hardwareMap.get(DcMotor.class, "motorFL");
+        motorFR = hardwareMap.get(DcMotor.class, "motorFR");
+        motorBL = hardwareMap.get(DcMotor.class, "motorBL");
+        motorBR = hardwareMap.get(DcMotor.class, "motorBR");
+        // Most robots need the motor on one side to be reversed to drive forward
+        // Reverse the motor that runs backwards when connected directly to the battery
+        motorFL.setDirection(DcMotor.Direction.FORWARD);
+        motorBL.setDirection(DcMotor.Direction.FORWARD);
+        motorFR.setDirection(DcMotor.Direction.REVERSE);
+        motorBR.setDirection(DcMotor.Direction.REVERSE);
+
+        servoCatchBlock_1 = hardwareMap.servo.get("servoCatchBlock_1");
+        servoCatchBlock_2 = hardwareMap.servo.get("servoCatchBlock_2");
+        servoCatchBlock_3 = hardwareMap.servo.get("servoCatchBlock_3");
+        servoCatchBlock_4 = hardwareMap.servo.get("servoCatchBlock_4");
+
+        motorLift = hardwareMap.dcMotor.get("motorLift");
+
+        motorShift = hardwareMap.dcMotor.get("motorShift");
+        motorArm = hardwareMap.dcMotor.get("motorArm");
+
+        servoKickBall_1 = hardwareMap.get(Servo.class, "servoKickBall_1");
+        servoKickBall_2 = hardwareMap.get(Servo.class, "servoKickBall_2");
+
+        tripodHead = hardwareMap.get(Servo.class, "tripodHead");
+        watcher = hardwareMap.get(Servo.class, "watcher");
+
+        servoBaby_1 = hardwareMap.servo.get("servoBaby_1");
+        servoBaby_2 = hardwareMap.servo.get("servoBaby_2");
+
+//        sensorColour1 = hardwareMap.get(ColorSensor.class, "sensorColourDistance1");
+//        sensorColour2 = hardwareMap.get(ColorSensor.class, "sensorColourDistance2");
+//
+//        sensorDistance1 = hardwareMap.get(DistanceSensor.class, "sensorColourDistance1");
+//        sensorDistance2 = hardwareMap.get(DistanceSensor.class, "sensorColourDistance2");
+
+        motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorShift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        telemetry.addData("Hardware", "Initialized");
+        telemetry.update();
         Thread1 shift = new Thread1("shift");
         //Thread2 initIMU_ALL = new Thread2(("initIMU_ALL"));
         telemetry.addData("Hardware", "Initialized");
