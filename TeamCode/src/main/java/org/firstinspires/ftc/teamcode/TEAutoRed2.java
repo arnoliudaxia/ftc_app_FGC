@@ -280,9 +280,9 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
             servoKickBall(0.25,0.71);
 
-            sleep(200);
+            sleep(500);
 
-            servoKickBall(0.25,0.57);
+            servoKickBall(0.25,0.5);
         }
 
         else if (sensorColour1.blue() > sensorColour1.red()) {//判断telemetry.addData("red",0);
@@ -295,9 +295,9 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
             servoKickBall(0.25,0.25);
 
-            sleep(200);
+            sleep(500);
 
-            servoKickBall(0.25,0.57);
+            servoKickBall(0.25,0.5);
         }
 
 
@@ -359,7 +359,7 @@ public class TEAutoRed2 extends TurningEchoHardware {
 
                 moveFix(0.2, moveStatus.yF);//缓停
 
-                sleep(320);
+                sleep(420);
 
                 frameStop();
 
@@ -419,15 +419,15 @@ public class TEAutoRed2 extends TurningEchoHardware {
                 if (vuMark == LEFT) {
                     moveFix(1, moveStatus.xL);//左平移
 
-                    sleep(920);
+                    sleep(850);
                 } else if (vuMark == CENTER) {//done
                     moveFix(1, moveStatus.xL);//左平移
 
-                    sleep(675);
+                    sleep(610);
                 } else if (vuMark == RIGHT) {
                     moveFix(1, moveStatus.xL);//左平移
 
-                    sleep(450);
+                    sleep(340);
                 }
 
                 frameStop();
@@ -467,15 +467,15 @@ public class TEAutoRed2 extends TurningEchoHardware {
                 //以下为sao操作，主要是左右摇摆，把方块摆进对应密码箱
                 moveFix(0.3, moveStatus.yB);//后退一点点
 
-                sleep(130);
+                sleep(140);
 
                 moveFix(0.4, moveStatus.rR);//右转
 
-                sleep(400);
+                sleep(500);
 
                 moveFix(0.4, moveStatus.rL);//左转
 
-                sleep(400);
+                sleep(500);
 
                 moveFix(0.3, moveStatus.yF);//往前推一点点
 

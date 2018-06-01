@@ -245,9 +245,9 @@ public class TEAutoRed1 extends TurningEchoHardware {
 
             servoKickBall(0.25,0.71);
 
-            sleep(200);
+            sleep(500);
 
-            servoKickBall(0.25,0.57);
+            servoKickBall(0.25,0.5);
         }
 
         else if (sensorColour1.blue() > sensorColour1.red()) {//判断telemetry.addData("red",0);
@@ -260,9 +260,9 @@ public class TEAutoRed1 extends TurningEchoHardware {
 
             servoKickBall(0.25,0.25);
 
-            sleep(200);
+            sleep(500);
 
-            servoKickBall(0.25,0.57);
+            servoKickBall(0.25,0.5);
         }
 
 
@@ -323,7 +323,7 @@ public class TEAutoRed1 extends TurningEchoHardware {
 ///////////////////////////////////////////////////////////////////////////////////////////
                 moveFix(0.4,moveStatus.yF);//前进
 
-                sleep(950);
+                sleep(1050);
 
                 frameStop();
 
@@ -354,19 +354,19 @@ public class TEAutoRed1 extends TurningEchoHardware {
                 if (vuMark == LEFT){
                     moveFix(0.6,moveStatus.xL);//左平移
 
-                    sleep(530);
+                    sleep(1090);
                 }
 
                 else if (vuMark == CENTER){//done
-                    moveFix(0.6,moveStatus.xR);
+                    moveFix(0.6,moveStatus.xL);
 
-                    sleep(530);
+                    sleep(480);
                 }
 
                 else if (vuMark == RIGHT){
                     moveFix(0.6,moveStatus.xR);
 
-                    sleep(530);
+                    sleep(180);
                 }
 
                 frameStop();
@@ -396,15 +396,15 @@ public class TEAutoRed1 extends TurningEchoHardware {
                 if (vuMark == RIGHT){
                     moveFix(0.3,moveStatus.yB);//后退一点点
 
-                    sleep(120);
+                    sleep(140);
 
-                    moveFix(0.4,moveStatus.rR);//右转
+                    moveFix(0.4,moveStatus.rL);//右转
 
-                    sleep(600);
+                    sleep(500);
 
-                    moveFix(0.4,moveStatus.rL);//左转
+                    moveFix(0.4,moveStatus.rR);//左转
 
-                    sleep(600);
+                    sleep(500);
 
                     moveFix(0.3,moveStatus.yF);//往前推一点点
 
@@ -414,15 +414,15 @@ public class TEAutoRed1 extends TurningEchoHardware {
                 if (vuMark == LEFT){
                     moveFix(0.3,moveStatus.yB);//后退一点点
 
-                    sleep(120);
+                    sleep(140);
 
-                    moveFix(0.4,moveStatus.rR);//左转
+                    moveFix(0.4,moveStatus.rL);//左转
 
-                    sleep(400);
+                    sleep(500);
 
-                    moveFix(0.4,moveStatus.rL);//右转
+                    moveFix(0.4,moveStatus.rR);//右转
 
-                    sleep(400);
+                    sleep(500);
 
                     moveFix(0.3,moveStatus.yF);//往前推一点点
 
@@ -432,15 +432,15 @@ public class TEAutoRed1 extends TurningEchoHardware {
                 if (vuMark == CENTER){
                     moveFix(0.3,moveStatus.yB);
 
-                    sleep(130);
+                    sleep(140);
 
                     moveFix(0.4,moveStatus.rL);
 
-                    sleep(400);
+                    sleep(500);
 
                     moveFix(0.4,moveStatus.rR);
 
-                    sleep(400);
+                    sleep(500);
 
                     moveFix(0.6,moveStatus.yF);
 

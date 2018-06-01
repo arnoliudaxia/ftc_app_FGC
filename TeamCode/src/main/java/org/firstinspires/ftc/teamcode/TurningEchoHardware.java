@@ -109,7 +109,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     public double servoBlockPosition_1_tight = 0.69;
     public double servoBlockPosition_2_tight = 0;
     public double servoBlockPosition_3_tight = 0.3;
-    public double servoBlockPosition_4_tight = 0.9;
+    public double servoBlockPosition_4_tight = 0.92;
     public double servoBlockPosition_1_release = 0.35;
     public double servoBlockPosition_2_release = 0.31;
     public double servoBlockPosition_3_release = 0.61;
@@ -126,7 +126,7 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
     boolean servoBaby_1_case = false;
     boolean servoBaby_2_case = false;
 
-    boolean shiftCount = false;
+    boolean shiftCase = false;
 
     final double errorIMU = 0.8;
 
@@ -221,23 +221,22 @@ public class TurningEchoHardware extends BasicOpMode_Linear {
             telemetry.update();
             try {
                 shiftReversed = !shiftReversed;
+                shiftCase = true;
                 if (shiftReversed) {//如果电机（shift）已反转
-                    motorShift.setPower(0.63);
-                    sleep(150, 0);
-                    motorShift.setPower(0.43);
+                    motorShift.setPower(0.3);
                     sleep(350, 0);
-                    motorShift.setPower(0.23);
-                    sleep(600, 0);
+                    motorShift.setPower(0.2);
+                    sleep(750, 0);
                 }
 
                 else {
-                    motorShift.setPower(-0.63);
-                    sleep(150, 0);
-                    motorShift.setPower(-0.43);
+                    motorShift.setPower(-0.3);
                     sleep(350, 0);
-                    motorShift.setPower(-0.23);
-                    sleep(600, 0);
+                    motorShift.setPower(-0.2);
+                    sleep(750, 0);
                 }
+
+                shiftCase = false;
                 motorShift.setPower(0);
             } catch (InterruptedException e) {
                 e.printStackTrace();

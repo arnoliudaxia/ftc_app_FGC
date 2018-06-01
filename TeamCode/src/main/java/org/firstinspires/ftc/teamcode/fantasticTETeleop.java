@@ -172,12 +172,13 @@ public class fantasticTETeleop extends TurningEchoHardware {
                 }
             }
 
-            if (shiftReversed){
-                motorShift.setPower(gamepad2.left_trigger/2);
+            if (shiftReversed&&!shiftCase){
+                motorShift.setPower(gamepad2.left_trigger/3);
             }
-            else {
-                motorShift.setPower(-gamepad2.right_trigger/2);
+            else if (!shiftReversed&&!shiftCase){
+                motorShift.setPower(-gamepad2.left_trigger/3);
             }
+            else idle();
 
             if (gamepad2.y) {
                 if (!shiftReversed) {//如果已反转
@@ -401,8 +402,10 @@ public class fantasticTETeleop extends TurningEchoHardware {
 //            telemetry.addData("heading", formatAngle(angles.angleUnit, angles.firstAngle));
 //            telemetry.addData("roll", formatAngle(angles.angleUnit, angles.secondAngle));
 //            telemetry.addData("pitch", formatAngle(angles.angleUnit, angles.thirdAngle));
-            telemetry.addData("red", sensorColour1.red());
-            telemetry.addData("blue", sensorColour1.blue());
+            //telemetry.addData("red", sensorColour1.red());
+            //telemetry.addData("blue", sensorColour1.blue());
+            //telemetry.addData("Position1", servoCatchBlock_1.getPosition());
+            //telemetry.addData("Position2", servoCatchBlock_2.getPosition());
 //            telemetry.addData("gravityX", gravity.xAccel);
 //            telemetry.addData("gravityY", gravity.yAccel);
 //            telemetry.addData("gravityZ", gravity.zAccel);
