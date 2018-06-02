@@ -138,8 +138,10 @@ public class TEAutoBlue2 extends TurningEchoHardware {
         imu.initialize(parameters);
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
-        releaseBlock12();
-        releaseBlock34();
+        servoCatchBlock_1.setPosition(0.15);
+        servoCatchBlock_2.setPosition(0.51);
+        servoCatchBlock_3.setPosition(0.81);
+        servoCatchBlock_4.setPosition(0.41);
 
         // Set up our telemetry dashboard
         //composeTelemetry();
